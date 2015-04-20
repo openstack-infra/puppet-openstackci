@@ -8,5 +8,6 @@
   "project_page": "http://ci.openstack.org/",
   "issues_url": "https://storyboard.openstack.org/#!/project/808",
   "dependencies": [
+    { "name": "openstackinfra/jenkins" }
   ]
 }
