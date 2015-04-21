@@ -10,6 +10,8 @@
   "dependencies": [
     { "name": "puppetlabs/apache" },
     { "name": "openstackinfra/vcsrepo" },
-    { "name": "openstackinfra/jenkins" }
+    { "name": "openstackinfra/jenkins" },
+    { "name": "openstackinfra/zuul" },
+    { "name": "openstackinfra/project_config" },
   ]
 }
