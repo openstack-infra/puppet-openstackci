@@ -8,5 +8,7 @@
   "project_page": "http://ci.openstack.org/",
   "issues_url": "https://storyboard.openstack.org/#!/project/808",
   "dependencies": [
+    { "name": "openstackinfra/puppet-zuul", "version_requirement": "= 0.0.1" },
+    { "name": "openstackinfra/puppet-project_config", "version_requirement": "= 0.0.1" },
   ]
 }
