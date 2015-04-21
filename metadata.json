@@ -11,5 +11,7 @@
     { "name": "puppetlabs/apache" },
     { "name": "openstackinfra/vcsrepo" },
     { "name": "openstackinfra/jenkins" }
+    { "name": "openstackinfra/zuul", "version_requirement": ">= 0.0.1" },
+    { "name": "openstackinfra/project_config", "version_requirement": ">= 0.0.1" }
   ]
 }
