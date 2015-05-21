@@ -1,4 +1,6 @@
 require 'beaker-rspec'
+require 'tmpdir'
+require 'json'
 
 hosts.each do |host|
 
@@ -10,6 +12,7 @@ end
 RSpec.configure do |c|
   # Project root
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+  modname = JSON.parse(open('metadata.json').read)['name'].split('-')[1]
 
   # Readable test descriptions
   c.formatter = :documentation
@@ -22,20 +25,22 @@ RSpec.configure do |c|
       # install git
       install_package host, 'git'
 
-      # clean out any module cruft
-      shell('rm -fr /etc/puppet/modules/*')
+      # If we are running in CI, we expect the modules to have been
+      # installed by the test prep.  If not, we need to install the
+      # modules ourselves.
+      if Dir.entries('/etc/puppet/modules/').size == 2
+        Dir.mktmpdir { |dir|
+          on host, "git clone https://git.openstack.org/openstack-infra/system-config #{dir}/system-config"
+          on host, "#{dir}/system-config/tools/install_modules.sh"
+        }
 
-      # install library modules from the forge
-      on host, puppet('module','install','puppetlabs-apache', '--version', '0.0.4'), { :acceptable_exit_codes => 0 }
+        # Delete and then copy the module being tested in to place.
+        on host, "rm -fr /etc/puppet/modules/#{modname}"
+        copy_module_to(host, :source => proj_root, :module_name => modname)
+      end
 
-      # install puppet modules from git, use master, TODO: zuul-cloner this
-      shell('git clone https://git.openstack.org/openstack-infra/puppet-jenkins /etc/puppet/modules/jenkins')
-      shell('git clone https://git.openstack.org/openstack-infra/puppet-vcsrepo /etc/puppet/modules/vcsrepo')
-
-      # Install the module being tested
-      puppet_module_install(:source => proj_root, :module_name => 'openstackci')
       # List modules installed to help with debugging
-      on hosts[0], puppet('module','list'), { :acceptable_exit_codes => 0 }
+      on host, puppet('module','list'), { :acceptable_exit_codes => 0 }
     end
   end
 end
