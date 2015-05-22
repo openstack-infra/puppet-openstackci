@@ -15,6 +15,33 @@
 
 # == Class: openstackci::logserver
 #
+# === Parameters:
+#
+# [*domain*]
+#   The domain of the logs.* name. Eg: openstack.org
+#
+# [*jenkins_ssh_key*]
+#   The rsa-ssh key of the jenkins user.
+#
+# [*swift_authurl*]
+#   (optional) The authurl for wsgi, if applicable.
+#
+# [*swift_user*]
+#   (optional) The swift auth user.
+#
+# [*swift_key*]
+#   (optional) The password for the swift auth user.
+#
+# [*swift_tenant_name*]
+#   (optional) The swift auth tenant name
+#
+# [*swift_region_name*]
+#   (optional) The region of the swift auth
+#
+# [*swift_default_container*]
+#   (optional) The swift auth container
+#
+
 class openstackci::logserver (
   $domain,
   $jenkins_ssh_key,
@@ -32,8 +59,8 @@ class openstackci::logserver (
     }
   }
 
-  include apache
-  include apache::mod::wsgi
+  include ::apache
+  include ::apache::mod::wsgi
 
   if ! defined(A2mod['rewrite']) {
     a2mod { 'rewrite':
