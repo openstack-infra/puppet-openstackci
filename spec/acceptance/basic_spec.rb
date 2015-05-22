@@ -17,9 +17,9 @@ describe 'basic openstackci' do
       apply_manifest(pp, :catch_changes => true)
     end
 
-    describe port(80) do
-      it { is_expected.to be_listening.with('tcp') }
-    end
+    #describe port(80) do
+    #  it { is_expected.to be_listening.with('tcp') }
+    #end
 
   end
 end
