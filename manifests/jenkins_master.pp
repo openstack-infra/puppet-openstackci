@@ -4,8 +4,8 @@ class openstackci::jenkins_master (
   $serveradmin,
   $vhost_name              = $::fqdn,
   $logo                    = '', # Logo must be present in puppet-jenkins/files
-  $ssl_cert_file           = '',
-  $ssl_key_file            = '',
+  $ssl_cert_file           = '/etc/ssl/certs/ssl-cert-snakeoil.pem',
+  $ssl_key_file            = '/etc/ssl/private/ssl-cert-snakeoil.key',
   $ssl_chain_file          = '',
   $ssl_cert_file_contents  = '',
   $ssl_key_file_contents   = '',
@@ -13,27 +13,13 @@ class openstackci::jenkins_master (
   $jenkins_ssh_private_key = '',
   $jenkins_ssh_public_key  = '',
 ) {
-  # Set defaults here because they evaluate variables which you cannot
-  # do in the class parameter list.
-  if $ssl_cert_file == '' {
-    $prv_ssl_cert_file = "/etc/ssl/certs/${vhost_name}.pem"
-  }
-  else {
-    $prv_ssl_cert_file = $ssl_cert_file
-  }
-  if $ssl_key_file == '' {
-    $prv_ssl_key_file = "/etc/ssl/private/${vhost_name}.key"
-  }
-  else {
-    $prv_ssl_key_file = $ssl_key_file
-  }
 
   class { '::jenkins::master':
     vhost_name              => $vhost_name,
     serveradmin             => $serveradmin,
     logo                    => $logo,
-    ssl_cert_file           => $prv_ssl_cert_file,
-    ssl_key_file            => $prv_ssl_key_file,
+    ssl_cert_file           => $ssl_cert_file,
+    ssl_key_file            => $ssl_key_file,
     ssl_chain_file          => $ssl_chain_file,
     ssl_cert_file_contents  => $ssl_cert_file_contents,
     ssl_key_file_contents   => $ssl_key_file_contents,
