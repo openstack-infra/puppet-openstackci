@@ -123,7 +123,7 @@ class openstackci::logserver (
   file { '/etc/os_loganalyze/wsgi.conf':
     ensure  => present,
     owner   => 'root',
-    group   => 'www-data',
+    group   => $apache::params::group,
     mode    => '0440',
     content => template('openstackci/os-loganalyze-wsgi.conf.erb'),
     require => File['/etc/os_loganalyze'],
