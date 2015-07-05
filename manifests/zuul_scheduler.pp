@@ -41,14 +41,16 @@ class openstackci::zuul_scheduler(
   $proxy_ssl_chain_file_contents = '',
   $statsd_host = '',
   $project_config_repo = '',
+  $project_config_revision = 'master',
   $project_config_base = '',
   $git_email = 'zuul@domain.example',
   $git_name = 'Zuul',
 ) {
 
   class { 'project_config':
-    url  => $project_config_repo,
-    base => $project_config_base,
+    url      => $project_config_repo,
+    revision => $project_config_revision,
+    base     => $project_config_base,
   }
 
   class { '::zuul':
