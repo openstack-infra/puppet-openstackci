@@ -32,23 +32,23 @@ class openstackci::logserver (
     }
   }
 
-  include apache
-  include apache::mod::wsgi
+  include httpd
+  include httpd::mod::wsgi
 
-  if ! defined(A2mod['rewrite']) {
-    a2mod { 'rewrite':
+  if ! defined(Httpd_mod['rewrite']) {
+    httpd_mod { 'rewrite':
       ensure => present,
     }
   }
 
-  if ! defined(A2mod['proxy']) {
-    a2mod { 'proxy':
+  if ! defined(Httpd_mod['proxy']) {
+    httpd_mod { 'proxy':
       ensure => present,
     }
   }
 
-  if ! defined(A2mod['proxy_http']) {
-    a2mod { 'proxy_http':
+  if ! defined(Httpd_mod['proxy_http']) {
+    httpd_mod { 'proxy_http':
       ensure => present,
     }
   }
@@ -59,7 +59,7 @@ class openstackci::logserver (
     }
   }
 
-  apache::vhost { "logs.${domain}":
+  httpd::vhost { "logs.${domain}":
     port     => 80,
     priority => '50',
     docroot  => '/srv/static/logs',
@@ -67,7 +67,7 @@ class openstackci::logserver (
     template => 'openstackci/logs.vhost.erb',
   }
 
-  apache::vhost { "logs-dev.${domain}":
+  httpd::vhost { "logs-dev.${domain}":
     port     => 80,
     priority => '51',
     docroot  => '/srv/static/logs',
