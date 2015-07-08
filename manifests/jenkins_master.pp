@@ -12,6 +12,15 @@ class openstackci::jenkins_master (
   $ssl_chain_file_contents = '',
   $jenkins_ssh_private_key = '',
   $jenkins_ssh_public_key  = '',
+  $manage_jenkins_jobs     = false,
+  $jenkins_url             = "https://${vhost_name}/",
+  $jenkins_password        = '',
+  $jenkins_username        = 'gerrit',
+  $jjb_update_timeout      = 1200,
+  $jjb_git_url             = 'https://git.openstack.org/openstack-infra/jenkins-job-builder',
+  $jjb_git_revision        = 'master',
+  $project_config_repo     = '',
+  $project_config_base     = '',
 ) {
 
   class { '::jenkins::master':
@@ -85,5 +94,25 @@ class openstackci::jenkins_master (
   }
   jenkins::plugin { 'token-macro':
     version => '1.5.1',
+  }
+
+  if $manage_jenkins_jobs == true {
+    if ! defined(Class['project_config']) {
+      class { 'project_config':
+        url  => $project_config_repo,
+        base => $project_config_base,
+      }
+    }
+    class { '::jenkins::job_builder':
+      url                         => $jenkins_url,
+      username                    => $jenkins_username,
+      password                    => $jenkins_password,
+      jenkins_jobs_update_timeout => $jjb_update_timeout,
+      git_revision                => $jjb_git_revision,
+      git_url                     => $jjb_git_url,
+      config_dir                  =>
+        $::project_config::jenkins_job_builder_config_dir,
+      require                     => $::project_config::config_dir,
+    }
   }
 }
