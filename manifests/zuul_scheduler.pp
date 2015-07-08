@@ -46,9 +46,11 @@ class openstackci::zuul_scheduler(
   $git_name = 'Zuul',
 ) {
 
-  class { 'project_config':
-    url  => $project_config_repo,
-    base => $project_config_base,
+  if ! defined(Class['project_config']) {
+    class { 'project_config':
+      url  => $project_config_repo,
+      base => $project_config_base,
+    }
   }
 
   class { '::zuul':
