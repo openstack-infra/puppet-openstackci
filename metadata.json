@@ -12,6 +12,11 @@
     { "name": "openstackinfra/vcsrepo" },
     { "name": "openstackinfra/jenkins" },
     { "name": "openstackinfra/zuul" },
-    { "name": "openstackinfra/project_config" }
+    { "name": "openstackinfra/project_config" },
+    { "name": "openstackinfra/log_processor" },
+    { "name": "openstackinfra/simpleproxy" },
+    { "name": "openstackinfra/subunit2sql" },
+    { "name": "openstackinfra/logstash" },
+    { "name": "openstackinfra/elasticsearch" }
   ]
 }
