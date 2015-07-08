@@ -110,6 +110,7 @@ class openstackci::logserver (
     path        => '/usr/local/bin:/usr/bin:/bin/',
     refreshonly => true,
     subscribe   => Vcsrepo['/opt/os-loganalyze'],
+    notify      => Service['httpd'],
   }
 
   file { '/etc/os_loganalyze':
