@@ -13,14 +13,14 @@ class openstackci::jenkins_master (
   $jenkins_ssh_private_key = '',
   $jenkins_ssh_public_key  = '',
   $manage_jenkins_jobs     = true,
-  $jenkins_jobs_password   = '',
-  $jenkins_jobs_username   = 'gerrit',
-  $jenkins_git_url         = 'https://git.openstack.org/openstack-infra/jenkins-job-builder',
-  $jenkins_git_revision    = 'master',
+  $jenkins_url             = "https://${vhost_name}/",
+  $jenkins_password        = '',
+  $jenkins_username        = 'gerrit',
+  $jenkins_update_timeout  = 1200,
+  $jjb_git_url             = 'https://git.openstack.org/openstack-infra/jenkins-job-builder',
+  $jjb_git_revision        = 'master',
   $project_config_repo     = '',
   $project_config_base     = '',
-
-
 ) {
 
   class { '::jenkins::master':
@@ -104,12 +104,12 @@ class openstackci::jenkins_master (
       }
     }
     class { '::jenkins::job_builder':
-      jenkins_jobs_update_timeout => 1200,
-      url                         => "https://${vhost_name}/",
-      username                    => $jenkins_jobs_username,
-      password                    => $jenkins_jobs_password,
-      git_revision                => $jenkins_git_revision,
-      git_url                     => $jenkins_git_url,
+      jenkins_jobs_update_timeout => $jenkins_update_timeout,
+      url                         => $jenkins_url,
+      username                    => $jenkins_username,
+      password                    => $jenkins_password,
+      git_revision                => $jjb_git_revision,
+      git_url                     => $jjb_git_url,
       config_dir                  =>
         $::project_config::jenkins_job_builder_config_dir,
       require                     => $::project_config::config_dir,
