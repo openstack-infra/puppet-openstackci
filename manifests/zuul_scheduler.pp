@@ -44,6 +44,10 @@ class openstackci::zuul_scheduler(
   $project_config_base = '',
   $git_email = 'zuul@domain.example',
   $git_name = 'Zuul',
+  $smtp_host = 'localhost',
+  $smtp_port = 25,
+  $smtp_default_from = "zuul@${::fqdn}",
+  $smtp_default_to = "zuul.reports@${::fqdn}",
 ) {
 
   class { 'project_config':
@@ -64,6 +68,10 @@ class openstackci::zuul_scheduler(
     statsd_host                    => $statsd_host,
     git_email                      => $git_email,
     git_name                       => $git_name,
+    smtp_host                      => $smtp_host,
+    smtp_port                      => $smtp_port,
+    smtp_default_from              => $smtp_default_from,
+    smtp_default_to                => $smtp_default_to,
     swift_authurl                  => $swift_authurl,
     swift_auth_version             => $swift_auth_version,
     swift_user                     => $swift_user,
