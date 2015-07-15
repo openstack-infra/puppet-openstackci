@@ -1,0 +1,10 @@
+Code-Review+2: James E. Blair <corvus@inaugust.com>
+Workflow+1: James E. Blair <corvus@inaugust.com>
+Verified+2: Jenkins
+Code-Review+2: Spencer Krum <nibz@spencerkrum.com>
+Code-Review+2: Ramy Asselin <ramy.asselin@hp.com>
+Submitted-by: Jenkins
+Submitted-at: Wed, 15 Jul 2015 22:59:30 +0000
+Reviewed-on: https://review.openstack.org/199784
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
