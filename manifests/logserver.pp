@@ -18,12 +18,12 @@
 class openstackci::logserver (
   $domain,
   $jenkins_ssh_key,
-  $swift_authurl = '',
-  $swift_user = '',
-  $swift_key = '',
-  $swift_tenant_name = '',
-  $swift_region_name = '',
-  $swift_default_container = '',
+  $swift_authurl = undef,
+  $swift_user = undef,
+  $swift_key = undef,
+  $swift_tenant_name = undef,
+  $swift_region_name = undef,
+  $swift_default_container = undef,
 ) {
 
   if ! defined(Class['::jenkins::jenkinsuser']) {
@@ -32,8 +32,8 @@ class openstackci::logserver (
     }
   }
 
-  include apache
-  include apache::mod::wsgi
+  include ::apache
+  include ::apache::mod::wsgi
 
   if ! defined(A2mod['rewrite']) {
     a2mod { 'rewrite':

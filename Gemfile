@@ -6,6 +6,22 @@ group :development, :unit_tests do
 
   gem 'json'
   gem 'webmock'
+
+  gem 'metadata-json-lint'
+  # This is nice and all, but let's not worry about it until we've actually
+  # got puppet 4.x sorted
+  # gem 'puppet-lint-param-docs'
+  gem 'puppet-lint-absolute_classname-check'
+  gem 'puppet-lint-absolute_template_path'
+  gem 'puppet-lint-trailing_newline-check'
+
+  # Puppet 4.x related lint checks
+  gem 'puppet-lint-unquoted_string-check'
+  gem 'puppet-lint-empty_string-check'
+  gem 'puppet-lint-leading_zero-check'
+  gem 'puppet-lint-variable_contains_upcase'
+  gem 'puppet-lint-spaceship_operator_without_tag-check'
+  gem 'puppet-lint-undef_in_function-check'
 end
 
 group :system_tests do
@@ -15,7 +31,7 @@ end
 if puppetversion = ENV['PUPPET_GEM_VERSION']
   gem 'puppet', puppetversion, :require => false
 else
-  gem 'puppet', :require => false
+  gem 'puppet', '~> 3.0', :require => false
 end
 
 # vim:ft=ruby
