@@ -5,22 +5,22 @@ class openstackci::jenkins_master (
   $jenkins_username        = 'jenkins',
   $jenkins_password        = 'secret',
   $vhost_name              = $::fqdn,
-  $logo                    = '', # Logo must be present in puppet-jenkins/files
+  $logo                    = undef, # Logo must be present in puppet-jenkins/files
   $ssl_cert_file           = '/etc/ssl/certs/ssl-cert-snakeoil.pem',
   $ssl_key_file            = '/etc/ssl/private/ssl-cert-snakeoil.key',
-  $ssl_chain_file          = '',
-  $ssl_cert_file_contents  = '',
-  $ssl_key_file_contents   = '',
-  $ssl_chain_file_contents = '',
-  $jenkins_ssh_private_key = '',
-  $jenkins_ssh_public_key  = '',
+  $ssl_chain_file          = undef,
+  $ssl_cert_file_contents  = undef,
+  $ssl_key_file_contents   = undef,
+  $ssl_chain_file_contents = undef,
+  $jenkins_ssh_private_key = undef,
+  $jenkins_ssh_public_key  = undef,
   $manage_jenkins_jobs     = false,
   $jenkins_url             = 'http://localhost:8080',
   $jjb_update_timeout      = 1200,
   $jjb_git_url             = 'https://git.openstack.org/openstack-infra/jenkins-job-builder',
   $jjb_git_revision        = 'master',
-  $project_config_repo     = '',
-  $project_config_base     = '',
+  $project_config_repo     = undef,
+  $project_config_base     = undef,
 ) {
 
   class { '::jenkins::master':
@@ -98,7 +98,7 @@ class openstackci::jenkins_master (
 
   if $manage_jenkins_jobs == true {
     if ! defined(Class['project_config']) {
-      class { 'project_config':
+      class { '::project_config':
         url  => $project_config_repo,
         base => $project_config_base,
       }
