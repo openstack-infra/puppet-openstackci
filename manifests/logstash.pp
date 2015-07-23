@@ -24,29 +24,29 @@ class openstackci::logstash (
   $log_processor_config,
 ) {
 
-  class { 'logstash::web':
+  class { '::logstash::web':
     frontend            => 'kibana',
     discover_nodes      => $discover_nodes,
     proxy_elasticsearch => true,
   }
 
-  class { 'log_processor': }
+  class { '::log_processor': }
 
-  class { 'log_processor::client':
+  class { '::log_processor::client':
     config_file => $log_processor_config,
     statsd_host => $statsd_host,
   }
 
-  include subunit2sql
+  include ::subunit2sql
 
-  class { 'subunit2sql::server':
+  class { '::subunit2sql::server':
     db_host => $subunit2sql_db_host,
     db_pass => $subunit2sql_db_pass,
   }
 
-  include simpleproxy
+  include ::simpleproxy
 
-  class { 'simpleproxy::server':
+  class { '::simpleproxy::server':
     db_host            => $subunit2sql_db_host,
   }
 

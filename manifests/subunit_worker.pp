@@ -22,7 +22,7 @@ class openstackci::subunit_worker (
   $subunit2sql_config_file,
 ) {
 
-  include subunit2sql
+  include ::subunit2sql
   subunit2sql::worker { 'A':
     config_file => $subunit2sql_config_file,
     db_host     => $subunit2sql_db_host,

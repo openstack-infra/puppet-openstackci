@@ -40,11 +40,11 @@ class openstackci::logstash_worker (
     content => "JAVA_ARGS='${indexer_java_args}'"
   }
 
-  class { 'logstash::indexer':
+  class { '::logstash::indexer':
     conf_template => 'openstackci/logstash/indexer.conf.erb',
   }
 
-  include log_processor
+  include ::log_processor
   log_processor::worker { $log_processor_workers:
     config_file => $log_processor_config,
   }
