@@ -19,6 +19,24 @@ describe 'basic openstackci' do
 
     end
 
+    context 'installation of packages' do
+
+      describe package('apache2') do
+        it { should be_installed }
+      end
+
+    end
+
+    context 'files and directories' do
+
+      describe file('/etc/os_loganalyze/wsgi.conf') do
+        it { should be_file }
+        it { should be_owned_by 'root' }
+        it { should be_mode 440 }
+      end
+
+    end
+
   end
 
 end
