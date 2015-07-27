@@ -1,0 +1,9 @@
+Verified+2: Jenkins
+Code-Review+2: yolanda.robla <info@ysoft.biz>
+Code-Review+2: Spencer Krum <nibz@spencerkrum.com>
+Workflow+1: Spencer Krum <nibz@spencerkrum.com>
+Submitted-by: Jenkins
+Submitted-at: Mon, 27 Jul 2015 16:05:44 +0000
+Reviewed-on: https://review.openstack.org/198820
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
