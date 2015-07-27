@@ -32,24 +32,81 @@ class openstackci::logserver (
     }
   }
 
-  include apache
-  include apache::mod::wsgi
+  # NOTE(pabelanger): Until we full remove puppetlabs-apache from
+  # system-config, we need to do this hack to avoid a circular dependency.
+  if ! defined(Class['::apache']) {
+    include ::httpd
+    include ::httpd::mod::wsgi
 
-  if ! defined(A2mod['rewrite']) {
-    a2mod { 'rewrite':
-      ensure => present,
+    if ! defined(Httpd_mod['rewrite']) {
+      httpd_mod { 'rewrite':
+        ensure => present,
+      }
     }
-  }
 
-  if ! defined(A2mod['proxy']) {
-    a2mod { 'proxy':
-      ensure => present,
+    if ! defined(Httpd_mod['proxy']) {
+      httpd_mod { 'proxy':
+        ensure => present,
+      }
     }
-  }
 
-  if ! defined(A2mod['proxy_http']) {
-    a2mod { 'proxy_http':
-      ensure => present,
+    if ! defined(Httpd_mod['proxy_http']) {
+      httpd_mod { 'proxy_http':
+        ensure => present,
+      }
+    }
+
+    ::httpd::vhost { "logs.${domain}":
+      port     => 80,
+      priority => '50',
+      docroot  => '/srv/static/logs',
+      require  => File['/srv/static/logs'],
+      template => 'openstackci/logs.vhost.erb',
+    }
+
+    ::httpd::vhost { "logs-dev.${domain}":
+      port     => 80,
+      priority => '51',
+      docroot  => '/srv/static/logs',
+      require  => File['/srv/static/logs'],
+      template => 'openstackci/logs-dev.vhost.erb',
+    }
+  } else {
+    include apache
+    include apache::mod::wsgi
+
+    if ! defined(A2mod['rewrite']) {
+      a2mod { 'rewrite':
+        ensure => present,
+      }
+    }
+
+    if ! defined(A2mod['proxy']) {
+      a2mod { 'proxy':
+        ensure => present,
+      }
+    }
+
+    if ! defined(A2mod['proxy_http']) {
+      a2mod { 'proxy_http':
+        ensure => present,
+      }
+    }
+
+    apache::vhost { "logs.${domain}":
+      port     => 80,
+      priority => '50',
+      docroot  => '/srv/static/logs',
+      require  => File['/srv/static/logs'],
+      template => 'openstackci/logs.vhost.erb',
+    }
+
+    apache::vhost { "logs-dev.${domain}":
+      port     => 80,
+      priority => '51',
+      docroot  => '/srv/static/logs',
+      require  => File['/srv/static/logs'],
+      template => 'openstackci/logs-dev.vhost.erb',
     }
   }
 
@@ -57,22 +114,6 @@ class openstackci::logserver (
     file { '/srv/static':
       ensure => directory,
     }
-  }
-
-  apache::vhost { "logs.${domain}":
-    port     => 80,
-    priority => '50',
-    docroot  => '/srv/static/logs',
-    require  => File['/srv/static/logs'],
-    template => 'openstackci/logs.vhost.erb',
-  }
-
-  apache::vhost { "logs-dev.${domain}":
-    port     => 80,
-    priority => '51',
-    docroot  => '/srv/static/logs',
-    require  => File['/srv/static/logs'],
-    template => 'openstackci/logs-dev.vhost.erb',
   }
 
   file { '/srv/static/logs':
