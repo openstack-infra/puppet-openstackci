@@ -41,18 +41,21 @@ class openstackci::logserver (
     if ! defined(Httpd_mod['rewrite']) {
       httpd_mod { 'rewrite':
         ensure => present,
+        before => Service['httpd']
       }
     }
 
     if ! defined(Httpd_mod['proxy']) {
       httpd_mod { 'proxy':
         ensure => present,
+        before => Service['httpd']
       }
     }
 
     if ! defined(Httpd_mod['proxy_http']) {
       httpd_mod { 'proxy_http':
         ensure => present,
+        before => Service['httpd']
       }
     }
 
@@ -78,18 +81,21 @@ class openstackci::logserver (
     if ! defined(A2mod['rewrite']) {
       a2mod { 'rewrite':
         ensure => present,
+        before => Service['httpd']
       }
     }
 
     if ! defined(A2mod['proxy']) {
       a2mod { 'proxy':
         ensure => present,
+        before => Service['httpd']
       }
     }
 
     if ! defined(A2mod['proxy_http']) {
       a2mod { 'proxy_http':
         ensure => present,
+        before => Service['httpd']
       }
     }
 
