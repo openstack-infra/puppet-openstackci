@@ -177,6 +177,15 @@ class openstackci::logserver (
     require => File['/etc/os_loganalyze'],
   }
 
+  file { '/etc/os_loganalyze/file_conditions.yaml':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'www-data',
+    mode    => '0440',
+    source  => 'puppet:///modules/openstackci/os-loganalyze-file_conditions.yaml',
+    require => File['/etc/os_loganalyze'],
+  }
+
   vcsrepo { '/opt/devstack-gate':
     ensure   => latest,
     provider => git,
