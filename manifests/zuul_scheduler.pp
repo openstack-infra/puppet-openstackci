@@ -94,21 +94,8 @@ class openstackci::zuul_scheduler(
   }
 
   if $known_hosts_content != '' {
-    file { '/home/zuul/.ssh':
-      ensure  => directory,
-      owner   => 'zuul',
-      group   => 'zuul',
-      mode    => '0700',
-      require => Class['::zuul'],
-    }
-    file { '/home/zuul/.ssh/known_hosts':
-      ensure  => present,
-      owner   => 'zuul',
-      group   => 'zuul',
-      mode    => '0600',
-      content => $known_hosts_content,
-      replace => true,
-      require => File['/home/zuul/.ssh'],
+    class { '::zuul::known_hosts':
+      known_hosts_content => $known_hosts_content,
     }
   }
 }
