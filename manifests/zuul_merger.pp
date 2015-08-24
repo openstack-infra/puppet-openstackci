@@ -27,6 +27,7 @@ class openstackci::zuul_merger(
   $git_email = 'zuul@domain.example',
   $git_name = 'Zuul',
   $manage_common_zuul = true,
+  $revision = 'master',
 ) {
 
   if $manage_common_zuul {
@@ -39,6 +40,7 @@ class openstackci::zuul_merger(
       zuul_url             => $zuul_url,
       git_email            => $git_email,
       git_name             => $git_name,
+      revision             => $revision,
     }
   }
 

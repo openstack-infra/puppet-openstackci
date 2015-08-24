@@ -48,6 +48,7 @@ class openstackci::zuul_scheduler(
   $smtp_port = 25,
   $smtp_default_from = "zuul@${::fqdn}",
   $smtp_default_to = "zuul.reports@${::fqdn}",
+  $revision = 'master',
 ) {
 
   if ! defined(Class['project_config']) {
@@ -86,6 +87,7 @@ class openstackci::zuul_scheduler(
     proxy_ssl_cert_file_contents   => $proxy_ssl_cert_file_contents,
     proxy_ssl_key_file_contents    => $proxy_ssl_key_file_contents,
     proxy_ssl_chain_file_contents  => $proxy_ssl_chain_file_contents,
+    revision                       => $revision,
   }
 
   class { '::zuul::server':
