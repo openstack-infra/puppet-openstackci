@@ -38,6 +38,13 @@ class openstackci::nodepool (
     }
   }
 
+  class { '::os_client_config':
+    clouds      => $oscc_clouds,
+    cache       => $oscc_cache,
+    client      => $oscc_client,
+    target_user => 'nodepool',
+  }
+
   class { '::nodepool':
     mysql_root_password       => $mysql_root_password,
     mysql_password            => $mysql_password,
