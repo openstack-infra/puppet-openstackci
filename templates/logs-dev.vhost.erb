@@ -26,14 +26,26 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
   <Directory <%= @docroot %>>
     Options <%= @options %>
     AllowOverride None
+    <% if @osfamily == "Debian" %>
     Order allow,deny
     allow from all
     Satisfy Any
+    <% end %>
+    <% if @osfamily == "RedHat" %>
+    Require all granted
+    <% end %>
   </Directory>
+  <% if @osfamily == "Debian" %>
   <Directory /usr/local/lib/python2.7/dist-packages/os_loganalyze>
     Allow from all
     Satisfy Any
   </Directory>
+  <% end %>
+  <% if @osfamily == "RedHat" %>
+  <Directory /usr/lib/python2.7/site-packages/os_loganalyze>
+    Require all granted
+  </Directory>
+  <% end %>
 
   <Directory <%= @docroot %>/*/*/*/*/*-tempest-dsvm*/*>
      ReadmeName /help/tempest-overview.html
@@ -68,10 +80,20 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
   RewriteCond %{REQUEST_FILENAME} !^/icon
   RewriteRule ^/(.*)$ /htmlify/$1 [QSA,L,PT,NS]
 
+  <% if @osfamily == "Debian" %>
   WSGIScriptAlias /htmlify /usr/local/lib/python2.7/dist-packages/os_loganalyze/wsgi.py
 
   ErrorLog /var/log/apache2/<%= @name %>_error.log
   LogLevel warn
   CustomLog /var/log/apache2/<%= @name %>_access.log combined
   ServerSignature Off
+  <% end %>
+  <% if @osfamily == "RedHat" %>
+  WSGIScriptAlias /htmlify /usr/lib/python2.7/site-packages/os_loganalyze/wsgi.py
+
+  ErrorLog /var/log/httpd/<%= @name %>_error.log
+  LogLevel warn
+  CustomLog /var/log/httpd/<%= @name %>_access.log combined
+  ServerSignature Off
+  <% end %>
 </VirtualHost>

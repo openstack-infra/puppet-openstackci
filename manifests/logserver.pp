@@ -26,9 +26,29 @@ class openstackci::logserver (
   $swift_default_container = '',
 ) {
 
-  if ! defined(Class['::jenkins::jenkinsuser']) {
-    class { '::jenkins::jenkinsuser':
-      ssh_key => $jenkins_ssh_key,
+
+  if $::osfamily == 'RedHat' {
+    $apache_group = "apache"
+    exec { 'declare_se_context':
+      path => '/usr/sbin/:/usr/bin/:/bin/',
+      command => 'semanage fcontext -a -t httpd_sys_content_t "/srv/static/logs(/.*)?"',
+      require => File['/srv/static/logs'],
+    }
+    # Avoid creating jenkins user here as it create a conflict
+    # between the user created with the Jenkins package (not the same
+    # home defined).
+    #if ! defined(Class['::jenkins::jenkinsuser']) {
+    #  class { '::jenkins::jenkinsuser':
+    #    ssh_key => $jenkins_ssh_key,
+    #  }
+    #}
+  }
+  if $::osfamily == 'Debian' {
+    $apache_group = "www-data"
+    if ! defined(Class['::jenkins::jenkinsuser']) {
+      class { '::jenkins::jenkinsuser':
+        ssh_key => $jenkins_ssh_key,
+      }
     }
   }
 
@@ -38,24 +58,26 @@ class openstackci::logserver (
     include ::httpd
     include ::httpd::mod::wsgi
 
-    if ! defined(Httpd_mod['rewrite']) {
-      httpd_mod { 'rewrite':
-        ensure => present,
-        before => Service['httpd']
+    if $::osfamily == 'Debian' {
+      if ! defined(Httpd_mod['rewrite']) {
+        httpd_mod { 'rewrite':
+          ensure => present,
+          before => Service['httpd']
+        }
       }
-    }
 
-    if ! defined(Httpd_mod['proxy']) {
-      httpd_mod { 'proxy':
-        ensure => present,
-        before => Service['httpd']
+      if ! defined(Httpd_mod['proxy']) {
+        httpd_mod { 'proxy':
+          ensure => present,
+          before => Service['httpd']
+        }
       }
-    }
 
-    if ! defined(Httpd_mod['proxy_http']) {
-      httpd_mod { 'proxy_http':
-        ensure => present,
-        before => Service['httpd']
+      if ! defined(Httpd_mod['proxy_http']) {
+        httpd_mod { 'proxy_http':
+          ensure => present,
+          before => Service['httpd']
+        }
       }
     }
 
@@ -66,7 +88,6 @@ class openstackci::logserver (
       require  => File['/srv/static/logs'],
       template => 'openstackci/logs.vhost.erb',
     }
-
     ::httpd::vhost { "logs-dev.${domain}":
       port     => 80,
       priority => '51',
@@ -78,24 +99,27 @@ class openstackci::logserver (
     include apache
     include apache::mod::wsgi
 
-    if ! defined(A2mod['rewrite']) {
-      a2mod { 'rewrite':
-        ensure => present,
-        before => Service['httpd']
+    if $::osfamily == 'Debian' {
+      include apache::mod::wsgi
+      if ! defined(A2mod['rewrite']) {
+        a2mod { 'rewrite':
+          ensure => present,
+          before => Service['httpd']
+        }
       }
-    }
 
-    if ! defined(A2mod['proxy']) {
-      a2mod { 'proxy':
-        ensure => present,
-        before => Service['httpd']
+      if ! defined(A2mod['proxy']) {
+        a2mod { 'proxy':
+          ensure => present,
+          before => Service['httpd']
+        }
       }
-    }
 
-    if ! defined(A2mod['proxy_http']) {
-      a2mod { 'proxy_http':
-        ensure => present,
-        before => Service['httpd']
+      if ! defined(A2mod['proxy_http']) {
+        a2mod { 'proxy_http':
+          ensure => present,
+          before => Service['httpd']
+        }
       }
     }
 
@@ -171,7 +195,7 @@ class openstackci::logserver (
   file { '/etc/os_loganalyze/wsgi.conf':
     ensure  => present,
     owner   => 'root',
-    group   => 'www-data',
+    group   => $apache_group,
     mode    => '0440',
     content => template('openstackci/os-loganalyze-wsgi.conf.erb'),
     require => File['/etc/os_loganalyze'],
@@ -180,7 +204,7 @@ class openstackci::logserver (
   file { '/etc/os_loganalyze/file_conditions.yaml':
     ensure  => present,
     owner   => 'root',
-    group   => 'www-data',
+    group   => $apache_group,
     mode    => '0440',
     source  => 'puppet:///modules/openstackci/os-loganalyze-file_conditions.yaml',
     require => File['/etc/os_loganalyze'],
