@@ -1,0 +1,55 @@
+# You can access your gerrit username from the gerrit server, under your settings, in the 'profile' section
+gerrit_user: your-gerrit-user
+
+# This is your public key registered with your gerrit account.
+# Your public key should not have any white space. Omit the 'ssh-rsa' prefix and comment section / e-mail address suffix
+gerrit_user_ssh_public_key: your-gerrit-public-key-no-whitespace
+# This is the private key that pairs with the above public key
+gerrit_user_ssh_private_key: |
+                             -----BEGIN RSA PRIVATE KEY-----
+                             put private key here
+                             -----END RSA PRIVATE KEY-----
+
+# email address and name used by zuul for internal commits
+git_email: your-email@example.com
+git_name: Your Name
+
+# The Jenkins API Key is needed if you have a password for Jenkins user inside Jenkins
+# Jenkins keys are used by jenkins/nodepool provider to enable communication between the jenkins master and slaves
+# It is provided in the Jenkins UI
+jenkins_api_key: YYY
+
+# The Jenkins credentials_id should match the id field of this element:
+# <com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey plugin="ssh-credentials@1.6">
+# inside this file:
+# /var/lib/jenkins/credentials.xml
+# which is the private key used by the jenkins master to log into the jenkins
+# slave node to install and register the node as a jenkins slave
+jenkins_credentials_id: ABC
+
+# If you have jenkins secured, this is the password Jenkins Job builder will use to manage jenkins jobs
+jenkins_password:
+
+# This is the public key to log into jenkins slaves
+# Your public key should not have any white space. Omit the 'ssh-rsa' prefix and comment section / e-mail address suffix
+jenkins_ssh_public_key:  your-jenkins-public-key-no-whitespace
+
+# This is the private key that pairs with the above public key
+jenkins_ssh_private_key: |
+                         -----BEGIN RSA PRIVATE KEY-----
+                         put private key here
+                         -----END RSA PRIVATE KEY-----
+
+# This is the nodepool user's mysql password
+mysql_nodepool_password: mysqlpw
+
+# This is the root mysql password. If mysql is not yet installed, this will be the password.
+# Otherwise if mysql is already installed, this is the password needed to setup the nodepool mysql user and database.
+mysql_root_password: mysql_root
+
+# This is the GIT URL to your project-config repo that contains all your jenkins jobs, nodepool configurations, and zuul configurations.
+project_config_repo: http://your-project-config-repo.example.com/project-config-example.git
+
+# This is the fqdn/ip address of your log server where log files are uploaded after a job finishes
+# Jenkins will use its jenkins ssh key to scp files to it
+log_server: your-log-server.example.com
