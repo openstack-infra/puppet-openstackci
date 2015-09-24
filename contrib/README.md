@@ -1,0 +1,227 @@
+# OpenStack Third-Party CI
+
+These instructions provide a **Third Party Testing** solution using the same
+tools and scripts used by the Official OpenStack Infrastructure 'Jenkins' CI
+system.
+
+Before beginning, you'll need to familiarize yourself with the contents of the
+[third party manual](http://docs.openstack.org/infra/system-config/third_party.html),
+and in particular you'll need to [create a service account]
+(http://docs.openstack.org/infra/system-config/third_party.html#creating-a-service-account).
+
+This CI solution uses a few open-source tools:
+
+* [Jenkins](http://docs.openstack.org/infra/system-config/jenkins.html) - an open-source continuous integration server.
+
+* [Zuul](http://docs.openstack.org/infra/system-config/zuul.html) - a project gating system
+
+* [Nodepool](http://docs.openstack.org/infra/system-config/nodepool.html)- a node management system for testing
+
+* [Jenkins Job Builder](http://docs.openstack.org/infra/system-config/jjb.html) - a tool to manage jenkins job definitions
+
+The follow steps will help you integrate and deploy all these systems on a
+single host. An initial system with 8GB RAM, 4CPUs, 80GB HD should be sufficient,
+running Ubuntu 14.
+
+The system also requires two external resources.
+
+* A source for Nodepool nodes. You can use a public or private OpenStack cloud,
+or even [devstack](https://git.openstack.org/cgit/openstack-dev/devstack/) to
+get started.
+
+* A public log server (TBD)
+
+These instructions are for a 'masterless' puppet setup, which is the simplest
+version to set up for those not familiar with puppet.
+
+## Create an Initial 'project-config' Repository
+
+Create an intial 'project-config' repository. You can start with this
+[bare bones example](https://github.com/rasselin/project-config-example) following
+the instructions provided in its README.md.
+
+## Install Puppet
+
+Puppet is a tool to automate the installing of servers by defining the desired
+end state. You can quickly install puppet along with basic tools using this script:
+
+    wget https://git.openstack.org/cgit/openstack-infra/system-config/plain/install_puppet.sh
+    sudo bash install_puppet.sh
+
+## Install Puppet Modules
+
+You can get the latest version of the puppet modules needed using this script.
+
+    git clone https://git.openstack.org/openstack-infra/system-config
+    cd system-config
+    sudo ./install_modules.sh
+    cd ..
+
+## Configure Puppet Hiera
+
+Puppet Hiera provides a mechanism to include local configurations and secrets
+such as passwords and private keys.
+
+Create a simple Puppet Hiera file:
+
+    sudo vi /etc/puppet/hiera.yaml
+    ---
+    :backends:
+      - yaml
+    :logger: console
+    :hierarchy:
+      - single_node_ci_hiera
+
+    :yaml:
+       :datadir: /etc/puppet/environments
+
+This example assumes `single_node_ci_hiera.yaml` will be located in
+`/etc/puppet/environments`.
+
+Create your hiera config data
+`cp /etc/puppet/modules/openstackci/contrib/single_node_ci_hiera.yaml /etc/puppet/environments/single_node_ci_hiera.yaml`
+
+Modify it as you need (TODO: more details) and save it to a secure location.
+
+# Add 'jenkins' to your host name
+
+Add 'jenkins' to your /etc/hosts file so that apache is happy
+
+    head -n 1 /etc/hosts
+    127.0.0.1 localhost jenkins
+
+# Run masterless Puppet
+
+At this point you are ready to invoke Puppet for the first time:
+
+    sudo puppet apply --verbose /etc/puppet/modules/openstackci/contrib/single_node_ci_site.pp
+
+# Restart apache if necessary
+
+There are some known issues with Puppet automation.
+
+    AH00526: Syntax error on line 21 of /etc/apache2/sites-enabled/50-<fqdn/ip>.conf:
+    Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server configuration
+
+A simple restart works around the issue:
+
+    sudo service apache2 restart
+
+# Start zuul
+
+We'll start zuul first:
+
+    sudo service zuul start
+    sudo service zuul-merger start
+
+You should see 2 zuul-server processes and 1 zuul-merger process
+
+    ps -ef | grep zuul
+    zuul      5722     1  2 18:13 ?        00:00:00 /usr/bin/python /usr/local/bin/zuul-server
+    zuul      5725  5722  0 18:13 ?        00:00:00 /usr/bin/python /usr/local/bin/zuul-server
+    zuul      5741     1  2 18:13 ?        00:00:00 /usr/bin/python /usr/local/bin/zuul-merger
+
+# Start nodepool
+
+The first time starting nodepool, it's recommended to manually build the image
+to aid in debugging any issues:
+
+    screen
+    sudo su - nodepool
+    # Ensure the NODEPOOL_SSH_KEY variable is in the environment
+    source /etc/default/nodepool
+    nodepool image-build <image-name>
+
+    <exit screen with ctrl-A, d>
+
+Then start nodepool:
+
+    sudo service nodepool start
+
+You should see at least one process running. In particular:
+
+    ps -ef | grep nodepool
+    nodepool  5786     1 28 18:14 ?        00:00:01 /usr/bin/python /usr/local/bin/nodepoold -c /etc/nodepool/nodepool.yaml -l /etc/nodepool/logging.conf
+
+# Setup Jenkins
+
+First Restart Jenkins so that plugins will be fully installed:
+
+    sudo service jenkins restart
+
+Then open the Jenkins UI to finish manual configuration steps.
+
+Enable Gearman, which is the Jenkins plugin zuul uses to queue jobs:
+
+    http://<host fqdn/ip>:8080/
+    Manage Jenkins --> Configure System
+    Under "Gearman Plugin Config" Check the box "Enable Gearman"
+    Click "Test Connection" It should return success if zuul is running.
+
+Enable ZMQ Event Publisher, which is how nodepool is notified of jenkin
+slaves status events:
+
+    http://<host fqdn/ip>:8080/
+    Manage Jenkins --> Configure System
+    Under "ZMQ Event Publisher"
+    Check the box "Enable on all Jobs"
+
+# Securing Jenkins (optional)
+
+By default, Jenkins is installed with security disabled. While this is fine
+for development environments were external access to Jenkins UI is restricted,
+you are strongly encouraged to enable it:
+
+Create a jenkins 'credentials':
+
+    http://<host fqdn/ip>:8080/
+    Manage Jenkins --> Add Credentials --> SSH Username with private key
+    Username 'jenkins'
+    Private key --> From a file  on Jenkins master
+    "/var/lib/jenkins/.ssh/id_rsa"
+    --> Save
+
+Save the credential uuid in your hiera data:
+
+    sudo su jenkins
+    cat /var/lib/jenkins/credentials.xml | grep "<id>"
+    Copy the id to the 'jenkins_credentials_id' value in  /etc/puppet/environments/single_node_ci_hiera.yaml
+
+Enable basic Jenkins security:
+
+    http://<host fqdn/ip>:8080/
+    Manage Jenkins --> Configure Global Security
+    Check "Enable Security"
+    Under "Security Realm"
+    Select Jenkin's own user database
+    Uncheck allow users to sign up
+    Under "Authorization" select "logged-in users can do anything"
+
+    Create a user 'jenkins'
+    Choose a password.
+    check 'Sign up'
+    Save the password to the 'jenkins_password' value in /etc/puppet/environments/single_node_ci_hiera.yaml
+
+Get the new 'jenkins' user API token:
+
+    http://<host fqdn/ip>:8080/
+    Manage Jenkins --> People --> Select user 'jenkins' --> configure --> Show API Token
+    Save this token to the 'jenkins_api_key' value in /etc/puppet/environments/single_node_ci_hiera.yaml
+
+Make a backup of your hiera data (`/etc/puppet/environments/single_node_ci_hiera.yaml`)
+to a secure location
+
+Reconfigure your system to use Jenkins security settings stored in
+`/etc/puppet/environments/single_node_ci_hiera.yaml`
+
+    sudo puppet apply --verbose /etc/puppet/modules/openstackci/contrib/single_node_ci_site.pp
+
+# Updating your CI System
+
+Any time you check-in changes to your project-config repo, or make changes to the
+hiera data (`/etc/puppet/environments/single_node_ci_hiera.yaml`), run the same
+puppet command.
+
+    sudo puppet apply --verbose /etc/puppet/modules/openstackci/contrib/single_node_ci_site.pp
+
+
