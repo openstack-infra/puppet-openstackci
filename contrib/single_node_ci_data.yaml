@@ -1,0 +1,39 @@
+# See parameter documetation inside ../manifests/single_node_ci.pp
+# Fields commented out have reasonable default values
+
+#vhost_name:
+project_config_repo: http://your-project-config-repo.example.com/project-config-example.git
+#serveradmin:
+#jenkins_username: jenkins
+#jenkins_password:
+jenkins_ssh_private_key: |
+                         -----BEGIN RSA PRIVATE KEY-----
+                         jenkins private key
+                         -----END RSA PRIVATE KEY-----
+jenkins_ssh_public_key:  your-jenkins-public-key-no-whitespace
+#gerrit_server: review.openstack.org
+#gerrit_ssh_host_key:
+gerrit_user: your-gerrit-user
+gerrit_user_ssh_private_key: |
+                             -----BEGIN RSA PRIVATE KEY-----
+                             gerrit private key
+                             -----END RSA PRIVATE KEY-----
+gerrit_user_ssh_public_key: gerrit-public-key-no-whitespace
+git_email: your-email@example.com
+git_name: Your Name
+log_server: logs.example.com
+#smtp_host:
+#smtp_default_from:
+#smtp_default_to:
+#zuul_revision: master
+#zuul_git_source_repo: https://git.openstack.org/openstack-infra/zuul
+oscc_file_contents: |
+                    # Do Not Edit - Generated & Managed by Puppet
+                    #
+mysql_root_password: secret_mysql_root_password
+mysql_nodepool_password: secret_mysql_nodepool_password
+#nodepool_jenkins_target: jenkins1
+#jenkins_api_key:
+#jenkins_credentials_id:
+#nodepool_revision: master
+#nodepool_git_source_repo: https://git.openstack.org/openstack-infra/nodepool
