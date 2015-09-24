@@ -1,0 +1,11 @@
+# See parameter documetation inside ../manifests/single_node_ci.pp
+# Fields commented out have reasonable default values
+domain: your-domain.example.com
+jenkins_ssh_public_key:  your-jenkins-public-key-no-whitespace
+#swift_authurl:
+#swift_user:
+#swift_key:
+#swift_tenant_name:
+#swift_region_name:
+#swift_default_container:
+
