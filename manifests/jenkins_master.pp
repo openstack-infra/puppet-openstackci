@@ -2,8 +2,8 @@
 #
 class openstackci::jenkins_master (
   $serveradmin,
+  $jenkins_password,
   $jenkins_username        = 'jenkins',
-  $jenkins_password        = 'secret',
   $vhost_name              = $::fqdn,
   $logo                    = '', # Logo must be present in puppet-jenkins/files
   $ssl_cert_file           = '/etc/ssl/certs/ssl-cert-snakeoil.pem',
