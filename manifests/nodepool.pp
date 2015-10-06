@@ -21,7 +21,7 @@ class openstackci::nodepool (
   $yaml_path = '/etc/project-config/nodepool/nodepool.yaml',
   $git_source_repo = 'https://git.openstack.org/openstack-infra/nodepool',
   $revision = 'master',
-  $oscc_file_contents,
+  $oscc_file_contents = '',
   $environment = {},
   $nodepool_ssh_private_key = '',
   $vhost_name = $::fqdn,
