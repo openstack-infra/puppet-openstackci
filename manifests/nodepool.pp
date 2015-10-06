@@ -21,7 +21,7 @@ class openstackci::nodepool (
   $yaml_path = '/etc/project-config/nodepool/nodepool.yaml',
   $git_source_repo = 'https://git.openstack.org/openstack-infra/nodepool',
   $revision = 'master',
-  $oscc_file_contents,
+  $oscc_file_contents = undef,
   $environment = {},
   $nodepool_ssh_private_key = '',
   $vhost_name = $::fqdn,
@@ -67,35 +67,36 @@ class openstackci::nodepool (
       Class['project_config'],
     ],
   }
+  if ($oscc_file_contents != undef) and ($oscc_file_contents != '') {
+    file { '/home/nodepool/.config':
+      ensure  => directory,
+      owner   => 'nodepool',
+      group   => 'nodepool',
+      require => [
+        User['nodepool'],
+      ],
+    }
 
-  file { '/home/nodepool/.config':
-    ensure  => directory,
-    owner   => 'nodepool',
-    group   => 'nodepool',
-    require => [
-      User['nodepool'],
-    ],
-  }
+    file { '/home/nodepool/.config/openstack':
+      ensure  => directory,
+      owner   => 'nodepool',
+      group   => 'nodepool',
+      require => [
+        File['/home/nodepool/.config'],
+      ],
+    }
 
-  file { '/home/nodepool/.config/openstack':
-    ensure  => directory,
-    owner   => 'nodepool',
-    group   => 'nodepool',
-    require => [
-      File['/home/nodepool/.config'],
-    ],
-  }
-
-  file { '/home/nodepool/.config/openstack/clouds.yaml':
-    ensure  => present,
-    owner   => 'nodepool',
-    group   => 'nodepool',
-    mode    => '0400',
-    content => $oscc_file_contents,
-    require => [
-      File['/home/nodepool/.config/openstack'],
-      User['nodepool'],
-    ],
+    file { '/home/nodepool/.config/openstack/clouds.yaml':
+      ensure  => present,
+      owner   => 'nodepool',
+      group   => 'nodepool',
+      mode    => '0400',
+      content => $oscc_file_contents,
+      require => [
+        File['/home/nodepool/.config/openstack'],
+        User['nodepool'],
+      ],
+    }
   }
 
 }
