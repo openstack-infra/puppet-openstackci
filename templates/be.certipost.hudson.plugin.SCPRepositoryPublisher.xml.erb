@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<be.certipost.hudson.plugin.SCPRepositoryPublisher_-DescriptorImpl plugin="scp@1.9-SNAPSHOT">
+  <sites>
+    <be.certipost.hudson.plugin.SCPSite>
+      <displayname>LogServer</displayname>
+      <hostname><%= @log_server %></hostname>
+      <port>22</port>
+      <username>jenkins</username>
+      <password></password>
+      <keyfile>/var/lib/jenkins/.ssh/id_rsa</keyfile>
+      <rootRepositoryPath>/srv/static</rootRepositoryPath>
+    </be.certipost.hudson.plugin.SCPSite>
+  </sites>
+</be.certipost.hudson.plugin.SCPRepositoryPublisher_-DescriptorImpl>
