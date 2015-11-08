@@ -186,6 +186,7 @@ class openstackci::single_node_ci (
     jenkins_username        => $jenkins_username,
     jenkins_password        => $jenkins_password,
     project_config_repo     => $project_config_repo,
+    log_server              => $log_server,
   }
 
   class { '::openstackci::zuul_merger':
