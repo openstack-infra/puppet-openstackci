@@ -21,6 +21,7 @@ class openstackci::jenkins_master (
   $jjb_git_revision        = 'master',
   $project_config_repo     = '',
   $project_config_base     = '',
+  $log_server              = undef,
 ) {
 
   class { '::jenkins::master':
@@ -115,4 +116,15 @@ class openstackci::jenkins_master (
       require                     => $::project_config::config_dir,
     }
   }
+
+  if $log_server != undef {
+    file {'/var/lib/jenkins/be.certipost.hudson.plugin.SCPRepositoryPublisher.xml':
+        ensure  => present,
+        owner   => 'jenkins',
+        group   => 'jenkins',
+        mode    => '0644',
+        content => template('openstackci/be.certipost.hudson.plugin.SCPRepositoryPublisher.xml.erb'),
+    }
+  }
+
 }
