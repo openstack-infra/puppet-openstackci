@@ -246,4 +246,14 @@ class openstackci::single_node_ci (
       },
     ],
   }
+
+  # TODO(asselin): this should really be inside openstackci::jenkins_master
+  file {'/var/lib/jenkins/be.certipost.hudson.plugin.SCPRepositoryPublisher.xml':
+      ensure  => present,
+      owner   => 'jenkins',
+      group   => 'jenkins',
+      mode    => '0644',
+      content => template('openstackci/be.certipost.hudson.plugin.SCPRepositoryPublisher.xml.erb'),
+  }
+
 }
