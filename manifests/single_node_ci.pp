@@ -221,6 +221,7 @@ class openstackci::single_node_ci (
     smtp_host            => $smtp_host,
     smtp_default_from    => $smtp_default_from,
     smtp_default_to      => $smtp_default_to,
+    revision             => $zuul_revision,
   }
 
   class { '::openstackci::nodepool':
