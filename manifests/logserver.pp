@@ -94,6 +94,10 @@ class openstackci::logserver (
     require => File['/srv/static/logs'],
   }
 
+  package { 'build-essentials'
+    ensure => 'present',
+  }
+
   package { 'keyring':
     ensure   => 'latest',
     provider => 'pip',
@@ -113,6 +117,7 @@ class openstackci::logserver (
     path        => '/usr/local/bin:/usr/bin:/bin/',
     refreshonly => true,
     subscribe   => Vcsrepo['/opt/os-loganalyze'],
+    require     => Package['build-essentials'],
     notify      => Service['httpd'],
   }
 
