@@ -9,16 +9,16 @@ project_config_repo: http://your-project-config-repo.example.com/project-config-
 jenkins_ssh_private_key: |
                          -----BEGIN RSA PRIVATE KEY-----
                          jenkins private key
-jenkins_ssh_public_key:  your-jenkins-public-key-no-whitespace
                          -----END RSA PRIVATE KEY-----
+jenkins_ssh_public_key:  your-jenkins-public-key-no-whitespace
 #gerrit_server: review.openstack.org
-gerrit_user: gerrit-user
-gerrit_user_ssh_public_key: gerrit-public-key-no-whitespace
+#gerrit_ssh_host_key:
+gerrit_user: your-gerrit-user
 gerrit_user_ssh_private_key: |
                              -----BEGIN RSA PRIVATE KEY-----
                              gerrit private key
                              -----END RSA PRIVATE KEY-----
-#gerrit_ssh_host_key:
+gerrit_user_ssh_public_key: gerrit-public-key-no-whitespace
 git_email: your-email@example.com
 git_name: Your Name
 log_server: logs.example.com
