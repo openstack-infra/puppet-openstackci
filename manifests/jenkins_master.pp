@@ -61,10 +61,10 @@ class openstackci::jenkins_master (
   jenkins::plugin { 'zmq-event-publisher':
     version => '0.0.3',
   }
-#  TODO(jeblair): release
-#  jenkins::plugin { 'scp':
-#    version => '1.9',
-#  }
+  jenkins::plugin { 'scp':
+    version => '1.9',
+    plugin_url => 'http://tarballs.openstack.org/ci/scp.jpi',
+  }
   jenkins::plugin { 'jobConfigHistory':
     version => '1.13',
   }
