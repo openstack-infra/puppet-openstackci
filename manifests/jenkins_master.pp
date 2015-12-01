@@ -48,7 +48,7 @@ class openstackci::jenkins_master (
     version => '2.3',
   }
   jenkins::plugin { 'gearman-plugin':
-    version => '0.1.1',
+    version => '0.1.3',
   }
   jenkins::plugin { 'git':
     version => '1.1.23',
