@@ -177,7 +177,7 @@ class openstackci::single_node_ci (
 
   class { '::openstackci::jenkins_master':
     # Don't use $vhost_name as it conflicts with zuul
-    vhost_name              => 'jenkins',
+    vhost_name              => 'jenkins.storageci.qa.sw.ru',
     serveradmin             => $serveradmin,
     jenkins_ssh_private_key => $jenkins_ssh_private_key,
     jenkins_ssh_public_key  => $jenkins_ssh_public_key,
@@ -212,7 +212,7 @@ class openstackci::single_node_ci (
     gerrit_user          => $gerrit_user,
     known_hosts_content  => $gerrit_ssh_host_key,
     zuul_ssh_private_key => $gerrit_user_ssh_private_key,
-    url_pattern          => "http://${log_server}/{build.parameters[LOG_PATH]}",
+    url_pattern          => "http://openstack-3rd-party-storage-ci-logs.virtuozzo.com/{build.parameters[LOG_PATH]}",
     zuul_url             => "http://${vhost_name}/p/",
     job_name_in_report   => true,
     status_url           => "http://${vhost_name}",
