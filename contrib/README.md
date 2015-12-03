@@ -30,7 +30,7 @@ This CI solution uses a few open-source tools:
   browsing, sharing, and filtering log files by log level.
 
 
-The follow steps will help you integrate and deploy the first 4 tools on a single
+The following steps will help you integrate and deploy the first 4 tools on a single
 host. An initial system with 8GB RAM, 4CPUs, 80GB HD should be sufficient,
 running Ubuntu 14.04.
 
@@ -53,7 +53,7 @@ The system requires two external resources:
 
 
 * A Gerrit server (for OpenStack users, this is provided to you at review.openstack.org)
-  Zuul will listen to the Gerrit even stream to decide which jobs to run when it receives
+  Zuul will listen to the Gerrit event stream to decide which jobs to run when it receives
   a desired event. Zuul will also post a comment with results to this Gerrit with the
   job results along with a link to the related log files.
 
@@ -81,7 +81,6 @@ You can get the latest version of the puppet modules needed using this script.
     git clone https://git.openstack.org/openstack-infra/system-config
     cd system-config
     sudo ./install_modules.sh
-    cd ..
 
 This script will install all the puppet modules used by upstream to
 `/etc/puppet/modules`. In many cases, these are git cloned, and running
@@ -90,10 +89,16 @@ This script uses `modules.env` as its configuration input.
 
 ### Configure Masterless Puppet
 
-First, it is useful to save the history, so set up a git repo as root user:
+The instructions in this section apply to both the single-node CI host as
+well as the log host. 
 
-    cd /etc/puppet
+First, it is useful to save the history, so set up a 
+git repo as root user:
+
+    sudo su -
+    cd /etc/puppet    
     git init
+    exit
 
 You will be configuring 3 puppet files. The first is `site.pp` which is the top
 level entry point for puppet to start managing the node. The second is a `hiera.yaml`
@@ -121,11 +126,17 @@ documentation described in `../manifests/single_node_ci.pp` or
 the top level puppet class that is used in `site.pp`).
 
 Once completed, you should commit these 3 files to the `/etc/puppet` git repo.
+Your git workflow may vary a bit, but here is an example:
 
-# Setup the log server
+    git checkout -b setup
+    git add environments/common.yaml   
+    # repeat for other modified files
+    git commit -a -m 'initial setup'
 
-Setup the log server first, because it is simpler, and its FQDN (or IP address)
-will be needed when setting up the CI server.
+# Set up the log server
+
+Set up the log server first as it is simpler to configure. Besides, its FQDN 
+(or IP address) is needed to set up the CI server.
 
 While setting up jenkins_ssh_public_key in `common.yaml` it is important that
 the same ssh key pair is used when setting up the CI server in the next step.
@@ -138,11 +149,12 @@ be run as root.
 
 You can simulate a jenkins file upload using:
 
-    scp -i $JENKINS_SSH_PUBLIC_KEY -o StrictHostKeyChecking=no $your-log-file jenkins@<fqdn_or_ip>:/srv/static/logs/
+    scp -i $JENKINS_SSH_PRIVATE_KEY_FILE -o StrictHostKeyChecking=no $your-log-file jenkins@<fqdn_or_ip>:/srv/static/logs/
 
 You should now be able to see the file you uploaded at `http://<fqnd_or_ip>/$your-log-file`
 
-# Setup the CI server
+# Set up the CI server
+Follow the steps above to install and configure puppet on the CI server node.
 
 ## Create an Initial 'project-config' Repository
 
@@ -156,8 +168,8 @@ The second is project configuration, which includes the configuration files
 that the services use to perform the desired project-specific operations.
 
 The instructions provided here are mainly focused on the system configuration aspect.
-However, they need an initial set of project configurations in order to work. These
-project configurations are provided via a git URL to a `project-config` repository.
+However, system configuration requires an initial set of project configurations in order 
+to work. These project configurations are provided via a git URL to a `project-config` repository.
 Before moving on, create an initial `project-config` repository. You can start with this
 [project-config-example](https://git.openstack.org/cgit/openstack-infra/project-config-example/)
 following the instructions provided in its README.md. While tailored for OpenStack users,
@@ -229,8 +241,8 @@ You can view the log files for any errors:
 
     view /var/log/zuul/zuul.log
 
-Most zuul files are located in either. They should not need to be modified directly, but
-are useful to help identify root causes:
+Most zuul files are located in either of the following directories. They should not need 
+to be modified directly, but are useful to help identify root causes:
 
     /var/lib/zuul
     /etc/zuul
@@ -250,7 +262,7 @@ to aid in debugging any issues:
 
     # In the command below <image-name> references one of the
     # images defined in your project-config/nodepool/nodepool.yaml
-    # file as the 'name' field in the section 'diskimages'.
+    # file as the 'name' field in the section 'diskimages'.    
     nodepool image-build <image-name>
 
 If you run into issues building the image, the [documentation provided
