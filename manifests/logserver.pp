@@ -36,23 +36,20 @@ class openstackci::logserver (
   include ::httpd::mod::wsgi
 
   if ! defined(Httpd_mod['rewrite']) {
-    httpd_mod { 'rewrite':
+    httpd::mod { 'rewrite':
       ensure => present,
-      before => Service['httpd']
     }
   }
 
   if ! defined(Httpd_mod['proxy']) {
-    httpd_mod { 'proxy':
+    httpd::mod { 'proxy':
       ensure => present,
-      before => Service['httpd']
     }
   }
 
   if ! defined(Httpd_mod['proxy_http']) {
-    httpd_mod { 'proxy_http':
+    httpd::mod { 'proxy_http':
       ensure => present,
-      before => Service['httpd']
     }
   }
 
@@ -94,12 +91,16 @@ class openstackci::logserver (
     require => File['/srv/static/logs'],
   }
 
-  package { 'build-essential':
-    ensure => 'present',
+  if ! defined(Package['build-essential']) {
+    package { 'build-essential':
+      ensure => 'present',
+    }
   }
 
-  package { 'python-dev':
-    ensure => 'present',
+  if ! defined(Package['python-dev']) {
+    package { 'python-dev':
+      ensure => 'present',
+    }
   }
 
   package { 'keyring':
