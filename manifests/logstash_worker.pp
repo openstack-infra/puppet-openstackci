@@ -20,7 +20,7 @@ class openstackci::logstash_worker (
   $elasticsearch_nodes = [],
   $log_processor_config,
   $es_heap_size = '1g',
-  $es_version = '0.90.9',
+  $es_version = '1.7.3',
   # Increase the indexer max heap size to twice the default.
   # Default is 25% of memory or 1g whichever is less.
   $indexer_java_args = '-Xmx2g',
