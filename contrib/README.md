@@ -92,7 +92,7 @@ This script uses `modules.env` as its configuration input.
 The instructions in this section apply to both the single-node CI server node as
 well as the log server node.
 
-First, it is useful to save the history, so set up a 
+First, it is useful to save the history, so set up a
 git repo as root user:
 
     sudo su -
@@ -138,7 +138,7 @@ Your git workflow may vary a bit, but here is an example:
 
 # Set up the log server
 
-Set up the log server node first as it is simpler to configure. Besides, its FQDN 
+Set up the log server node first as it is simpler to configure. Besides, its FQDN
 (or IP address) is needed to set up the CI server node.
 
 While setting up jenkins_ssh_public_key in `common.yaml` it is important that
@@ -171,7 +171,7 @@ The second is project configuration, which includes the configuration files
 that the services use to perform the desired project-specific operations.
 
 The instructions provided here are mainly focused on the system configuration aspect.
-However, system configuration requires an initial set of project configurations in order 
+However, system configuration requires an initial set of project configurations in order
 to work. These project configurations are provided via a git URL to a `project-config` repository.
 Before moving on, create an initial `project-config` repository. You can start with this
 [project-config-example](https://git.openstack.org/cgit/openstack-infra/project-config-example/)
@@ -244,7 +244,7 @@ You can view the log files for any errors:
 
     view /var/log/zuul/zuul.log
 
-Most zuul files are located in either of the following directories. They should not need 
+Most zuul files are located in either of the following directories. They should not need
 to be modified directly, but are useful to help identify root causes:
 
     /var/lib/zuul
@@ -287,6 +287,22 @@ You should see at least one process running. In particular:
 
     ps -ef | grep nodepool
     nodepool  5786     1 28 18:14 ?        00:00:01 /usr/bin/python /usr/local/bin/nodepoold -c /etc/nodepool/nodepool.yaml -l /etc/nodepool/logging.conf
+
+After building and uploading the images to the providers, nodepool will
+start to build nodes on those providers based on the image
+and will register those nodes as jenkins slaves.
+
+If that does not happen, the nodepool log files will help identify the causes.
+
+    view /var/log/nodepool/nodepool.log
+    view /var/log/nodepool/debug.log
+
+Most nodepool configuration files are located in either of the following directories. They should never
+to be modified directly as puppet will overwrite any changes, but are useful to help identify root causes:
+
+    /etc/nodepool
+    /home/nodepool/.config/openstack/clouds.yaml
+
 
 ## Setup Jenkins
 
