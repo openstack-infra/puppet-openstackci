@@ -63,7 +63,8 @@ version to set up for those not familiar with puppet.
 
 ## Install and Configure Puppet
 
-On each node, you will need to install and configure puppet.
+On each node, you will need to install and configure puppet. These scripts assume
+a dedicated 'clean' node built with a base [ubuntu 14.04 server image](http://www.ubuntu.com/download/server).
 
 ### Install Puppet
 
@@ -71,16 +72,20 @@ Puppet is a tool to automate the installation of servers by defining the desired
 end state. You can quickly install puppet along with basic tools (such as pip and git)
 using this script:
 
+    sudo su -
     wget https://git.openstack.org/cgit/openstack-infra/system-config/plain/install_puppet.sh
-    sudo bash install_puppet.sh
+    bash install_puppet.sh
+    exit
 
 ### Install Puppet Modules
 
 You can get the latest version of the puppet modules needed using this script.
 
+    sudo su -
     git clone https://git.openstack.org/openstack-infra/system-config
     cd system-config
-    sudo ./install_modules.sh
+    ./install_modules.sh
+    exit
 
 This script will install all the puppet modules used by upstream to
 `/etc/puppet/modules`. In many cases, these are git cloned, and running
@@ -109,6 +114,7 @@ actual configurations and secrets.
 First, set up these 3 files by starting with the samples provided. For each node,
 select the corresponding `single_node_ci*` or `log_server*` files.
 
+    sudo su -
     cp /etc/puppet/modules/openstackci/contrib/hiera.yaml /etc/puppet
 
     cp /etc/puppet/modules/openstackci/contrib/single_node_ci_site.pp /etc/puppet/manifests/site.pp
@@ -118,6 +124,7 @@ select the corresponding `single_node_ci*` or `log_server*` files.
 
     cp /etc/puppet/modules/openstackci/contrib/log_server_site.pp /etc/puppet/manifests/site.pp
     cp /etc/puppet/modules/openstackci/contrib/log_server_data.yaml /etc/puppet/environments/common.yaml
+    exit
 
 At this point, you should not need to modify either of the first two files.
 Modify `/etc/puppet/environments/common.yaml` as you need using the parameter
