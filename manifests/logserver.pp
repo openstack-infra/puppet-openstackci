@@ -35,19 +35,19 @@ class openstackci::logserver (
   include ::httpd
   include ::httpd::mod::wsgi
 
-  if ! defined(Httpd_mod['rewrite']) {
+  if ! defined(Httpd::Mod['rewrite']) {
     httpd::mod { 'rewrite':
       ensure => present,
     }
   }
 
-  if ! defined(Httpd_mod['proxy']) {
+  if ! defined(Httpd::Mod['proxy']) {
     httpd::mod { 'proxy':
       ensure => present,
     }
   }
 
-  if ! defined(Httpd_mod['proxy_http']) {
+  if ! defined(Httpd::Mod['proxy_http']) {
     httpd::mod { 'proxy_http':
       ensure => present,
     }
