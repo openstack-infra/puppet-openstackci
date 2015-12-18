@@ -45,16 +45,16 @@ to the Swift Service.
 
 The system requires two external resources:
 
-* A source for Nodepool nodes. This is a service that provides virtual machines
-  (e.g. OpenStack - Nova) or bare metal (e.g. OpenStack - Ironic) that nodepool
-  will manage as a pool of Jenkins slaves that will run the actual CI jobs.
+* A source for Nodepool nodes. This is a service that implements the OpenStack Nova API
+  to provide virtual machines or bare metal nodes. Nodepool will use this service to
+  manage a pool of Jenkins slaves that will run the actual CI jobs.
   You can use a public or private OpenStack cloud, or even run your own
   [devstack](https://git.openstack.org/cgit/openstack-dev/devstack/) to get started.
 
 
 * A Gerrit server (for OpenStack users, this is provided to you at review.openstack.org)
   Zuul will listen to the Gerrit event stream to decide which jobs to run when it receives
-  a desired event. Zuul will also post a comment with results to this Gerrit with the
+  a desired event. Zuul will also post a comment with results to this Gerrit server with the
   job results along with a link to the related log files.
 
 These instructions are for a 'masterless' puppet setup, which is the simplest
@@ -97,7 +97,7 @@ This script uses `modules.env` as its configuration input.
 The instructions in this section apply to both the single-node CI server node as
 well as the log server node.
 
-First, it is useful to save the history, so set up a
+It is useful to save the history, so set up a
 git repo as root user:
 
     sudo su -
@@ -114,7 +114,7 @@ which configures Puppet Hiera to store local configurations and secrets
 such as passwords and private keys, and finally some `yaml` files which store the
 actual configurations and secrets.
 
-First, set up these 3 files by starting with the samples provided. For each node,
+Set up these 3 files by starting with the samples provided. For each node,
 select the corresponding `single_node_ci*` or `log_server*` files.
 
     sudo su -
@@ -131,9 +131,9 @@ select the corresponding `single_node_ci*` or `log_server*` files.
 
 At this point, you should not need to modify either of the first two files.
 Modify `/etc/puppet/environments/common.yaml` as you need using the parameter
-documentation described in `../manifests/single_node_ci.pp` or
-`../manifests/logserver.pp` (which is
-the top level puppet class that is used in `site.pp`).
+documentation described in [single_node_ci.pp](http://git.openstack.org/cgit/openstack-infra/puppet-openstackci/tree/manifests/single_node_ci.pp)
+or [logserver.pp](http://git.openstack.org/cgit/openstack-infra/puppet-openstackci/tree/manifests/logserver.pp)
+(which are the top level puppet class that is used in `site.pp`).
 
 Once completed, you should commit these 3 files to the `/etc/puppet` git repo.
 Your git workflow may vary a bit, but here is an example:

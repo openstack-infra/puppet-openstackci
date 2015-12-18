@@ -1,0 +1,8 @@
+.eggs
+.idea
+.tox
+puppet_openstackci.egg-info
+AUTHORS
+ChangeLog
+doc/build
+
