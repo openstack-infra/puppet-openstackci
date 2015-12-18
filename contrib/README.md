@@ -45,16 +45,16 @@ to the Swift Service.
 
 The system requires two external resources:
 
-* A source for Nodepool nodes. This is a service that provides virtual machines
-  (e.g. OpenStack - Nova) or bare metal (e.g. OpenStack - Ironic) that nodepool
-  will manage as a pool of Jenkins slaves that will run the actual CI jobs.
+* A source for Nodepool nodes. This is a service that implements the OpenStack Nova API
+  to provide virtual machines or bare metal nodes. Nodepool will use this service to
+  manage a pool of Jenkins slaves that will run the actual CI jobs.
   You can use a public or private OpenStack cloud, or even run your own
   [devstack](https://git.openstack.org/cgit/openstack-dev/devstack/) to get started.
 
 
 * A Gerrit server (for OpenStack users, this is provided to you at review.openstack.org)
   Zuul will listen to the Gerrit event stream to decide which jobs to run when it receives
-  a desired event. Zuul will also post a comment with results to this Gerrit with the
+  a desired event. Zuul will also post a comment with results to this Gerrit server with the
   job results along with a link to the related log files.
 
 These instructions are for a 'masterless' puppet setup, which is the simplest
