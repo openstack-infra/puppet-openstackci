@@ -91,6 +91,10 @@
 #   after a job finishes. Jenkins will use its jenkins_ssh_private_key to scp
 #   job log files files to it.
 #
+# [*log_server_external*]
+#   This is the external FQDN/IP address to access the log server,
+#   which is equal to $log_server in most cases.
+#
 # [*smtp_host*]
 #   The smtp hostname to use for zuul to send notification e-mails
 #   if configured to do so in project-config/zuul/layout/layout.yaml
@@ -170,6 +174,7 @@ class openstackci::single_node_ci (
   $git_email                     = undef,
   $git_name                      = undef,
   $log_server                    = undef,
+  $log_server_external           = $log_server,
   $smtp_host                     = 'localhost',
   $smtp_default_from             = "zuul@${vhost_name}",
   $smtp_default_to               = "zuul.reports@${vhost_name}",
@@ -226,7 +231,7 @@ class openstackci::single_node_ci (
     gerrit_user          => $gerrit_user,
     known_hosts_content  => $gerrit_ssh_host_key,
     zuul_ssh_private_key => $gerrit_user_ssh_private_key,
-    url_pattern          => "http://${log_server}/{build.parameters[LOG_PATH]}",
+    url_pattern          => "http://${log_server_external}/{build.parameters[LOG_PATH]}",
     zuul_url             => "http://${vhost_name}/p/",
     job_name_in_report   => true,
     status_url           => "http://${vhost_name}",
