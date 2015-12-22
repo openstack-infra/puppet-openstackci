@@ -103,6 +103,9 @@ git repo as root user:
     sudo su -
     cd /etc/puppet
     git init
+    echo "modules/" >> .gitignore
+    git add .
+    git commit -m "initial files"
     exit
 
 You will be configuring 3 puppet files. The first is `site.pp` which is the top
