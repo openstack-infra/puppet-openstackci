@@ -22,6 +22,7 @@ class openstackci::jenkins_master (
   $project_config_repo     = '',
   $project_config_base     = '',
   $log_server              = undef,
+  $jenkins_java_heap_size  = '',
 ) {
 
   class { '::jenkins::master':
@@ -36,6 +37,7 @@ class openstackci::jenkins_master (
     ssl_chain_file_contents => $ssl_chain_file_contents,
     jenkins_ssh_private_key => $jenkins_ssh_private_key,
     jenkins_ssh_public_key  => $jenkins_ssh_public_key,
+    jenkins_java_heap_size  => $jenkins_java_heap_size,
   }
 
   jenkins::plugin { 'build-timeout':
