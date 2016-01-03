@@ -8,6 +8,8 @@ project_config_repo: http://your-project-config-repo.example.com/project-config-
 # zuul. However, it has numerous security vulnerabilities, and should only
 # be used for installations that have other means (e.g. firewalls) that block all
 # untrusted access to Jenkins.
+# see SECURITY-170 in:
+# "https://wiki.jenkins-ci.org/display/SECURITY/Jenkins+Security+Advisory+2016-05-11"
 #jenkins_version: present
 #jenkins_vhost_name: jenkins
 #jenkins_username: jenkins
@@ -18,6 +20,11 @@ jenkins_ssh_private_key: |
   -----END RSA PRIVATE KEY-----
 jenkins_ssh_public_key:  your-jenkins-public-key-no-whitespace
 jjb_git_revision: 1.6.2
+#java_args_override: |
+   # These are the arguments to pass to Java
+   # The recommended value:
+   # "-Xloggc:/var/log/jenkins/gc.log -XX:+PrintGCDetails -Xmx12g -Dorg.kohsuke.stapler.compression.CompressionFilter.disabled=true -Djava.util.logging.config.file=/var/lib/jenkins/logger.conf -Dhudson.model.ParametersAction.keepUndefinedParameters=true"
+   # Please note that using the parameter: keepUndefinedParameters=true is not secure and exposes a potential jenkins security vulnerability
 #jjb_git_url: https://git.openstack.org/openstack-infra/jenkins-job-builder
 #gerrit_server: review.openstack.org
 #gerrit_ssh_host_key:
