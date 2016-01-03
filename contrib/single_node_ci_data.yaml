@@ -8,6 +8,8 @@ project_config_repo: http://your-project-config-repo.example.com/project-config-
 # zuul. However, it has numerous security vulnerabilities, and should only
 # be used for installations that have other means (e.g. firewalls) that block all
 # untrusted access to Jenkins.
+# see SECURITY-170 in:
+# "https://wiki.jenkins-ci.org/display/SECURITY/Jenkins+Security+Advisory+2016-05-11"
 #jenkins_version: present
 #jenkins_vhost_name: jenkins
 #jenkins_username: jenkins

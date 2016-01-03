@@ -56,6 +56,14 @@
 #   The public key should not have any white space. Omit the 'ssh-rsa' prefix
 #   and comment section / e-mail address suffix.
 #
+# [*java_args_override*]
+#   These are the arguments to pass to Java. Set this parameter through
+#   hieradata to work around the security restrictions that result from
+#   upgrading to version > 1.651.
+#   The workaround for Jenkins 1.651.2+ is to pass the Java system parameter:
+#   "-Dhudson.model.ParametersAction.keepUndefinedParameters=true"
+#   Which is not secure.
+#
 # [*jenkins_version*]
 #   This is a Jenkins version, such as '1.651', 'present' (to install
 #   the most recent, and never upgrade), or latest' (to install the most
@@ -158,6 +166,7 @@ class openstackci::single_node_ci (
   $jenkins_password              = undef,
   $jenkins_ssh_private_key       = undef,
   $jenkins_ssh_public_key        = undef,
+  $java_args_override            = undef,
   $jenkins_version               = 'present',
   $jjb_git_revision              = 'master',
   $jjb_git_url                   = 'https://git.openstack.org/openstack-infra/jenkins-job-builder',
@@ -200,6 +209,7 @@ class openstackci::single_node_ci (
     jenkins_password        => $jenkins_password,
     project_config_repo     => $project_config_repo,
     log_server              => $log_server,
+    java_args_override      => $java_args_override,
     jjb_git_revision        => $jjb_git_revision,
     jjb_git_url             => $jjb_git_url,
   }

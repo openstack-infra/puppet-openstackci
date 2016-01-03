@@ -23,6 +23,7 @@ class openstackci::jenkins_master (
   $project_config_repo     = '',
   $project_config_base     = '',
   $log_server              = undef,
+  $java_args_override      = undef,
 ) {
 
   class { '::jenkins::master':
@@ -38,6 +39,7 @@ class openstackci::jenkins_master (
     jenkins_ssh_private_key => $jenkins_ssh_private_key,
     jenkins_ssh_public_key  => $jenkins_ssh_public_key,
     jenkins_version         => $jenkins_version,
+    java_args_override      => $java_args_override,
   }
 
   jenkins::plugin { 'build-timeout':
