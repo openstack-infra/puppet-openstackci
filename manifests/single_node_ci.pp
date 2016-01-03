@@ -56,6 +56,9 @@
 #   The public key should not have any white space. Omit the 'ssh-rsa' prefix
 #   and comment section / e-mail address suffix.
 #
+# [*jenkins_java_args*]
+#   These are the arguments to pass to Java
+#
 # [*jenkins_version*]
 #   This is a Jenkins version, such as '1.651', 'present' (to install
 #   the most recent, and never upgrade), or latest' (to install the most
@@ -158,6 +161,7 @@ class openstackci::single_node_ci (
   $jenkins_password              = undef,
   $jenkins_ssh_private_key       = undef,
   $jenkins_ssh_public_key        = undef,
+  $jenkins_java_args             = '"-Xloggc:/var/log/jenkins/gc.log -XX:+PrintGCDetails -Xmx12g -Dorg.kohsuke.stapler.compression.CompressionFilter.disabled=true -Djava.util.logging.config.file=/var/lib/jenkins/logger.conf -Dhudson.model.ParametersAction.keepUndefinedParameters=true"',
   $jenkins_version               = 'present',
   $jjb_git_revision              = 'master',
   $jjb_git_url                   = 'https://git.openstack.org/openstack-infra/jenkins-job-builder',
@@ -200,6 +204,7 @@ class openstackci::single_node_ci (
     jenkins_password        => $jenkins_password,
     project_config_repo     => $project_config_repo,
     log_server              => $log_server,
+    jenkins_java_args       => $jenkins_java_args,
     jjb_git_revision        => $jjb_git_revision,
     jjb_git_url             => $jjb_git_url,
   }

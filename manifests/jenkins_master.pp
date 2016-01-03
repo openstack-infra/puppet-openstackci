@@ -23,6 +23,7 @@ class openstackci::jenkins_master (
   $project_config_repo     = '',
   $project_config_base     = '',
   $log_server              = undef,
+  $jenkins_java_args       = '"-Xloggc:/var/log/jenkins/gc.log -XX:+PrintGCDetails -Xmx12g -Dorg.kohsuke.stapler.compression.CompressionFilter.disabled=true -Djava.util.logging.config.file=/var/lib/jenkins/logger.conf"',
 ) {
 
   class { '::jenkins::master':
@@ -38,6 +39,7 @@ class openstackci::jenkins_master (
     jenkins_ssh_private_key => $jenkins_ssh_private_key,
     jenkins_ssh_public_key  => $jenkins_ssh_public_key,
     jenkins_version         => $jenkins_version,
+    java_args               => $jenkins_java_args,
   }
 
   jenkins::plugin { 'build-timeout':
