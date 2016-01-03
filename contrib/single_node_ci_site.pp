@@ -36,6 +36,7 @@ node default {
     jenkins_password            => hiera('jenkins_password', 'XXX'),
     jenkins_ssh_private_key     => hiera('jenkins_ssh_private_key'),
     jenkins_ssh_public_key      => hiera('jenkins_ssh_public_key'),
+    jenkins_java_heap_size      => hiera('jenkins_java_heap_size', '12g'),
     gerrit_server               => hiera('gerrit_server', 'review.openstack.org'),
     gerrit_user                 => hiera('gerrit_user'),
     gerrit_user_ssh_public_key  => hiera('gerrit_user_ssh_public_key'),
