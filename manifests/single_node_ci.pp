@@ -148,6 +148,7 @@ class openstackci::single_node_ci (
   $jenkins_password              = undef,
   $jenkins_ssh_private_key       = undef,
   $jenkins_ssh_public_key        = undef,
+  $jenkins_java_heap_size        = '12g'
 
   # Zuul Configurations
   $gerrit_server                 = 'review.openstack.org',
@@ -187,6 +188,7 @@ class openstackci::single_node_ci (
     jenkins_password        => $jenkins_password,
     project_config_repo     => $project_config_repo,
     log_server              => $log_server,
+    jenkins_java_heap_size  => $jenkins_java_heap_size,
   }
 
   class { '::openstackci::zuul_merger':
