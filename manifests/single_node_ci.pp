@@ -52,6 +52,10 @@
 #   The public key should not have any white space. Omit the 'ssh-rsa' prefix
 #   and comment section / e-mail address suffix.
 #
+# [*jenkins_java_args*]
+#   These are the arguments to pass to Java
+#   You can use this to customize java heap size
+#
 # [*gerrit_server*]
 #   This is the host name of the gerrit server this CI system will be
 #   listening for events.
@@ -148,6 +152,7 @@ class openstackci::single_node_ci (
   $jenkins_password              = undef,
   $jenkins_ssh_private_key       = undef,
   $jenkins_ssh_public_key        = undef,
+  $jenkins_java_args             = '"-Xloggc:/var/log/jenkins/gc.log -XX:+PrintGCDetails -Xmx12g -Dorg.kohsuke.stapler.compression.CompressionFilter.disabled=true -Djava.util.logging.config.file=/var/lib/jenkins/logger.conf"',
 
   # Zuul Configurations
   $gerrit_server                 = 'review.openstack.org',
@@ -187,6 +192,7 @@ class openstackci::single_node_ci (
     jenkins_password        => $jenkins_password,
     project_config_repo     => $project_config_repo,
     log_server              => $log_server,
+    jenkins_java_args       => $jenkins_java_args,
   }
 
   class { '::openstackci::zuul_merger':
