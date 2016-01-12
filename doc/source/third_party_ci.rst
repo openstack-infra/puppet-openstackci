@@ -140,27 +140,37 @@ Set up these 3 files by starting with the samples provided. For each
 node, select the corresponding ``single_node_ci*`` or ``log_server*``
 files.
 
+Configure Puppet ``hiera.yaml`` so that puppet knows where to look for the
+``common.yaml`` file you'll create in the next step.
 ::
 
     sudo su -
     cp /etc/puppet/modules/openstackci/contrib/hiera.yaml /etc/puppet
+    exit
 
+
+If setting up the ``single node ci`` node:
+::
+
+    sudo su -
     cp /etc/puppet/modules/openstackci/contrib/single_node_ci_site.pp /etc/puppet/manifests/site.pp
     cp /etc/puppet/modules/openstackci/contrib/single_node_ci_data.yaml /etc/puppet/environments/common.yaml
+    exit
 
-    OR
+If setting up the ``log server`` node:
+::
 
+    sudo su -
     cp /etc/puppet/modules/openstackci/contrib/log_server_site.pp /etc/puppet/manifests/site.pp
     cp /etc/puppet/modules/openstackci/contrib/log_server_data.yaml /etc/puppet/environments/common.yaml
     exit
 
-At this point, you should not need to modify either of the first two
-files. Modify ``/etc/puppet/environments/common.yaml`` as you need using
+Modify ``/etc/puppet/environments/common.yaml`` as you need using
 the parameter documentation described in
 `single\_node\_ci.pp <http://git.openstack.org/cgit/openstack-infra/puppet-openstackci/tree/manifests/single_node_ci.pp>`__
 or
-`logserver.pp <http://git.openstack.org/cgit/openstack-infra/puppet-openstackci/tree/manifests/logserver.pp>`__
-(which are the top level puppet class that is used in ``site.pp``).
+`logserver.pp <http://git.openstack .org/cgit/openstack-infra/puppet-openstackci/tree/manifests/logserver.pp>`__.
+These are the top level puppet class that is used in ``site.pp``.
 
 Once completed, you should commit these 3 files to the ``/etc/puppet``
 git repo. Your git workflow may vary a bit, but here is an example:
