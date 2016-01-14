@@ -412,10 +412,19 @@ Enable Gearman, which is the Jenkins plugin zuul uses to queue jobs:
 
 ::
 
-    http://<host fqdn/ip>:8080/
+    http://<host fqdn/ip>:4730/
     Manage Jenkins --> Configure System
     Under "Gearman Plugin Config" Check the box "Enable Gearman"
     Click "Test Connection" It should return success if zuul is running.
+
+By default, gearman server is listening on port 4730. Check the status of
+gearman: on your zuul node telnet to 127.0.0.1 port 4730, and issue command
+'status' to get status info about jobs registered in gearman.
+
+::
+
+    echo 'status' | nc 127.0.0.1 4730 -w 1 | grep 'job name'
+
 
 Enable ZMQ Event Publisher, which is how nodepool is notified of Jenkin
 slaves status events:
