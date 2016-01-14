@@ -414,8 +414,32 @@ Enable Gearman, which is the Jenkins plugin zuul uses to queue jobs:
 
     http://<host fqdn/ip>:8080/
     Manage Jenkins --> Configure System
+    For "Gearman Server Port" use port number 4730
     Under "Gearman Plugin Config" Check the box "Enable Gearman"
     Click "Test Connection" It should return success if zuul is running.
+
+The zuul process is running a gearman server on port 4730. Check the status
+of gearman: on your zuul node telnet to 127.0.0.1 port 4730, and issue
+command 'status' to get status info about jobs registered in gearman.
+
+::
+
+    echo 'status' | nc 127.0.0.1 4730 -w 1
+
+The output of the status is tab separated columns with the following information.
+
+1. Name: The name of the job.
+2. Number in queue: The total number of jobs in the queue including the
+currently running ones ( next column).
+3. Number of jobs running: The total number of jobs currently running.
+4. Number of capable workers: A maximum possible count of workers that can run
+this job. This number being zero is one reason zuul reports "NOT Registered".
+
+::
+
+    build:noop-check-communication    1    0    1
+    build:dsvm-tempest-full           2    1    1
+
 
 Enable ZMQ Event Publisher, which is how nodepool is notified of Jenkin
 slaves status events:
