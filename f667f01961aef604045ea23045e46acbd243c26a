@@ -1,0 +1,10 @@
+Code-Review+2: yolanda.robla <info@ysoft.biz>
+Code-Review+1: Rajini Ram <rajini_ram@dell.com>
+Code-Review+2: Colleen Murphy <colleen@gazlene.net>
+Workflow+1: Colleen Murphy <colleen@gazlene.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 15 Jan 2016 21:41:19 +0000
+Reviewed-on: https://review.openstack.org/265483
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
