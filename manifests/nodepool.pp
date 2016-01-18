@@ -31,6 +31,7 @@ class openstackci::nodepool (
   $project_config_repo = '',
   $logging_conf_template = 'nodepool/nodepool.logging.conf.erb',
   $jenkins_masters = [],
+  $colocate_builder = true,
 ) {
 
   if ! defined(Class['project_config']) {
@@ -100,4 +101,10 @@ class openstackci::nodepool (
     ],
   }
 
+  if $colocate_builder {
+    class { '::nodepool::builder':
+      git_source_repo => $git_source_repo,
+      revision        => $revision,
+    }
+  }
 }
