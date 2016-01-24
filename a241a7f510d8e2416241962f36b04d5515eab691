@@ -1,0 +1,10 @@
+Code-Review+2: Ramy Asselin <ramy.asselin@hpe.com>
+Code-Review+1: arkady kanevsky <arkady_kanevsky@dell.com>
+Code-Review+2: Spencer Krum <nibz@spencerkrum.com>
+Workflow+1: Spencer Krum <nibz@spencerkrum.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sun, 24 Jan 2016 17:54:52 +0000
+Reviewed-on: https://review.openstack.org/267733
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
