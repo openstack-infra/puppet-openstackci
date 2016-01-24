@@ -7,7 +7,11 @@ system.
 
 If you are setting up a similar system for use outside of OpenStack,
 many of these steps are still valid, while others can be skipped. These
-will be mentioned within each step.
+will be mentioned within each step.  Before adapting these steps for use
+outside OpenStack, it is recommended to set up the third-part CI system
+as documented below, especially if are new to CI systems.  The operation
+of the CI system is much easier to understand once you have successfully
+completed the steps documented below.
 
 If you are creating a third-party CI system for use within OpenStack,
 you'll need to familiarize yourself with the contents of the `third
@@ -235,7 +239,11 @@ The instructions provided here are mainly focused on the system
 configuration aspect. However, system configuration requires an initial
 set of project configurations in order to work. These project
 configurations are provided via a git URL to a ``project-config``
-repository. Before moving on, create an initial ``project-config``
+repository. The master branch of this repository will be cloned to the
+CI server during the puppet apply.
+
+
+Before moving on, create an initial ``project-config``
 repository. You can start with this
 `project-config-example <https://git.openstack.org/cgit/openstack-infra/project-config-example/>`__
 following the instructions provided in its README.md. While tailored for

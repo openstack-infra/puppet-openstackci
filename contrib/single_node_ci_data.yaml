@@ -27,6 +27,10 @@ log_server: logs.example.com
 #smtp_default_to:
 #zuul_revision: master
 #zuul_git_source_repo: https://git.openstack.org/openstack-infra/zuul
+# The oscc_file_contents contain the cloud connection information
+# in cloud.yaml format. Add this content after the "Do Not Edit" header.
+# The header is a reminder that the values are maintained here and not
+# in the nodepool account.
 oscc_file_contents: |
                     # Do Not Edit - Generated & Managed by Puppet
                     #
