@@ -30,6 +30,7 @@ class openstackci::nodepool (
   $enable_image_log_via_http = true,
   $project_config_repo = '',
   $logging_conf_template = 'nodepool/nodepool.logging.conf.erb',
+  $builder_logging_conf_template = 'nodepool/nodepool-builder.logging.conf.erb',
   $jenkins_masters = [],
 ) {
 
@@ -40,21 +41,22 @@ class openstackci::nodepool (
   }
 
   class { '::nodepool':
-    mysql_root_password       => $mysql_root_password,
-    mysql_password            => $mysql_password,
-    nodepool_ssh_private_key  => $nodepool_ssh_private_key,
-    git_source_repo           => $git_source_repo,
-    revision                  => $revision,
-    vhost_name                => $vhost_name,
-    statsd_host               => $statsd_host,
-    image_log_document_root   => $image_log_document_root,
-    enable_image_log_via_http => $enable_image_log_via_http,
-    environment               => $environment,
-    scripts_dir               => $::project_config::nodepool_scripts_dir,
-    elements_dir              => $::project_config::nodepool_elements_dir,
-    require                   => $::project_config::config_dir,
-    logging_conf_template     => $logging_conf_template,
-    jenkins_masters           => $jenkins_masters,
+    mysql_root_password           => $mysql_root_password,
+    mysql_password                => $mysql_password,
+    nodepool_ssh_private_key      => $nodepool_ssh_private_key,
+    git_source_repo               => $git_source_repo,
+    revision                      => $revision,
+    vhost_name                    => $vhost_name,
+    statsd_host                   => $statsd_host,
+    image_log_document_root       => $image_log_document_root,
+    enable_image_log_via_http     => $enable_image_log_via_http,
+    environment                   => $environment,
+    scripts_dir                   => $::project_config::nodepool_scripts_dir,
+    elements_dir                  => $::project_config::nodepool_elements_dir,
+    require                       => $::project_config::config_dir,
+    logging_conf_template         => $logging_conf_template,
+    builder_logging_conf_template => $builder_logging_conf_template,
+    jenkins_masters               => $jenkins_masters,
   }
 
   file { '/etc/nodepool/nodepool.yaml':
