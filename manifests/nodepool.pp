@@ -31,6 +31,7 @@ class openstackci::nodepool (
   $project_config_repo = '',
   $logging_conf_template = 'nodepool/nodepool.logging.conf.erb',
   $builder_logging_conf_template = 'nodepool/nodepool-builder.logging.conf.erb',
+  $use_dib_from_git = false,
   $jenkins_masters = [],
 ) {
 
@@ -56,6 +57,7 @@ class openstackci::nodepool (
     require                       => $::project_config::config_dir,
     logging_conf_template         => $logging_conf_template,
     builder_logging_conf_template => $builder_logging_conf_template,
+    use_dib_from_git              => $use_dib_from_git,
     jenkins_masters               => $jenkins_masters,
   }
 
