@@ -18,7 +18,6 @@
 class openstackci::nodepool (
   $mysql_root_password,
   $mysql_password,
-  $yaml_path = '/etc/project-config/nodepool/nodepool.yaml',
   $git_source_repo = 'https://git.openstack.org/openstack-infra/nodepool',
   $revision = 'master',
   $oscc_file_contents,
@@ -29,6 +28,7 @@ class openstackci::nodepool (
   $image_log_document_root = '/var/log/nodepool/image',
   $enable_image_log_via_http = true,
   $project_config_repo = '',
+  $project_config_base = undef,
   $logging_conf_template = 'nodepool/nodepool.logging.conf.erb',
   $builder_logging_conf_template = 'nodepool/nodepool-builder.logging.conf.erb',
   $jenkins_masters = [],
@@ -37,6 +37,7 @@ class openstackci::nodepool (
   if ! defined(Class['project_config']) {
     class { 'project_config':
       url  => $project_config_repo,
+      base => $project_config_base,
     }
   }
 
@@ -61,7 +62,7 @@ class openstackci::nodepool (
 
   file { '/etc/nodepool/nodepool.yaml':
     ensure  => present,
-    source  => $yaml_path,
+    source  => $::project_config::nodepool_config_file,
     owner   => 'nodepool',
     group   => 'root',
     mode    => '0400',
