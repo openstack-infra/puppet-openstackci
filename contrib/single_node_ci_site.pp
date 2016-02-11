@@ -44,7 +44,7 @@ node default {
       'review.openstack.org,23.253.232.87,2001:4800:7815:104:3bc3:d7f6:ff03:bf5d b8:3c:72:82:d5:9e:59:43:54:11:ef:93:40:1f:6d:a5'),
     git_email                   => hiera('git_email'),
     git_name                    => hiera('git_name'),
-    log_server                  => hiera('log_server'),
+    log_server                  => hiera('log_server', undef),
     smtp_host                   => hiera('smtp_host', 'localhost'),
     smtp_default_from           => hiera('smtp_default_from', "zuul@${vhost_name}"),
     smtp_default_to             => hiera('smtp_default_to', "zuul.reports@${vhost_name}"),
