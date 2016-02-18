@@ -1,4 +1,4 @@
-# See parameter documetation inside ../manifests/single_node_ci.pp
+# See parameter documentation inside ../manifests/single_node_ci.pp
 # Fields commented out have reasonable default values
 
 #vhost_name:
@@ -30,6 +30,9 @@ log_server: logs.example.com
 oscc_file_contents: |
                     # Do Not Edit - Generated & Managed by Puppet
                     #
+                    # Insert OSCC file contents here as explained in the
+                    # documentation
+
 mysql_root_password: secret_mysql_root_password
 mysql_nodepool_password: secret_mysql_nodepool_password
 #nodepool_jenkins_target: jenkins1
