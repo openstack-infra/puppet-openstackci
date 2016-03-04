@@ -2,6 +2,10 @@ require 'spec_helper_acceptance'
 
 describe 'basic openstackci' do
 
+  after(:all) do
+    puts File.read('/etc/pip.conf')
+  end
+
   if fact('osfamily') == 'Debian'
 
     context 'default parameters' do

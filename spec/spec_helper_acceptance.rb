@@ -1,3 +1,5 @@
+puts File.read('/etc/pip.conf')
+
 require 'beaker-rspec'
 
 hosts.each do |host|
@@ -56,3 +58,5 @@ RSpec.configure do |c|
     end
   end
 end
+
+puts File.read('/etc/pip.conf')
