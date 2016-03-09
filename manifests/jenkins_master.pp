@@ -96,6 +96,9 @@ class openstackci::jenkins_master (
   jenkins::plugin { 'token-macro':
     version => '1.5.1',
   }
+  jenkins::plugin { 'flexible-publish':
+    version => '0.15.2',
+  }
 
   if $manage_jenkins_jobs == true {
     if ! defined(Class['project_config']) {
