@@ -343,8 +343,13 @@ root causes:
 Start nodepool
 --------------
 
+
 The first time starting nodepool, it's recommended to manually build the
-image to aid in debugging any issues:
+image to aid in debugging any issues. Note that this only works for
+`Nodepool Tag 0.2.0 
+<https://git.openstack.org/cgit/openstack-infra/nodepool/tag/?h=0.2.0>`__  and earlier. If 
+you are using a more recent version, skip ahead to the step that explains
+how to start the nodepool service.
 
 ::
 
