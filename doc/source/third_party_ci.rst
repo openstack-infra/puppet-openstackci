@@ -344,7 +344,22 @@ Start nodepool
 --------------
 
 The first time starting nodepool, it's recommended to manually build the
-image to aid in debugging any issues:
+image to aid in debugging any issues. To do that, first, initiate the
+nodepool-builder service:
+
+::
+
+    sudo service nodepool-builder start
+
+The nodepool-builder service is responsible for receiving image building
+requests and calling Disk Image Builder to carry on the image creation. 
+You can see its logs by typing:
+
+::
+
+    view /var/log/nodepool/nodepool-builder.log
+
+Next, log into the nodepool user to issue manually the image building:
 
 ::
 
