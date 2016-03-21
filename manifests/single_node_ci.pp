@@ -139,40 +139,40 @@
 #
 
 class openstackci::single_node_ci (
-  $vhost_name                    = $::fqdn,
-  $project_config_repo           = undef,
+  $project_config_repo         = undef,
+  $vhost_name                  = $::fqdn,
 
   # Jenkins Configurations
-  $serveradmin                   = "webmaster@${vhost_name}",
-  $jenkins_username              = 'jenkins',
-  $jenkins_password              = undef,
-  $jenkins_ssh_private_key       = undef,
-  $jenkins_ssh_public_key        = undef,
-
-  # Zuul Configurations
-  $gerrit_server                 = 'review.openstack.org',
-  $gerrit_user                   = undef,
-  $gerrit_user_ssh_public_key    = undef,
-  $gerrit_user_ssh_private_key   = undef,
-  $gerrit_ssh_host_key           = 'review.openstack.org,23.253.232.87,2001:4800:7815:104:3bc3:d7f6:ff03:bf5d b8:3c:72:82:d5:9e:59:43:54:11:ef:93:40:1f:6d:a5',
-  $git_email                     = undef,
-  $git_name                      = undef,
-  $log_server                    = undef,
-  $smtp_host                     = 'localhost',
-  $smtp_default_from             = "zuul@${vhost_name}",
-  $smtp_default_to               = "zuul.reports@${vhost_name}",
-  $zuul_revision                 = 'master',
-  $zuul_git_source_repo          = 'https://git.openstack.org/openstack-infra/zuul',
+  $jenkins_password            = undef,
+  $jenkins_ssh_private_key     = undef,
+  $jenkins_ssh_public_key      = undef,
+  $jenkins_username            = 'jenkins',
+  $serveradmin                 = "webmaster@${vhost_name}",
 
   # Nodepool configurations
-  $oscc_file_contents            = undef,
-  $mysql_root_password           = undef,
-  $mysql_nodepool_password       = undef,
-  $nodepool_jenkins_target       = undef,
-  $jenkins_api_key               = undef,
-  $jenkins_credentials_id        = undef,
-  $nodepool_revision             = 'master',
-  $nodepool_git_source_repo      = 'https://git.openstack.org/openstack-infra/nodepool',
+  $jenkins_api_key             = undef,
+  $jenkins_credentials_id      = undef,
+  $mysql_nodepool_password     = undef,
+  $mysql_root_password         = undef,
+  $nodepool_git_source_repo    = 'https://git.openstack.org/openstack-infra/nodepool',
+  $nodepool_jenkins_target     = undef,
+  $nodepool_revision           = 'master',
+  $oscc_file_contents          = undef,
+
+  # Zuul Configurations
+  $gerrit_server               = 'review.openstack.org',
+  $gerrit_ssh_host_key         = 'review.openstack.org,23.253.232.87,2001:4800:7815:104:3bc3:d7f6:ff03:bf5d b8:3c:72:82:d5:9e:59:43:54:11:ef:93:40:1f:6d:a5',
+  $gerrit_user                 = undef,
+  $gerrit_user_ssh_private_key = undef,
+  $gerrit_user_ssh_public_key  = undef,
+  $git_email                   = undef,
+  $git_name                    = undef,
+  $log_server                  = undef,
+  $smtp_default_from           = "zuul@${vhost_name}",
+  $smtp_default_to             = "zuul.reports@${vhost_name}",
+  $smtp_host                   = 'localhost',
+  $zuul_git_source_repo        = 'https://git.openstack.org/openstack-infra/zuul',
+  $zuul_revision               = 'master',
 ) {
 
   class { '::openstackci::jenkins_master':

@@ -18,12 +18,12 @@
 class openstackci::logserver (
   $domain,
   $jenkins_ssh_key,
-  $swift_authurl = '',
-  $swift_user = '',
-  $swift_key = '',
-  $swift_tenant_name = '',
-  $swift_region_name = '',
+  $swift_authurl           = '',
   $swift_default_container = '',
+  $swift_key               = '',
+  $swift_region_name       = '',
+  $swift_tenant_name       = '',
+  $swift_user              = '',
 ) {
 
   if ! defined(Class['::jenkins::jenkinsuser']) {
