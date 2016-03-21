@@ -17,19 +17,19 @@
 # == Class: openstackci::zuul_merger
 #
 class openstackci::zuul_merger(
-  $vhost_name = $::fqdn,
-  $gearman_server = '127.0.0.1',
-  $gerrit_server = '',
-  $gerrit_user = '',
-  $known_hosts_content = '',
+  $gearman_server       = '127.0.0.1',
+  $gerrit_server        = '',
+  $gerrit_user          = '',
+  $git_email            = 'zuul@domain.example',
+  $git_name             = 'Zuul',
+  $git_source_repo      = 'https://git.openstack.org/openstack-infra/zuul',
+  $known_hosts_content  = '',
+  $layout_file_name     = 'layout.yaml',
+  $manage_common_zuul   = true,
+  $revision             = 'master',
+  $vhost_name           = $::fqdn,
   $zuul_ssh_private_key = '',
-  $layout_file_name = 'layout.yaml',
-  $zuul_url = "http://${::fqdn}/p",
-  $git_email = 'zuul@domain.example',
-  $git_name = 'Zuul',
-  $manage_common_zuul = true,
-  $revision = 'master',
-  $git_source_repo = 'https://git.openstack.org/openstack-infra/zuul',
+  $zuul_url             = "http://${::fqdn}/p",
 ) {
 
   if $manage_common_zuul {
