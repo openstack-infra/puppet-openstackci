@@ -16,23 +16,23 @@
 # == Class: openstackci::nodepool
 #
 class openstackci::nodepool (
-  $mysql_root_password,
   $mysql_password,
-  $yaml_path = '/etc/project-config/nodepool/nodepool.yaml',
-  $git_source_repo = 'https://git.openstack.org/openstack-infra/nodepool',
-  $revision = 'master',
+  $mysql_root_password,
   $oscc_file_contents,
-  $environment = {},
-  $nodepool_ssh_private_key = '',
-  $vhost_name = $::fqdn,
-  $statsd_host = '',
-  $image_log_document_root = '/var/log/nodepool/image',
-  $image_log_periodic_cleanup = true,
-  $enable_image_log_via_http = true,
-  $project_config_repo = '',
-  $logging_conf_template = 'nodepool/nodepool.logging.conf.erb',
   $builder_logging_conf_template = 'nodepool/nodepool-builder.logging.conf.erb',
-  $jenkins_masters = [],
+  $enable_image_log_via_http     = true,
+  $environment                   = {},
+  $git_source_repo               = 'https://git.openstack.org/openstack-infra/nodepool',
+  $image_log_document_root       = '/var/log/nodepool/image',
+  $image_log_periodic_cleanup    = true,
+  $jenkins_masters               = [],
+  $logging_conf_template         = 'nodepool/nodepool.logging.conf.erb',
+  $nodepool_ssh_private_key      = '',
+  $project_config_repo           = '',
+  $revision                      = 'master',
+  $statsd_host                   = '',
+  $vhost_name                    = $::fqdn,
+  $yaml_path                     = '/etc/project-config/nodepool/nodepool.yaml',
 ) {
 
   if ! defined(Class['project_config']) {
