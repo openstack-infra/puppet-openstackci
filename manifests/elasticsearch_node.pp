@@ -17,16 +17,16 @@
 # Elasticsearch server glue class.
 #
 class openstackci::elasticsearch_node (
-  $discover_nodes = ['localhost'],
-  $es_heap_size = '30g',
-  $es_version = '1.7.3',
-  $es_gw_recover_after_nodes = '5',
-  $es_gw_recover_after_time = '5m',
-  $es_gw_expected_nodes = '6',
   $es_discovery_min_master_nodes = '4',
-  $es_indices_cleanup_hour = '2',
-  $es_indices_cleanup_minute = '0',
-  $es_indices_cleanup_period = '10 days ago',
+  $es_gw_expected_nodes          = '6',
+  $es_gw_recover_after_nodes     = '5',
+  $es_gw_recover_after_time      = '5m',
+  $es_heap_size                  = '30g',
+  $es_indices_cleanup_hour       = '2',
+  $es_indices_cleanup_minute     = '0',
+  $es_indices_cleanup_period     = '10 days ago',
+  $es_version                    = '1.7.3',
+  $discover_nodes                = ['localhost'],
 ) {
 
   class { 'logstash::elasticsearch': }

@@ -1,27 +1,27 @@
 # == Class: openstackci::jenkins_master
 #
 class openstackci::jenkins_master (
-  $serveradmin,
   $jenkins_password,
-  $jenkins_username        = 'jenkins',
-  $vhost_name              = $::fqdn,
-  $logo                    = '', # Logo must be present in puppet-jenkins/files
-  $ssl_cert_file           = '/etc/ssl/certs/ssl-cert-snakeoil.pem',
-  $ssl_key_file            = '/etc/ssl/private/ssl-cert-snakeoil.key',
-  $ssl_chain_file          = '',
-  $ssl_cert_file_contents  = '',
-  $ssl_key_file_contents   = '',
-  $ssl_chain_file_contents = '',
+  $serveradmin,
   $jenkins_ssh_private_key = '',
   $jenkins_ssh_public_key  = '',
-  $manage_jenkins_jobs     = false,
   $jenkins_url             = 'http://localhost:8080',
-  $jjb_update_timeout      = 1200,
-  $jjb_git_url             = 'https://git.openstack.org/openstack-infra/jenkins-job-builder',
+  $jenkins_username        = 'jenkins',
   $jjb_git_revision        = 'master',
-  $project_config_repo     = '',
-  $project_config_base     = '',
+  $jjb_git_url             = 'https://git.openstack.org/openstack-infra/jenkins-job-builder',
+  $jjb_update_timeout      = 1200,
   $log_server              = undef,
+  $logo                    = '', # Logo must be present in puppet-jenkins/files
+  $manage_jenkins_jobs     = false,
+  $project_config_base     = '',
+  $project_config_repo     = '',
+  $ssl_cert_file           = '/etc/ssl/certs/ssl-cert-snakeoil.pem',
+  $ssl_cert_file_contents  = '',
+  $ssl_chain_file          = '',
+  $ssl_chain_file_contents = '',
+  $ssl_key_file            = '/etc/ssl/private/ssl-cert-snakeoil.key',
+  $ssl_key_file_contents   = '',
+  $vhost_name              = $::fqdn,
 ) {
 
   class { '::jenkins::master':
