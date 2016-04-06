@@ -48,6 +48,10 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
      ReadmeName /help/tempest-logs.html
   </Directory>
 
+  <Directory <%= @docroot %>/periodic*/*>
+     IndexOrderDefault Descending Date
+  </Directory>
+
   RewriteEngine On
   # rewrite txt.gz & console.html[.gz] files to map to our internal htmlify
   # wsgi app
