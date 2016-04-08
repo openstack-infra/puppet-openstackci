@@ -33,6 +33,13 @@ class openstackci::nodepool (
   $logging_conf_template = 'nodepool/nodepool.logging.conf.erb',
   $builder_logging_conf_template = 'nodepool/nodepool-builder.logging.conf.erb',
   $jenkins_masters = [],
+  $install_mysql = true,
+  $mysql_bind_address = '127.0.0.1',
+  $mysql_default_engine = 'InnoDB',
+  $mysql_db_name = 'nodepool',
+  $mysql_max_connections = 8192,
+  $mysql_user_host_access = 'localhost',
+  $mysql_user_name = 'nodepool',
 ) {
 
   if ! defined(Class['project_config']) {
@@ -41,7 +48,20 @@ class openstackci::nodepool (
     }
   }
 
-  class { '::nodepool':
+  if($install_mysql) {
+    class { '::nodepool::mysql' :
+      $mysql_bind_address     => $mysql_bind_address,
+      $mysql_default_engine   => $mysql_default_engine,
+      $mysql_db_name          => $mysql_db_name,
+      $mysql_max_connections  => $mysql_max_connections,
+      $mysql_root_password    => $mysql_root_password,
+      $mysql_user_host_access => $mysql_user_host_access,
+      $mysql_user_name        => $mysql_user_name,
+      $mysql_user_password    => $mysql_password,
+    }
+  }
+
+  class { '::nodepool' :
     mysql_root_password           => $mysql_root_password,
     mysql_password                => $mysql_password,
     nodepool_ssh_private_key      => $nodepool_ssh_private_key,
@@ -65,7 +85,7 @@ class openstackci::nodepool (
     ensure  => present,
     source  => $yaml_path,
     owner   => 'nodepool',
-    group   => 'root',
+    group   => 'nodepool',
     mode    => '0400',
     require => [
       File['/etc/nodepool'],
@@ -79,6 +99,7 @@ class openstackci::nodepool (
     owner   => 'nodepool',
     group   => 'nodepool',
     require => [
+      File['/home/nodepool'],
       User['nodepool'],
     ],
   }
@@ -89,6 +110,7 @@ class openstackci::nodepool (
     group   => 'nodepool',
     require => [
       File['/home/nodepool/.config'],
+      User['nodepool'],
     ],
   }
 
