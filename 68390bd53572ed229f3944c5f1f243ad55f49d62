@@ -1,0 +1,14 @@
+Code-Review+1: Alexander Maretskiy <amaretskiy@mirantis.com>
+Code-Review+1: Boris Pavlovic <boris@pavlovic.me>
+Code-Review+1: Evgeny Sikachev <esikachev@mirantis.com>
+Code-Review+2: yolanda.robla <yolanda.robla-mota@hpe.com>
+Code-Review+1: Vitaly Gridnev <vgridnev@mirantis.com>
+Code-Review+1: Khai Do <zaro0508@gmail.com>
+Code-Review+2: Ramy Asselin <ramy.asselin@hpe.com>
+Workflow+1: yolanda.robla <yolanda.robla-mota@hpe.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 12 Apr 2016 07:21:50 +0000
+Reviewed-on: https://review.openstack.org/303475
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
