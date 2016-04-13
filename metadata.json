@@ -18,5 +18,6 @@
     { "name": "openstackinfra/subunit2sql" },
     { "name": "openstackinfra/logstash" },
     { "name": "openstackinfra/elasticsearch" }
+    { "name": "openstackinfra/pip" }
   ]
 }
