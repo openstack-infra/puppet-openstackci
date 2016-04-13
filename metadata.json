@@ -17,6 +17,7 @@
     { "name": "openstackinfra/simpleproxy" },
     { "name": "openstackinfra/subunit2sql" },
     { "name": "openstackinfra/logstash" },
-    { "name": "openstackinfra/elasticsearch" }
+    { "name": "openstackinfra/elasticsearch" },
+    { "name": "openstackinfra/pip" }
   ]
 }
