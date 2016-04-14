@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 group :development, :unit_tests do
   gem 'puppetlabs_spec_helper', :require => false
   gem 'rspec-puppet', '~> 2.1.0', :require => false
+  gem 'google-api-client', '0.9.4'
 
   gem 'json'
   gem 'webmock'
