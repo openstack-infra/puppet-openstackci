@@ -33,6 +33,8 @@ class openstackci::nodepool (
   $logging_conf_template = 'nodepool/nodepool.logging.conf.erb',
   $builder_logging_conf_template = 'nodepool/nodepool-builder.logging.conf.erb',
   $jenkins_masters = [],
+  $build_workers = '1',
+  $upload_workers = '4',
 ) {
 
   if ! defined(Class['project_config']) {
@@ -59,6 +61,8 @@ class openstackci::nodepool (
     logging_conf_template         => $logging_conf_template,
     builder_logging_conf_template => $builder_logging_conf_template,
     jenkins_masters               => $jenkins_masters,
+    build_workers                 => $build_workers,
+    upload_workers                => $upload_workers,
   }
 
   file { '/etc/nodepool/nodepool.yaml':
