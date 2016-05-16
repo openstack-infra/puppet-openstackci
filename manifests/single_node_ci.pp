@@ -101,6 +101,10 @@
 # [*zuul_git_source_repo*]
 #   The zuul git source repository to install zuul.
 #
+# [*zuul_layout_file_name*]
+#   File name for zuul's project and pipline configuration found in
+#   project-config/zuul/layout/
+#
 # [*oscc_file_contents*]
 #   The multi-line contents of os-client-config.
 #   This allows the nodepool.yaml file provided to not contain any sensitive
@@ -162,7 +166,8 @@ class openstackci::single_node_ci (
   $smtp_default_from             = "zuul@${vhost_name}",
   $smtp_default_to               = "zuul.reports@${vhost_name}",
   $zuul_revision                 = 'master',
-  $zuul_git_source_repo          =  'https://git.openstack.org/openstack-infra/zuul',
+  $zuul_git_source_repo          = 'https://git.openstack.org/openstack-infra/zuul',
+  $zuul_layout_file_name         = 'layout.yaml',
 
   # Nodepool configurations
   $oscc_file_contents            = undef,
@@ -197,6 +202,7 @@ class openstackci::single_node_ci (
     # known_hosts_content is set by openstackci::zuul_scheduler
     known_hosts_content  => '',
     zuul_ssh_private_key => $gerrit_user_ssh_private_key,
+    layout_file_name     => $zuul_layout_file_name,
     zuul_url             => "http://${vhost_name}/p/",
     git_email            => $git_email,
     git_name             => $git_name,
@@ -212,6 +218,7 @@ class openstackci::single_node_ci (
     gerrit_user          => $gerrit_user,
     known_hosts_content  => $gerrit_ssh_host_key,
     zuul_ssh_private_key => $gerrit_user_ssh_private_key,
+    layout_file_name     => $zuul_layout_file_name,
     url_pattern          => "http://${log_server}/{build.parameters[LOG_PATH]}",
     zuul_url             => "http://${vhost_name}/p/",
     job_name_in_report   => true,
