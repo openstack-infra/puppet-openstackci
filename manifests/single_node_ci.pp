@@ -162,7 +162,7 @@ class openstackci::single_node_ci (
   $smtp_default_from             = "zuul@${vhost_name}",
   $smtp_default_to               = "zuul.reports@${vhost_name}",
   $zuul_revision                 = 'master',
-  $zuul_git_source_repo          =  'https://git.openstack.org/openstack-infra/zuul',
+  $zuul_git_source_repo          = 'https://git.openstack.org/openstack-infra/zuul',
 
   # Nodepool configurations
   $oscc_file_contents            = undef,
