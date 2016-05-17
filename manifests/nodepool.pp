@@ -35,11 +35,31 @@ class openstackci::nodepool (
   $jenkins_masters = [],
   $build_workers = '1',
   $upload_workers = '4',
+  $install_mysql = true,
+  $mysql_bind_address = '127.0.0.1',
+  $mysql_default_engine = 'InnoDB',
+  $mysql_db_name = 'nodepool',
+  $mysql_max_connections = 8192,
+  $mysql_user_host = 'localhost',
+  $mysql_user_name = 'nodepool',
 ) {
 
   if ! defined(Class['project_config']) {
     class { 'project_config':
       url  => $project_config_repo,
+    }
+  }
+
+  if($install_mysql) {
+    class { '::nodepool::mysql' :
+      mysql_bind_address    => $mysql_bind_address,
+      mysql_default_engine  => $mysql_default_engine,
+      mysql_db_name         => $mysql_db_name,
+      mysql_max_connections => $mysql_max_connections,
+      mysql_root_password   => $mysql_root_password,
+      mysql_user_host       => $mysql_user_host,
+      mysql_user_name       => $mysql_user_name,
+      mysql_password        => $mysql_password,
     }
   }
 
