@@ -1,4 +1,4 @@
 [gerrit]
-host=review.openstack.org
+host=review.fuel-infra.org
 port=29418
-project=openstack-infra/puppet-openstackci.git
+project=fuel-infra/puppet-openstackci.git
