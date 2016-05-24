@@ -16,191 +16,111 @@
 # == Class: openstackci::logserver
 #
 class openstackci::logserver (
-  $domain,
-  $jenkins_ssh_key,
-  $swift_authurl = '',
-  $swift_user = '',
-  $swift_key = '',
-  $swift_tenant_name = '',
-  $swift_region_name = '',
-  $swift_default_container = '',
+  $config_general_file_content = undef,
+  $cron_jobs                   = {},
+  $etc_conf_dir                = '/etc/os_loganalyze',
+  $file_conditions_content     = undef,
+  $file_conditions_path        = '/etc/os_loganalyze/file_conditions.yaml',
+  $package                     = 'python-os-loganalyze',
+  $service_fqdn                = 'loganalyze.test.local',
+  $user                        = 'loganalyze',
+  $user_home_dir               = '/var/lib/loganalyze',
+  $uwsgi_app_name              = 'wsgi',
+  $uwsgi_chdir                 = '/usr/lib/python2.7/dist-packages/os_loganalyze',
+  $uwsgi_socket                = '127.0.0.1:4689',
 ) {
 
-  if ! defined(Class['::jenkins::jenkinsuser']) {
-    class { '::jenkins::jenkinsuser':
-      ssh_key => $jenkins_ssh_key,
+  if($package) {
+    package { $package :
+      ensure => 'latest',
     }
   }
 
-  include ::httpd
-  include ::httpd::mod::wsgi
+  $dir_paths = hiera_hash('openstackci::logserver::log_dir_paths', {})
 
-  if ! defined(Httpd::Mod['rewrite']) {
-    httpd::mod { 'rewrite':
-      ensure => present,
-    }
+  if($dir_paths) {
+    create_resources(file, $dir_paths, {
+      ensure => 'directory',
+      before => Class['fuel_project::apps::seed']
+    })
   }
 
-  if ! defined(Httpd::Mod['proxy']) {
-    httpd::mod { 'proxy':
-      ensure => present,
-    }
+  group { $user:
+    ensure => 'present',
   }
 
-  if ! defined(Httpd::Mod['proxy_http']) {
-    httpd::mod { 'proxy_http':
-      ensure => present,
-    }
+  user { $user :
+    ensure     => 'present',
+    home       => $user_home_dir,
+    shell      => '/bin/false',
+    gid        => $user,
+    system     => true,
+    managehome => true,
+    require    => Group[$user],
   }
 
-  ::httpd::vhost { "logs.${domain}":
-    port     => 80,
-    priority => '50',
-    docroot  => '/srv/static/logs',
-    require  => File['/srv/static/logs'],
-    template => 'openstackci/logs.vhost.erb',
+  uwsgi::application { $uwsgi_app_name :
+    plugins   => 'python',
+    workers   => $::processorcount,
+    uid       => $user,
+    gid       => $user,
+    socket    => $uwsgi_socket,
+    master    => true,
+    vacuum    => true,
+    chdir     => $uwsgi_chdir,
+    module    => $uwsgi_app_name,
+    subscribe => Package[$package],
   }
 
-  ::httpd::vhost { "logs-dev.${domain}":
-    port     => 80,
-    priority => '51',
-    docroot  => '/srv/static/logs',
-    require  => File['/srv/static/logs'],
-    template => 'openstackci/logs-dev.vhost.erb',
-  }
-
-  if ! defined(File['/srv/static']) {
-    file { '/srv/static':
-      ensure => directory,
-    }
-  }
-
-  file { '/srv/static/logs':
-    ensure  => directory,
-    owner   => 'jenkins',
-    group   => 'jenkins',
-    require => User['jenkins'],
-  }
-
-  file { '/srv/static/logs/robots.txt':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    source  => 'puppet:///modules/openstackci/disallow_robots.txt',
-    require => File['/srv/static/logs'],
-  }
-
-  if ! defined(Package['build-essential']) {
-    package { 'build-essential':
-      ensure => 'present',
-    }
-  }
-
-  if ! defined(Package['python-dev']) {
-    package { 'python-dev':
-      ensure => 'present',
-    }
-  }
-
-  package { 'keyring':
-    ensure   => 'latest',
-    provider => 'pip',
-  }
-
-  vcsrepo { '/opt/os-loganalyze':
-    ensure   => latest,
-    provider => git,
-    revision => 'master',
-    source   => 'https://git.openstack.org/openstack-infra/os-loganalyze',
-    require  => Package['keyring'],
-  }
-
-  exec { 'install_os-loganalyze':
-    command     => 'pip install .',
-    cwd         => '/opt/os-loganalyze',
-    path        => '/usr/local/bin:/usr/bin:/bin/',
-    refreshonly => true,
-    subscribe   => Vcsrepo['/opt/os-loganalyze'],
-    require     => [Package['build-essential'], Package['python-dev']],
-    notify      => Service['httpd'],
-  }
-
-  file { '/etc/os_loganalyze':
-    ensure  => directory,
+  file { $etc_conf_dir :
+    ensure  => 'directory',
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
-    require => Vcsrepo['/opt/os-loganalyze'],
+    require => Package[$package],
   }
 
-  file { '/etc/os_loganalyze/wsgi.conf':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'www-data',
-    mode    => '0440',
-    content => template('openstackci/os-loganalyze-wsgi.conf.erb'),
-    require => File['/etc/os_loganalyze'],
+  if($config_general_file_content) {
+    file { "${etc_conf_dir}/loganalyze.conf" :
+      ensure  => 'present',
+      owner   => $user,
+      group   => $user,
+      mode    => '0444',
+      content => template('openstackci/os-loganalyze.conf.erb'),
+      require => File[$etc_conf_dir],
+    }
   }
 
-  file { '/etc/os_loganalyze/file_conditions.yaml':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'www-data',
-    mode    => '0440',
-    source  => 'puppet:///modules/openstackci/os-loganalyze-file_conditions.yaml',
-    require => File['/etc/os_loganalyze'],
+  if($file_conditions_content) {
+    file { $file_conditions_path :
+      ensure  => 'present',
+      owner   => $user,
+      group   => $user,
+      mode    => '0444',
+      content => $file_conditions_content,
+      require => File[$etc_conf_dir],
+    }
   }
 
-  vcsrepo { '/opt/devstack-gate':
-    ensure   => latest,
-    provider => git,
-    revision => 'master',
-    source   => 'https://git.openstack.org/openstack-infra/devstack-gate',
+  include ::nginx
+
+  ::nginx::resource::vhost { 'logserver' :
+    ensure              => 'present',
+    listen_port         => 80,
+    server_name         => [$service_fqdn],
+    access_log          => $nginx_access_log,
+    error_log           => $nginx_error_log,
+    format_log          => $nginx_log_format,
+    uwsgi               => $uwsgi_socket,
+    location_cfg_append => {
+      uwsgi_connect_timeout => '3m',
+      uwsgi_read_timeout    => '3m',
+      uwsgi_send_timeout    => '3m',
+    }
   }
 
-  file { '/srv/static/logs/help':
-    ensure  => directory,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    require => File['/srv/static/logs'],
-  }
-
-  file { '/srv/static/logs/help/tempest-logs.html':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    source  => 'file:///opt/devstack-gate/help/tempest-logs.html',
-    require => [File['/srv/static/logs/help'], Vcsrepo['/opt/devstack-gate']],
-  }
-
-  file { '/srv/static/logs/help/tempest-overview.html':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    source  => 'file:///opt/devstack-gate/help/tempest-overview.html',
-    require => [File['/srv/static/logs/help'], Vcsrepo['/opt/devstack-gate']],
-  }
-
-  file { '/usr/local/sbin/log_archive_maintenance.sh':
-    ensure => present,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0744',
-    source => 'puppet:///modules/openstackci/log_archive_maintenance.sh',
-  }
-
-  cron { 'gziprmlogs':
-    user        => 'root',
-    minute      => '0',
-    hour        => '7',
-    weekday     => '6',
-    command     => 'bash /usr/local/sbin/log_archive_maintenance.sh',
-    environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin',
-    require     => File['/usr/local/sbin/log_archive_maintenance.sh'],
-  }
+  create_resources(cron, $cron_jobs, {
+      ensure => 'present',
+  })
 
 }
