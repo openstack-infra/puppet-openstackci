@@ -19,6 +19,7 @@
 class openstackci::zuul_scheduler(
   $vhost_name = $::fqdn,
   $gearman_server = '127.0.0.1',
+  $gearman_check_job_registration = false,
   $gerrit_server = '',
   $gerrit_user = '',
   $known_hosts_content = '',
@@ -65,6 +66,7 @@ class openstackci::zuul_scheduler(
   class { '::zuul':
     vhost_name                     => $vhost_name,
     gearman_server                 => $gearman_server,
+    gearman_check_job_registration => $gearman_check_job_registration,
     gerrit_server                  => $gerrit_server,
     gerrit_user                    => $gerrit_user,
     zuul_ssh_private_key           => $zuul_ssh_private_key,
