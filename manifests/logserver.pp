@@ -105,7 +105,7 @@ class openstackci::logserver (
 
   package { 'keyring':
     ensure   => 'latest',
-    provider => 'pip',
+    provider => 'openstack_pip',
   }
 
   vcsrepo { '/opt/os-loganalyze':
