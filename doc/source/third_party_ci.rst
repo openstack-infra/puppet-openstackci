@@ -172,6 +172,14 @@ or
 `logserver.pp <http://git.openstack .org/cgit/openstack-infra/puppet-openstackci/tree/manifests/logserver.pp>`__.
 These are the top level puppet class that is used in ``site.pp``.
 
+One parameter called ``project_config_repo`` is necessary to be set
+into ``/etc/puppet/environments/common.yaml``, and you can configure
+this parameter with the URL of the 'project-config' repository which
+you are going to create in the step
+`Create an Initial \'project-config\'
+Repository <https://github.com/openstack-infra/puppet-openstackci/blob/master/doc/source/third_party_ci.rst#create-an-initial-project-config-repository>`__
+below.
+
 Once completed, you should commit these 3 files to the ``/etc/puppet``
 git repo. Your git workflow may vary a bit, but here is an example:
 
