@@ -253,7 +253,10 @@ scripts will install multiple services on a single node. For example:
 
 ::
 
-    head -n 1 /etc/hosts
+    $ head -n 1 /etc/hosts
+    127.0.0.1 localhost
+    $ sudo sed -i "s/127.0.0.1\tlocalhost/127.0.0.1\tlocalhost\tjenkins/g"
+    $ head -n 1 /etc/hosts
     127.0.0.1 localhost jenkins
 
 Run masterless Puppet
