@@ -39,7 +39,7 @@ class openstackci::nodepool (
 ) {
 
   if ! defined(Class['project_config']) {
-    class { 'project_config':
+    class { '::project_config':
       url  => $project_config_repo,
     }
   }

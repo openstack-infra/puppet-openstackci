@@ -29,7 +29,7 @@ class openstackci::elasticsearch_node (
   $es_indices_cleanup_period = '10 days ago',
 ) {
 
-  class { 'logstash::elasticsearch': }
+  class { '::logstash::elasticsearch': }
 
   class { '::elasticsearch':
     es_template_config => {
@@ -60,7 +60,7 @@ class openstackci::elasticsearch_node (
     environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin',
   }
 
-  class { 'logstash::curator':
+  class { '::logstash::curator':
     keep_for_days  => '10',
   }
 

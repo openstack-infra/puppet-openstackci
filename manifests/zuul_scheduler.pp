@@ -56,7 +56,7 @@ class openstackci::zuul_scheduler(
 ) {
 
   if ! defined(Class['project_config']) {
-    class { 'project_config':
+    class { '::project_config':
       url      => $project_config_repo,
       revision => $project_config_revision,
       base     => $project_config_base,

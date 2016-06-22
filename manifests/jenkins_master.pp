@@ -99,7 +99,7 @@ class openstackci::jenkins_master (
 
   if $manage_jenkins_jobs == true {
     if ! defined(Class['project_config']) {
-      class { 'project_config':
+      class { '::project_config':
         url  => $project_config_repo,
         base => $project_config_base,
       }
