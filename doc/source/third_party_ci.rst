@@ -153,6 +153,7 @@ If setting up the ``single node ci`` node:
 ::
 
     sudo su -
+    mkdir -p /etc/puppet/environments
     cp /etc/puppet/modules/openstackci/contrib/single_node_ci_site.pp /etc/puppet/manifests/site.pp
     cp /etc/puppet/modules/openstackci/contrib/single_node_ci_data.yaml /etc/puppet/environments/common.yaml
     exit
