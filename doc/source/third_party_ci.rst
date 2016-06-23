@@ -126,6 +126,8 @@ It is useful to save the history, so set up a git repo as root user:
     git init
     echo "modules/" >> .gitignore
     git add .
+    git config --global user.email "you@example.com"
+    git config --global user.name "Your Name"
     git commit -m "initial files"
     exit
 
