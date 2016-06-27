@@ -15,6 +15,21 @@
 
 # == Class: openstackci::nodepool
 #
+# === Parameters:
+#
+# [*nodepool_ssh_private_key*]
+#   This is the key used by nodepool to log into the newly created
+#   host and prepare it.  It will be deployed via configdrive as the
+#   node boots.
+#
+# [*zuul_worker_ssh_public_key*]
+#   This is the public key for the "zuul" user which is used by the
+#   zuul-worker launchers to log in when a node is attached to them.
+#   It is intended to be embedded into images built by nodepool
+#
+# [*nodepool_ssh_public_key*]
+#   Deprecated for above (2016-06)
+#
 class openstackci::nodepool (
   $mysql_root_password,
   $mysql_password,
@@ -24,6 +39,7 @@ class openstackci::nodepool (
   $oscc_file_contents,
   $environment = {},
   $nodepool_ssh_private_key = '',
+  $zuul_worker_ssh_public_key = '',
   $nodepool_ssh_public_key = '',
   $vhost_name = $::fqdn,
   $statsd_host = '',
@@ -48,6 +64,7 @@ class openstackci::nodepool (
     mysql_root_password           => $mysql_root_password,
     mysql_password                => $mysql_password,
     nodepool_ssh_private_key      => $nodepool_ssh_private_key,
+    zuul_worker_ssh_public_key    => $zuul_worker_ssh_public_key,
     nodepool_ssh_public_key       => $nodepool_ssh_public_key,
     git_source_repo               => $git_source_repo,
     revision                      => $revision,
