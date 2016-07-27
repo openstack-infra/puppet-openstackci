@@ -60,6 +60,9 @@ node default {
     nodepool_revision           => hiera('nodepool_revision', 'master'),
     nodepool_git_source_repo    => hiera('nodepool_git_source_repo',
       'https://git.openstack.org/openstack-infra/nodepool'),
+    jjb_git_revision            => hiera('nodepool_revision', 'master'),
+    jjb_git_url    => hiera('nodepool_git_source_repo',
+      'https://git.openstack.org/openstack-infra/jenkins-job-builder'),
   }
 }
 
