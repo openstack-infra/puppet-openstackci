@@ -148,6 +148,8 @@ class openstackci::single_node_ci (
   $jenkins_password              = undef,
   $jenkins_ssh_private_key       = undef,
   $jenkins_ssh_public_key        = undef,
+  $jjb_git_revision              = 'master',
+  $jjb_git_url                   = 'https://git.openstack.org/openstack-infra/jenkins-job-builder',
 
   # Zuul Configurations
   $gerrit_server                 = 'review.openstack.org',
@@ -187,6 +189,8 @@ class openstackci::single_node_ci (
     jenkins_password        => $jenkins_password,
     project_config_repo     => $project_config_repo,
     log_server              => $log_server,
+    jjb_git_revision        => $jjb_git_revision,
+    jjb_git_url             => $jjb_git_url,
   }
 
   class { '::openstackci::zuul_merger':
