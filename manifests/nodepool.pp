@@ -36,6 +36,10 @@ class openstackci::nodepool (
   $jenkins_masters = [],
   $build_workers = '1',
   $upload_workers = '4',
+  $install_mysql = true,
+  $mysql_db_name = 'nodepool',
+  $mysql_host = 'localhost',
+  $mysql_user_name = 'nodepool',
 ) {
 
   if ! defined(Class['project_config']) {
@@ -66,6 +70,10 @@ class openstackci::nodepool (
     jenkins_masters               => $jenkins_masters,
     build_workers                 => $build_workers,
     upload_workers                => $upload_workers,
+    install_mysql                 => $install_mysql,
+    mysql_db_name                 => $mysql_db_name,
+    mysql_host                    => $mysql_host,
+    mysql_user_name               => $mysql_user_name,
   }
 
   file { '/etc/nodepool/nodepool.yaml':
