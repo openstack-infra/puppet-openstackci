@@ -1,0 +1,10 @@
+Code-Review+2: James E. Blair <corvus@inaugust.com>
+Code-Review+2: Jeremy Stanley <fungi@yuggoth.org>
+Workflow+1: Jeremy Stanley <fungi@yuggoth.org>
+Code-Review+1: Clint 'SpamapS' Byrum <clint@fewbar.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 05 Aug 2016 20:44:06 +0000
+Reviewed-on: https://review.openstack.org/351865
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
