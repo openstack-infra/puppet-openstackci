@@ -27,7 +27,7 @@ log_server: logs.example.com
 #smtp_host:
 #smtp_default_from:
 #smtp_default_to:
-zuul_revision: 2.1.0
+zuul_revision: 2.5.0
 #zuul_git_source_repo: https://git.openstack.org/openstack-infra/zuul
 oscc_file_contents: |
   # Insert OSCC file contents here as explained in the
