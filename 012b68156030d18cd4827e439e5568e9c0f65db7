@@ -1,0 +1,9 @@
+Code-Review+2: Ramy Asselin <ramy.asselin@hpe.com>
+Code-Review+2: yolanda.robla <yroblamo@redhat.com>
+Workflow+1: yolanda.robla <yroblamo@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 09 Aug 2016 08:08:31 +0000
+Reviewed-on: https://review.openstack.org/352560
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
