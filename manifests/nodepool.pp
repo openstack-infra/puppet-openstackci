@@ -66,8 +66,13 @@ class openstackci::nodepool (
     elements_dir                  => $::project_config::nodepool_elements_dir,
     require                       => $::project_config::config_dir,
     logging_conf_template         => $logging_conf_template,
-    builder_logging_conf_template => $builder_logging_conf_template,
     jenkins_masters               => $jenkins_masters,
+  }
+
+  class { '::nodepool::builder':
+    statsd_host                   => $statsd_host,
+    environment                   => $environment,
+    builder_logging_conf_template => $builder_logging_conf_template,
     build_workers                 => $build_workers,
     upload_workers                => $upload_workers,
     install_mysql                 => $install_mysql,
