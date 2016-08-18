@@ -1,0 +1,10 @@
+Code-Review+2: Ramy Asselin <ramy.asselin@hpe.com>
+Code-Review+1: K Jonathan Harker <code@gentlydownthe.net>
+Code-Review+2: Ricardo Carrillo Cruz <ricardo.carrillo.cruz@gmail.com>
+Workflow+1: Ricardo Carrillo Cruz <ricardo.carrillo.cruz@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 18 Aug 2016 08:52:27 +0000
+Reviewed-on: https://review.openstack.org/259954
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
