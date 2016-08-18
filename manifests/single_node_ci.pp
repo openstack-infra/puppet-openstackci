@@ -35,6 +35,10 @@
 # [*serveradmin*]
 #  The e-mail address of the owner of the CI system
 #
+# [*jenkins_vhost_name*]
+#   This is the alternative hostname or FQDN to use by Jenkins.
+#   Don't use $vhost_name as it conflicts with zuul
+#
 # [*jenkins_username*]
 #    If you have Jenkins secured, this is the username Jenkins Job Builder
 #    will use to manage all Jenkins jobs. Otherwise the value is ignored.
@@ -143,6 +147,7 @@ class openstackci::single_node_ci (
   $project_config_repo           = undef,
 
   # Jenkins Configurations
+  $jenkins_vhost_name            = 'jenkins',
   $serveradmin                   = "webmaster@${vhost_name}",
   $jenkins_username              = 'jenkins',
   $jenkins_password              = undef,
@@ -178,8 +183,7 @@ class openstackci::single_node_ci (
 ) {
 
   class { '::openstackci::jenkins_master':
-    # Don't use $vhost_name as it conflicts with zuul
-    vhost_name              => 'jenkins',
+    vhost_name              => $jenkins_vhost_name,
     serveradmin             => $serveradmin,
     jenkins_ssh_private_key => $jenkins_ssh_private_key,
     jenkins_ssh_public_key  => $jenkins_ssh_public_key,

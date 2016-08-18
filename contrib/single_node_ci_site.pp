@@ -32,6 +32,7 @@ node default {
     vhost_name                  => $vhost_name,
     project_config_repo         => hiera('project_config_repo'),
     serveradmin                 => hiera('serveradmin', "webmaster@${vhost_name}"),
+    jenkins_vhost_name          => hiera('jenkins_vhost_name', 'jenkins'),
     jenkins_username            => hiera('jenkins_username', 'jenkins'),
     jenkins_password            => hiera('jenkins_password', 'XXX'),
     jenkins_ssh_private_key     => hiera('jenkins_ssh_private_key'),
