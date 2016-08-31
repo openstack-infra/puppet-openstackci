@@ -14,6 +14,7 @@ class openstackci::jenkins_master (
   $ssl_chain_file_contents = '',
   $jenkins_ssh_private_key = '',
   $jenkins_ssh_public_key  = '',
+  $jenkins_version         = '1.651',
   $manage_jenkins_jobs     = false,
   $jenkins_url             = 'http://localhost:8080',
   $jjb_update_timeout      = 1200,
@@ -36,6 +37,7 @@ class openstackci::jenkins_master (
     ssl_chain_file_contents => $ssl_chain_file_contents,
     jenkins_ssh_private_key => $jenkins_ssh_private_key,
     jenkins_ssh_public_key  => $jenkins_ssh_public_key,
+    jenkins_version         => $jenkins_version,
   }
 
   jenkins::plugin { 'build-timeout':
