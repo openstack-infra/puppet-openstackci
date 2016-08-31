@@ -4,6 +4,7 @@
 #vhost_name:
 project_config_repo: http://your-project-config-repo.example.com/project-config-example.git
 #serveradmin:
+jenkins_version: 1.651
 #jenkins_vhost_name: jenkins
 #jenkins_username: jenkins
 #jenkins_password:
