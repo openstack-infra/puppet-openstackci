@@ -40,6 +40,7 @@ class openstackci::nodepool (
   $mysql_db_name = 'nodepool',
   $mysql_host = 'localhost',
   $mysql_user_name = 'nodepool',
+  $split_daemon = false,
 ) {
 
   if ! defined(Class['project_config']) {
@@ -74,6 +75,7 @@ class openstackci::nodepool (
     mysql_db_name                 => $mysql_db_name,
     mysql_host                    => $mysql_host,
     mysql_user_name               => $mysql_user_name,
+    split_daemon                  => $split_daemon,
   }
 
   file { '/etc/nodepool/nodepool.yaml':
