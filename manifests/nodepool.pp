@@ -30,7 +30,8 @@ class openstackci::nodepool (
   $image_log_periodic_cleanup = true,
   $enable_image_log_via_http = true,
   $project_config_repo = '',
-  $project_config_base = undef,
+  $project_config_revision = 'master',
+  $project_config_base = '',
   $logging_conf_template = 'nodepool/nodepool.logging.conf.erb',
   $builder_logging_conf_template = 'nodepool/nodepool-builder.logging.conf.erb',
   $jenkins_masters = [],
@@ -45,8 +46,9 @@ class openstackci::nodepool (
 
   if ! defined(Class['project_config']) {
     class { '::project_config':
-      url  => $project_config_repo,
-      base => $project_config_base,
+      url      => $project_config_repo,
+      revision => $project_config_revision,
+      base     => $project_config_base,
     }
   }
 
