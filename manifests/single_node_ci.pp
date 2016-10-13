@@ -213,12 +213,11 @@ class openstackci::single_node_ci (
     git_source_repo      => $zuul_git_source_repo,
   }
 
-  class { '::openstackci::zuul_scheduler':
+  class { '::zuul':
     vhost_name           => $vhost_name,
     gearman_server       => 'localhost',
     gerrit_server        => $gerrit_server,
     gerrit_user          => $gerrit_user,
-    known_hosts_content  => $gerrit_ssh_host_key,
     zuul_ssh_private_key => $gerrit_user_ssh_private_key,
     url_pattern          => "http://${log_server}/{build.parameters[LOG_PATH]}",
     zuul_url             => "http://${vhost_name}/p/",
@@ -231,6 +230,12 @@ class openstackci::single_node_ci (
     smtp_default_from    => $smtp_default_from,
     smtp_default_to      => $smtp_default_to,
     revision             => $zuul_revision,
+  }
+
+  class { '::openstackci::zuul_scheduler':
+    known_hosts_content  => $gerrit_ssh_host_key,
+    project_config_repo  => $project_config_repo,
+    project_config_base  => $project_config_base,
   }
 
   class { '::openstackci::nodepool':
