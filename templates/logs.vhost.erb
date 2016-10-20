@@ -15,6 +15,8 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
 
   AddType text/plain .log
   AddType text/plain .sh
+  AddType text/plain .yaml
+  AddType text/plain .yml
 
   # use Apache to compress the results afterwards, to save on the wire
   # it's approx 18x savings of wire traffic to compress. We need to
