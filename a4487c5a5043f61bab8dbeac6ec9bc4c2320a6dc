@@ -1,0 +1,10 @@
+Code-Review+2: Paul Belanger <pabelanger@redhat.com>
+Code-Review+2: Ramy Asselin <ramy.asselin@hpe.com>
+Code-Review+1: K Jonathan Harker <code@gentlydownthe.net>
+Workflow+1: Jeremy Stanley <fungi@yuggoth.org>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 21 Oct 2016 16:14:48 +0000
+Reviewed-on: https://review.openstack.org/379553
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
