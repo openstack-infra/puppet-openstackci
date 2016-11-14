@@ -1,0 +1,13 @@
+Code-Review+2: yolanda.robla <yroblamo@redhat.com>
+Code-Review+1: Ricardo Carrillo Cruz <ricardo.carrillo.cruz@gmail.com>
+Code-Review+1: Clint Adams <clint@gcfm.net>
+Code-Review+2: Ramy Asselin <ramy.asselin@hpe.com>
+Code-Review+1: K Jonathan Harker <code@gentlydownthe.net>
+Code-Review+1: watanabe isao <watanabe_isao@jp.fujitsu.com>
+Workflow+1: Ian Wienand <iwienand@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 14 Nov 2016 23:58:53 +0000
+Reviewed-on: https://review.openstack.org/301989
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
