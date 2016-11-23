@@ -58,6 +58,7 @@ class openstackci::nodepool_builder (
     upload_log_periodic_cleanup => $upload_log_periodic_cleanup,
     enable_upload_log_via_http  => $enable_upload_log_via_http,
     environment                 => $environment,
+    nodepool_ssh_private_key    => '',
     scripts_dir                 => $::project_config::nodepool_scripts_dir,
     elements_dir                => $::project_config::nodepool_elements_dir,
     require                     => $::project_config::config_dir,
