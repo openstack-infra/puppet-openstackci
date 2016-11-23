@@ -17,6 +17,8 @@
 #
 class openstackci::nodepool_builder (
   $oscc_file_contents,
+  $mysql_root_password = '',
+  $mysql_password = '',
   $git_source_repo = 'https://git.openstack.org/openstack-infra/nodepool',
   $revision = 'master',
   $environment = {},
@@ -43,6 +45,8 @@ class openstackci::nodepool_builder (
   }
 
   class { '::nodepool':
+    mysql_root_password         => $mysql_root_password,
+    mysql_password              => $mysql_password,
     git_source_repo             => $git_source_repo,
     revision                    => $revision,
     vhost_name                  => $vhost_name,
