@@ -63,41 +63,6 @@ class openstackci::zuul_scheduler(
     }
   }
 
-  class { '::zuul':
-    vhost_name                     => $vhost_name,
-    gearman_server                 => $gearman_server,
-    gearman_check_job_registration => $gearman_check_job_registration,
-    gerrit_server                  => $gerrit_server,
-    gerrit_user                    => $gerrit_user,
-    zuul_ssh_private_key           => $zuul_ssh_private_key,
-    url_pattern                    => $url_pattern,
-    layout_file_name               => $layout_file_name,
-    zuul_url                       => $zuul_url,
-    job_name_in_report             => $job_name_in_report,
-    status_url                     => $status_url,
-    statsd_host                    => $statsd_host,
-    git_email                      => $git_email,
-    git_name                       => $git_name,
-    smtp_host                      => $smtp_host,
-    smtp_port                      => $smtp_port,
-    smtp_default_from              => $smtp_default_from,
-    smtp_default_to                => $smtp_default_to,
-    swift_account_temp_key         => $swift_account_temp_key,
-    swift_authurl                  => $swift_authurl,
-    swift_auth_version             => $swift_auth_version,
-    swift_user                     => $swift_user,
-    swift_key                      => $swift_key,
-    swift_tenant_name              => $swift_tenant_name,
-    swift_region_name              => $swift_region_name,
-    swift_default_container        => $swift_default_container,
-    swift_default_logserver_prefix => $swift_default_logserver_prefix,
-    swift_default_expiry           => $swift_default_expiry,
-    proxy_ssl_cert_file_contents   => $proxy_ssl_cert_file_contents,
-    proxy_ssl_key_file_contents    => $proxy_ssl_key_file_contents,
-    proxy_ssl_chain_file_contents  => $proxy_ssl_chain_file_contents,
-    revision                       => $revision,
-  }
-
   class { '::zuul::server':
     layout_dir => $::project_config::zuul_layout_dir,
     require    => $::project_config::config_dir,
