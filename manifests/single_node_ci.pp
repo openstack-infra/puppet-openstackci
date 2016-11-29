@@ -161,7 +161,7 @@ class openstackci::single_node_ci (
   $gerrit_user                   = undef,
   $gerrit_user_ssh_public_key    = undef,
   $gerrit_user_ssh_private_key   = undef,
-  $gerrit_ssh_host_key           = 'review.openstack.org,23.253.232.87,2001:4800:7815:104:3bc3:d7f6:ff03:bf5d b8:3c:72:82:d5:9e:59:43:54:11:ef:93:40:1f:6d:a5',
+  $gerrit_ssh_host_key           = '[review.openstack.org]:29418,[104.130.246.91]:29418,[2001:4800:7819:103:be76:4eff:fe05:8525]:29418 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfsIj/jqpI+2CFdjCL6kOiqdORWvxQ2sQbCzSzzmLXic8yVhCCbwarkvEpfUOHG4eyB0vqVZfMffxf0Yy3qjURrsroBCiuJ8GdiAcGdfYwHNfBI0cR6kydBZL537YDasIk0Z3ILzhwf7474LmkVzS7V2tMTb4ZiBS/jUeiHsVp88FZhIBkyhlb/awAGcUxT5U4QBXCAmerYXeB47FPuz9JFOVyF08LzH9JRe9tfXtqaCNhlSdRe/2pPRvn2EIhn5uHWwATACG9MBdrK8xv8LqPOik2w1JkgLWyBj11vDd5I3IjrmREGw8dqImqp0r6MD8rxqADlc1elfDIXYsy+TVH',
   $git_email                     = undef,
   $git_name                      = undef,
   $log_server                    = undef,
