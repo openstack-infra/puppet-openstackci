@@ -1,0 +1,9 @@
+Code-Review+2: Clark Boylan <cboylan@sapwetik.org>
+Code-Review+2: Ramy Asselin <ramy.asselin@hpe.com>
+Workflow+1: Ramy Asselin <ramy.asselin@hpe.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 30 Nov 2016 00:23:42 +0000
+Reviewed-on: https://review.openstack.org/403963
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
