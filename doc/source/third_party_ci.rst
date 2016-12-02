@@ -525,7 +525,7 @@ Enable basic Jenkins security:
     Select Jenkin's own user database
     Uncheck allow users to sign up
     Under "Authorization" select "logged-in users can do anything"
-
+    Check "Allow anonymous read access"
     Create a user 'jenkins'
     Choose a password.
     check 'Sign up'
