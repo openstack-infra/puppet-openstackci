@@ -1,0 +1,9 @@
+Code-Review+2: Ramy Asselin <ramy.asselin@hpe.com>
+Code-Review+2: Jeremy Stanley <fungi@yuggoth.org>
+Workflow+1: Ramy Asselin <ramy.asselin@hpe.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sat, 03 Dec 2016 20:08:15 +0000
+Reviewed-on: https://review.openstack.org/367232
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
