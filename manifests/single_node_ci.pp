@@ -56,6 +56,11 @@
 #   The public key should not have any white space. Omit the 'ssh-rsa' prefix
 #   and comment section / e-mail address suffix.
 #
+# [*jenkins_version*]
+#   This is a Jenkins version, such as '1.651', 'present' (to install
+#   the most recent, and never upgrade), or latest' (to install the most
+#   recent version, and upgrade if a more recent version is published).
+#
 # [*gerrit_server*]
 #   This is the host name of the gerrit server this CI system will be
 #   listening for events.
@@ -153,6 +158,7 @@ class openstackci::single_node_ci (
   $jenkins_password              = undef,
   $jenkins_ssh_private_key       = undef,
   $jenkins_ssh_public_key        = undef,
+  $jenkins_version               = 'present',
   $jjb_git_revision              = 'master',
   $jjb_git_url                   = 'https://git.openstack.org/openstack-infra/jenkins-job-builder',
 
@@ -187,6 +193,7 @@ class openstackci::single_node_ci (
     serveradmin             => $serveradmin,
     jenkins_ssh_private_key => $jenkins_ssh_private_key,
     jenkins_ssh_public_key  => $jenkins_ssh_public_key,
+    jenkins_version         => $jenkins_version,
     manage_jenkins_jobs     => true,
     jenkins_url             => 'http://127.0.0.1:8080/',
     jenkins_username        => $jenkins_username,
