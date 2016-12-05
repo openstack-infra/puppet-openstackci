@@ -1,0 +1,10 @@
+Code-Review+2: Ramy Asselin <ramy.asselin@hpe.com>
+Code-Review+1: Mikhail S Medvedev <mihailmed@gmail.com>
+Code-Review+2: yolanda.robla <yroblamo@redhat.com>
+Workflow+1: yolanda.robla <yroblamo@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 05 Dec 2016 07:32:40 +0000
+Reviewed-on: https://review.openstack.org/330320
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
