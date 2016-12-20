@@ -33,7 +33,7 @@ log_server: logs.example.com
 #smtp_host:
 #smtp_default_from:
 #smtp_default_to:
-zuul_revision: 2.5.0
+zuul_revision: 2.5.1
 #zuul_git_source_repo: https://git.openstack.org/openstack-infra/zuul
 oscc_file_contents: |
   # Insert OSCC file contents here as explained in the
@@ -46,5 +46,5 @@ mysql_nodepool_password: secret_mysql_nodepool_password
 #nodepool_jenkins_target: jenkins1
 #jenkins_api_key:
 #jenkins_credentials_id:
-nodepool_revision: 0.3.0
+nodepool_revision: 0.3.1
 #nodepool_git_source_repo: https://git.openstack.org/openstack-infra/nodepool
