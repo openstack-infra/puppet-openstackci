@@ -45,6 +45,7 @@ class openstackci::nodepool (
   $mysql_user_name = 'nodepool',
   $split_daemon = false,
   $install_nodepool_builder = true,
+  $install_nodepool_launcher = false,
 ) {
 
   if ! defined(Class['project_config']) {
@@ -81,6 +82,7 @@ class openstackci::nodepool (
     mysql_user_name             => $mysql_user_name,
     split_daemon                => $split_daemon,
     install_nodepool_builder    => false,
+    install_nodepool_launcher   => false,
   }
 
   if (install_nodepool_builder) {
@@ -91,6 +93,13 @@ class openstackci::nodepool (
       environment                   => $environment,
       build_workers                 => $build_workers,
       upload_workers                => $upload_workers,
+    }
+  }
+
+  if (install_nodepool_launcher) {
+    class { '::nodepool::launcher':
+      statsd_host                    => $statsd_host,
+      launcher_logging_conf_template => $launcher_logging_conf_template,
     }
   }
 
