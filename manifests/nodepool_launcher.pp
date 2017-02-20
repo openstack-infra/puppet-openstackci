@@ -26,6 +26,7 @@ class openstackci::nodepool_launcher (
   $project_config_repo = '',
   $project_config_base = undef,
   $launcher_logging_conf_template = 'nodepool/nodepool-launcher.logging.conf.erb',
+  $enable_html_status = false,
 ) {
 
   if ! defined(Class['project_config']) {
@@ -46,6 +47,7 @@ class openstackci::nodepool_launcher (
     require                  => $::project_config::config_dir,
     install_mysql            => false,
     install_nodepool_builder => false,
+    enable_html_status       => $enable_html_status,
   }
 
   class { '::nodepool::launcher':
