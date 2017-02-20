@@ -17,6 +17,7 @@
 #
 class openstackci::nodepool_launcher (
   $oscc_file_contents,
+  $nodepool_ssh_private_key = undef,
   $mysql_root_password = '',
   $mysql_password = '',
   $nodepool_ssh_public_key = undef,
@@ -41,7 +42,7 @@ class openstackci::nodepool_launcher (
     git_source_repo          => $git_source_repo,
     revision                 => $revision,
     statsd_host              => $statsd_host,
-    nodepool_ssh_private_key => '',
+    nodepool_ssh_private_key => $nodepool_ssh_private_key,
     scripts_dir              => $::project_config::nodepool_scripts_dir,
     require                  => $::project_config::config_dir,
     install_mysql            => false,
