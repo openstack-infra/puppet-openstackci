@@ -45,6 +45,7 @@ class openstackci::nodepool (
   $mysql_user_name = 'nodepool',
   $split_daemon = false,
   $install_nodepool_builder = true,
+  $enable_html_status = false,
 ) {
 
   if ! defined(Class['project_config']) {
@@ -81,6 +82,7 @@ class openstackci::nodepool (
     mysql_user_name             => $mysql_user_name,
     split_daemon                => $split_daemon,
     install_nodepool_builder    => false,
+    enable_html_status          => $enable_html_status,
   }
 
   if (install_nodepool_builder) {
