@@ -57,7 +57,7 @@ class openstackci::nodepool_launcher (
 
   file { '/etc/nodepool/nodepool.yaml':
     ensure  => present,
-    source  => $::project_config::nodepool_config_file,
+    source  => $::project_config::nodepool_config_file_zuulv3,
     owner   => 'nodepool',
     group   => 'root',
     mode    => '0400',
