@@ -20,7 +20,6 @@ class openstackci::nodepool_launcher (
   $nodepool_ssh_private_key = undef,
   $mysql_root_password = '',
   $mysql_password = '',
-  $nodepool_ssh_public_key = undef,
   $git_source_repo = 'https://git.openstack.org/openstack-infra/nodepool',
   $revision = 'master',
   $statsd_host = '',
@@ -50,7 +49,6 @@ class openstackci::nodepool_launcher (
   }
 
   class { '::nodepool::launcher':
-    nodepool_ssh_public_key        => $nodepool_ssh_public_key,
     statsd_host                    => $statsd_host,
     launcher_logging_conf_template => $launcher_logging_conf_template,
   }
