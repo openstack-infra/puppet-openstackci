@@ -21,7 +21,7 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
   # use Apache to compress the results afterwards, to save on the wire
   # it's approx 18x savings of wire traffic to compress. We need to
   # compress by content types that htmlify can produce
-  AddOutputFilterByType DEFLATE text/plain text/html application/x-font-ttf
+  AddOutputFilterByType DEFLATE text/plain text/html application/x-font-ttf image/svg+xml
 
   <FilesMatch \.html\.gz$>
     ForceType text/html
@@ -40,6 +40,10 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
   </FilesMatch>
   <FilesMatch \.ttf\.gz$>
     ForceType application/x-font-ttf
+    AddEncoding x-gzip gz
+  </FilesMatch>
+  <FilesMatch \.svg\.gz$>
+    ForceType image/svg+xml
     AddEncoding x-gzip gz
   </FilesMatch>
   <FilesMatch \.css$>
