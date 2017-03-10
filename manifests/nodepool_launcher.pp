@@ -23,6 +23,7 @@ class openstackci::nodepool_launcher (
   $git_source_repo = 'https://git.openstack.org/openstack-infra/nodepool',
   $revision = 'master',
   $statsd_host = '',
+  $statsd_prefix = undef,
   $project_config_repo = '',
   $project_config_base = undef,
   $launcher_logging_conf_template = 'nodepool/nodepool-launcher.logging.conf.erb',
@@ -50,6 +51,7 @@ class openstackci::nodepool_launcher (
 
   class { '::nodepool::launcher':
     statsd_host                    => $statsd_host,
+    statsd_prefix                  => $statsd_prefix,
     launcher_logging_conf_template => $launcher_logging_conf_template,
   }
 
