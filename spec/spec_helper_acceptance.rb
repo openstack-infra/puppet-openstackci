@@ -2,7 +2,8 @@ require 'beaker-rspec'
 
 hosts.each do |host|
 
-  install_puppet
+  on host, "apt-get install puppet -y"
+  add_platform_foss_defaults(host, 'unix')
 
   on host, "mkdir -p #{host['distmoduledir']}"
 end
