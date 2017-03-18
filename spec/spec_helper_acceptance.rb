@@ -1,11 +1,10 @@
 require 'beaker-rspec'
+require 'beaker/puppet_install_helper'
 
 hosts.each do |host|
 
-  # puppet 3 isn't available from apt.puppetlabs.com so install it from the Xenial repos
-  on host, "which apt-get && apt-get install puppet -y", { :acceptable_exit_codes => [0,1] }
-  on host, "which yum && yum install puppet -y", { :acceptable_exit_codes => [0,1] }
-  add_platform_foss_defaults(host, 'unix')
+  run_puppet_install_helper
+  on host, 'echo PATH=$PATH:/opt/puppetlabs/bin > /root/.bashrc' # Overwrite old bashrc
 
   on host, "mkdir -p #{host['distmoduledir']}"
 end
@@ -25,6 +24,8 @@ RSpec.configure do |c|
 
       # Clean out any module cruft
       shell('rm -fr /etc/puppet/modules/*')
+      shell('rm -fr /etc/puppetlabs/code/modules')
+      shell('ln -s /etc/puppet/modules /etc/puppetlabs/code/modules')
 
       # install git
       install_package host, 'git'
