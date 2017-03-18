@@ -2,7 +2,13 @@ require 'beaker-rspec'
 
 hosts.each do |host|
 
-  install_puppet
+  # puppet 3 isn't available from apt.puppetlabs.com so install it from the Xenial repos
+  if fact_on(host, 'operatingsystemrelease') == '16.04'
+    on host, "apt-get install puppet -y"
+    add_platform_foss_defaults(host, 'unix')
+  else
+    install_puppet
+  end
 
   on host, "mkdir -p #{host['distmoduledir']}"
 end
