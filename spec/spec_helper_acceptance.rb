@@ -1,8 +1,10 @@
 require 'beaker-rspec'
+require 'beaker/puppet_install_helper'
 
 hosts.each do |host|
 
-  install_puppet
+  run_puppet_install_helper
+  on host, 'echo PATH=$PATH:/opt/puppetlabs/bin > /root/.bashrc' # Overwrite old bashrc
 
   on host, "mkdir -p #{host['distmoduledir']}"
 end
@@ -22,6 +24,8 @@ RSpec.configure do |c|
 
       # Clean out any module cruft
       shell('rm -fr /etc/puppet/modules/*')
+      shell('rm -fr /etc/puppetlabs/code/modules')
+      shell('ln -s /etc/puppet/modules /etc/puppetlabs/code/modules')
 
       # install git
       install_package host, 'git'
