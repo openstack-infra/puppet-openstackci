@@ -13,8 +13,10 @@ describe 'basic openstackci' do
         pp = File.read(pp_path)
 
         # Run it twice and test for idempotency
-        apply_manifest(pp, :catch_failures => true)
-        apply_manifest(pp, :catch_changes => true)
+        apply_manifest(pp, :catch_failures => true, :debug => true, :verbose => true, :acceptable_exit_codes => [0,1,2,3,4,5,6])
+        apply_manifest(pp, :catch_changes => true, :debug => true, :verbose => true, :acceptable_exit_codes => [0,1,2,3,4,5,6])
+        shell('apt-cache policy libssl-dev')
+        shell('/usr/local/bin/pip install --upgrade keyring')
       end
 
     end
