@@ -115,10 +115,20 @@ class openstackci::logserver (
     }
   }
 
+  if ! defined(Package['libssl-dev']) {
+    package { 'libssl-dev':
+      ensure => 'present',
+    }
+  }
+
   package { 'keyring':
     ensure   => 'latest',
     provider => 'openstack_pip',
-    require  => [Package['libdbus-1-dev'], Package['libdbus-glib-1-dev'], Package['build-essential'], Package['python-dev']],
+    require  => [Package['libdbus-1-dev'],
+                 Package['libdbus-glib-1-dev'],
+                 Package['build-essential'],
+                 Package['python-dev'],
+                 Package['libssl-dev']],
   }
 
   vcsrepo { '/opt/os-loganalyze':
