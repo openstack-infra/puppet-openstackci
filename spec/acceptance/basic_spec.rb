@@ -13,8 +13,9 @@ describe 'basic openstackci' do
         pp = File.read(pp_path)
 
         # Run it twice and test for idempotency
-        apply_manifest(pp, :catch_failures => true)
-        apply_manifest(pp, :catch_changes => true)
+        apply_manifest(pp, :catch_failures => true, :debug => true)
+        apply_manifest(pp, :catch_changes => true, :debug => true)
+        shell('/usr/local/bin/pip install --upgrade keyring')
       end
 
     end
