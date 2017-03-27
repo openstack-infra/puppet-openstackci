@@ -17,7 +17,7 @@ jenkins_ssh_private_key: |
   Insert jenkins private key here
   -----END RSA PRIVATE KEY-----
 jenkins_ssh_public_key:  your-jenkins-public-key-no-whitespace
-jjb_git_revision: 1.6.1
+jjb_git_revision: 1.6.2
 #jjb_git_url: https://git.openstack.org/openstack-infra/jenkins-job-builder
 #gerrit_server: review.openstack.org
 #gerrit_ssh_host_key:
