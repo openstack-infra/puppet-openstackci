@@ -553,6 +553,19 @@ Reconfigure your system to use Jenkins security settings stored in
 
     sudo puppet apply --verbose /etc/puppet/manifests/site.pp
 
+Configuring Jenkins Plugins (optional)
+---------------------------
+
+Single Use Slave:
+
+::
+
+    http://<host fqdn/ip>:8080/
+    Manage Jenkins --> Configure System
+    Under "Single Use Slaves"
+    Add comma seperated labels
+    
+
 Updating your masterless puppet hosts
 =====================================
 
