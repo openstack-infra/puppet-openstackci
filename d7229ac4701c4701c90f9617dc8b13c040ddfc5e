@@ -1,0 +1,10 @@
+Code-Review+1: Lucio Seki <lucioseki@gmail.com>
+Code-Review+2: Ramy Asselin <ramy.asselin@suse.com>
+Code-Review+2: Paul Belanger <pabelanger@redhat.com>
+Workflow+1: Paul Belanger <pabelanger@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 27 Mar 2017 15:46:35 +0000
+Reviewed-on: https://review.openstack.org/439796
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
