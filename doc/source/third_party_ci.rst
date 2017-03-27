@@ -553,6 +553,28 @@ Reconfigure your system to use Jenkins security settings stored in
 
     sudo puppet apply --verbose /etc/puppet/manifests/site.pp
 
+Configuring Jenkins Plugins (recommended)
+-----------------------------------------
+
+single-use slave:
+
+This plugin will mark nodes as offline when a job completes on them.
+This plugin is intended to be used with external tools like Nodepool,
+which has the ability to spin up slaves on demand and then reap them when
+Jenkins has run a job on them. This plugin is needed because there is a race
+condition between when the job completes and when the external tool is able
+to reap the node.
+Labels can be taken from the project-config/nodepool/nodepool.yaml file
+under section "labels".
+
+::
+
+    http://<host fqdn/ip>:8080/
+    Manage Jenkins --> Configure System
+    Under "Single Use Slaves"
+    Add comma seperated labels
+
+
 Updating your masterless puppet hosts
 =====================================
 
