@@ -17,14 +17,14 @@
 # Logstash indexer worker glue class.
 #
 class openstackci::logstash_worker (
-  $elasticsearch_nodes = [],
   $log_processor_config,
+  $indexer_conf_template,
+  $elasticsearch_nodes = [],
   $es_heap_size = '1g',
   $es_version = '1.7.3',
   # Increase the indexer max heap size to twice the default.
   # Default is 25% of memory or 1g whichever is less.
   $indexer_java_args = '-Xmx2g',
-  $indexer_conf_template,
   $log_processor_workers = ['A', 'B', 'C', 'D',],
   $es_gw_recover_after_nodes = '5',
   $es_gw_recover_after_time = '5m',

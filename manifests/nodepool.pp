@@ -18,9 +18,9 @@
 class openstackci::nodepool (
   $mysql_root_password,
   $mysql_password,
+  $oscc_file_contents,
   $git_source_repo = 'https://git.openstack.org/openstack-infra/nodepool',
   $revision = 'master',
-  $oscc_file_contents,
   $environment = {},
   $nodepool_ssh_private_key = '',
   $nodepool_ssh_public_key = '',

@@ -17,11 +17,11 @@
 # Logstash web frontend glue class.
 #
 class openstackci::logstash (
-  $discover_nodes = ['localhost'],
   $statsd_host,
   $subunit2sql_db_host,
   $subunit2sql_db_pass,
   $log_processor_config,
+  $discover_nodes = ['localhost'],
 ) {
 
   class { '::logstash::web':
