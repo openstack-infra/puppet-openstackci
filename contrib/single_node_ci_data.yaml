@@ -55,3 +55,14 @@ mysql_nodepool_password: secret_mysql_nodepool_password
 #jenkins_credentials_id:
 nodepool_revision: 0.3.1
 #nodepool_git_source_repo: https://git.openstack.org/openstack-infra/nodepool
+
+# Class parameter overrides.
+# Overriding class parameters through hiera can make it harder to debug puppet
+# configuration because it makes it less obvious why all of a sudden a puppet
+# class takes a different parameter value. But it could be in some cases
+# simpler, especially when there is no other way to override it.
+
+# vhd package is not available on all distributions. If there are errors
+# installing it and there is no need to support vhd images, uncomment the
+# setting.
+# diskimage_builder::support_vhd: false
