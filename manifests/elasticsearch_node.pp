@@ -56,7 +56,7 @@ class openstackci::elasticsearch_node (
     user        => 'root',
     hour        => $es_indices_cleanup_hour,
     minute      => $es_indices_cleanup_minute,
-    command     => "curl -sS -XDELETE \"http://localhost:9200/logstash-`date -d '${es_indices_cleanup_period}' +\%Y.\%m.\%d`/\" > /dev/null",
+    command     => "curl -sS -XDELETE \"http://localhost:9200/logstash-`date -d '${es_indices_cleanup_period}' +\\%Y.\\%m.\\%d`/\" > /dev/null",
     environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin',
   }
 
