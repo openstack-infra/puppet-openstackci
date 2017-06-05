@@ -1,0 +1,9 @@
+Code-Review+2: Ramy Asselin <ramyasselin@yahoo.com>
+Code-Review+2: Monty Taylor <mordred@inaugust.com>
+Workflow+1: Monty Taylor <mordred@inaugust.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 05 Jun 2017 15:27:06 +0000
+Reviewed-on: https://review.openstack.org/450296
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
