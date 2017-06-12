@@ -1,0 +1,11 @@
+Code-Review+2: Clark Boylan <cboylan@sapwetik.org>
+Code-Review+1: wanghongtaozz <wanghongtaozz@inspur.com>
+Code-Review+2: Ramy Asselin <ramyasselin@yahoo.com>
+Code-Review+2: Jeremy Stanley <fungi@yuggoth.org>
+Workflow+1: Jeremy Stanley <fungi@yuggoth.org>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 12 Jun 2017 19:03:25 +0000
+Reviewed-on: https://review.openstack.org/447171
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
