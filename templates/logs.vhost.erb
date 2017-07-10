@@ -79,6 +79,9 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
   <Directory <%= @docroot %>/periodic*/*/*-tempest-dsvm*/*/logs/>
      ReadmeName /help/tempest-logs.html
   </Directory>
+  <Directory <%= @docroot %>/*/*/*/*/*tripleo-ci-*/*/logs/>
+     ReadmeName /help/tripleo-quickstart-logs.html
+  </Directory>
 
   <Directory <%= @docroot %>/periodic*/*>
      IndexOrderDefault Descending Date
