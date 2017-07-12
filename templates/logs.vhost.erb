@@ -66,6 +66,7 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
   #                    therefore ensure the rewrite doesn't trigger by
   #                    disallowing subrequests.
   RewriteRule ^/(.*\.txt\.gz)$ /htmlify/$1 [QSA,L,PT,NS]
+  RewriteRule ^/(.*job-output.txt)$ /htmlify/$1 [QSA,L,PT,NS]
   RewriteRule ^/(.*console\.html(\.gz)?)$ /htmlify/$1 [QSA,L,PT,NS]
 
   # Check if the request exists as a file, directory or symbolic link
