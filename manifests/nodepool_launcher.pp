@@ -27,6 +27,7 @@ class openstackci::nodepool_launcher (
   $project_config_repo = '',
   $project_config_base = undef,
   $launcher_logging_conf_template = 'nodepool/nodepool-launcher.logging.conf.erb',
+  $python_version = 2,
 ) {
 
   if ! defined(Class['project_config']) {
@@ -47,6 +48,7 @@ class openstackci::nodepool_launcher (
     require                  => $::project_config::config_dir,
     install_mysql            => false,
     install_nodepool_builder => false,
+    python_version           => $python_version,
   }
 
   class { '::nodepool::launcher':

@@ -36,6 +36,7 @@ class openstackci::nodepool_builder (
   $builder_logging_conf_template = 'nodepool/nodepool-builder.logging.conf.erb',
   $build_workers = '1',
   $upload_workers = '4',
+  $python_version = 2,
 ) {
 
   if ! defined(Class['project_config']) {
@@ -65,6 +66,7 @@ class openstackci::nodepool_builder (
     require                     => $::project_config::config_dir,
     install_mysql               => false,
     install_nodepool_builder    => false,
+    python_version              => $python_version,
   }
 
   class { '::nodepool::builder':
