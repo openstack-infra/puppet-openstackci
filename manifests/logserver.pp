@@ -24,7 +24,7 @@ class openstackci::logserver (
   $swift_tenant_name = '',
   $swift_region_name = '',
   $swift_default_container = '',
-  $legacy = true,
+  $legacy = false,
 ) {
 
   if ! defined(Class['::jenkins::jenkinsuser']) {
