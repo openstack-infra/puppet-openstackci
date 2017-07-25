@@ -53,18 +53,11 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
     Satisfy Any
   </Directory>
 
-  <Directory <%= @docroot %>/*/*/*/*/*-tempest-dsvm*/*>
-     ReadmeName /help/tempest-overview.html
+<% @readmes.each do |pattern| -%>
+  <Directory <%= @docroot %><%= pattern %>>
+    ReadmeName <%= @readmes[pattern] %>
   </Directory>
-  <Directory <%= @docroot %>/periodic*/*/*-tempest-dsvm*/*>
-     ReadmeName /help/tempest-overview.html
-  </Directory>
-  <Directory <%= @docroot %>/*/*/*/*/*-tempest-dsvm*/*/logs/>
-     ReadmeName /help/tempest-logs.html
-  </Directory>
-  <Directory <%= @docroot %>/periodic*/*/*-tempest-dsvm*/*/logs/>
-     ReadmeName /help/tempest-logs.html
-  </Directory>
+<% end -%>
 
   RewriteEngine On
   # If the specified file does not exist, look if there is a gzipped version
