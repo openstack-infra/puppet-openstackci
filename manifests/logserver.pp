@@ -24,7 +24,6 @@ class openstackci::logserver (
   $swift_tenant_name = '',
   $swift_region_name = '',
   $swift_default_container = '',
-  $legacy = true,
 ) {
 
   if ! defined(Class['::jenkins::jenkinsuser']) {
@@ -134,83 +133,48 @@ class openstackci::logserver (
     require  => [Package['libdbus-1-dev'], Package['libdbus-glib-1-dev'], Package['build-essential'], Package['python-dev'], Package['libffi-dev'], Package['libssl-dev']],
   }
 
-  if $legacy {
     vcsrepo { '/opt/os-loganalyze':
-      ensure   => latest,
-      provider => git,
-      revision => 'master',
-      source   => 'https://git.openstack.org/openstack-infra/os-loganalyze',
-      require  => Package['keyring'],
-    }
+    ensure   => latest,
+    provider => git,
+    revision => 'master',
+    source   => 'https://git.openstack.org/openstack-infra/os-loganalyze',
+    require  => Package['keyring'],
+  }
 
-    exec { 'install_os-loganalyze':
-      command     => 'pip install .',
-      cwd         => '/opt/os-loganalyze',
-      path        => '/usr/local/bin:/usr/bin:/bin/',
-      refreshonly => true,
-      subscribe   => Vcsrepo['/opt/os-loganalyze'],
-      require     => [Package['build-essential'], Package['python-dev']],
-      notify      => Service['httpd'],
-    }
+  exec { 'install_os-loganalyze':
+    command     => 'pip install .',
+    cwd         => '/opt/os-loganalyze',
+    path        => '/usr/local/bin:/usr/bin:/bin/',
+    refreshonly => true,
+    subscribe   => Vcsrepo['/opt/os-loganalyze'],
+    require     => [Package['build-essential'], Package['python-dev']],
+    notify      => Service['httpd'],
+  }
 
-    file { '/etc/os_loganalyze':
-      ensure  => directory,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0755',
-      require => Vcsrepo['/opt/os-loganalyze'],
-    }
+  file { '/etc/os_loganalyze':
+    ensure  => directory,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => Vcsrepo['/opt/os-loganalyze'],
+  }
 
-    file { '/etc/os_loganalyze/wsgi.conf':
-      ensure  => present,
-      owner   => 'root',
-      group   => 'www-data',
-      mode    => '0440',
-      content => template('openstackci/os-loganalyze-wsgi.conf.erb'),
-      require => File['/etc/os_loganalyze'],
-    }
+  file { '/etc/os_loganalyze/wsgi.conf':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'www-data',
+    mode    => '0440',
+    content => template('openstackci/os-loganalyze-wsgi.conf.erb'),
+    require => File['/etc/os_loganalyze'],
+  }
 
-    file { '/etc/os_loganalyze/file_conditions.yaml':
-      ensure  => present,
-      owner   => 'root',
-      group   => 'www-data',
-      mode    => '0440',
-      source  => 'puppet:///modules/openstackci/os-loganalyze-file_conditions.yaml',
-      require => File['/etc/os_loganalyze'],
-    }
-
-    vcsrepo { '/opt/devstack-gate':
-      ensure   => latest,
-      provider => git,
-      revision => 'master',
-      source   => 'https://git.openstack.org/openstack-infra/devstack-gate',
-    }
-
-    file { '/srv/static/logs/help':
-      ensure  => directory,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0755',
-      require => File['/srv/static/logs'],
-    }
-
-    file { '/srv/static/logs/help/tempest-logs.html':
-      ensure  => present,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0444',
-      source  => 'file:///opt/devstack-gate/help/tempest-logs.html',
-      require => [File['/srv/static/logs/help'], Vcsrepo['/opt/devstack-gate']],
-    }
-
-    file { '/srv/static/logs/help/tempest-overview.html':
-      ensure  => present,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0444',
-      source  => 'file:///opt/devstack-gate/help/tempest-overview.html',
-      require => [File['/srv/static/logs/help'], Vcsrepo['/opt/devstack-gate']],
-    }
+  file { '/etc/os_loganalyze/file_conditions.yaml':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'www-data',
+    mode    => '0440',
+    source  => 'puppet:///modules/openstackci/os-loganalyze-file_conditions.yaml',
+    require => File['/etc/os_loganalyze'],
   }
 
   file { '/usr/local/sbin/log_archive_maintenance.sh':
