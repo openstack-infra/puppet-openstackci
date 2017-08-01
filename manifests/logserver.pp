@@ -24,7 +24,7 @@ class openstackci::logserver (
   $swift_tenant_name = '',
   $swift_region_name = '',
   $swift_default_container = '',
-  $readmes = [],
+  $readmes = {},
 ) {
 
   if ! defined(Class['::jenkins::jenkinsuser']) {
