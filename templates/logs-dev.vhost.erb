@@ -53,9 +53,9 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
     Satisfy Any
   </Directory>
 
-<% @readmes.each do |pattern| -%>
+<% @readmes.each do |pattern, helpfile| -%>
   <Directory <%= @docroot %><%= pattern %>>
-    ReadmeName <%= @readmes[pattern] %>
+    ReadmeName <%= helpfile %>
   </Directory>
 <% end -%>
 
