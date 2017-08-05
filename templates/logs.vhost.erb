@@ -46,6 +46,10 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
     ForceType image/svg+xml
     AddEncoding x-gzip gz
   </FilesMatch>
+  <FilesMatch \.png\.gz$>
+    ForceType image/png
+    AddEncoding x-gzip gz
+  </FilesMatch>
   <FilesMatch \.json\.gz$>
     ForceType application/json
     AddEncoding x-gzip gz
