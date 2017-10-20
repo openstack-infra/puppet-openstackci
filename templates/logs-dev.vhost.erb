@@ -59,6 +59,23 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
   </Directory>
 <% end -%>
 
+<% if @ara_middleware -%>
+  # Redirect .*/<%= @ara_middleware_database_directory %> to the ARA sqlite wsgi middleware
+  # This middleware automatically loads the ARA web application with the
+  # database located at .*/<%= @ara_middleware_database_directory %>/ansible.sqlite.
+  SetEnv ARA_WSGI_TMPDIR_MAX_AGE <%= @ara_middleware_tmpdir_max_age %>
+  SetEnv ARA_WSGI_LOG_ROOT <%= @docroot %>
+  SetEnv ARA_WSGI_DATABASE_DIRECTORY <%= @ara_middleware_database_directory %>
+
+  # TODO: Adjust this once https://review.openstack.org/#/c/511992/ is released
+  # WSGIScriptAliasMatch ^.*/<%= @ara_middleware_database_directory %> /usr/local/lib/python2.7/dist-packages/ara/wsgi_sqlite.py
+  <Directory /usr/lib/cgi-bin>
+    Allow from all
+    Satisfy Any
+  </Directory>
+  WSGIScriptAliasMatch ^.*/<%= @ara_middleware_database_directory %> /usr/lib/cgi-bin/wsgi_sqlite.py
+<% end -%>
+
   RewriteEngine On
   # If the specified file does not exist, look if there is a gzipped version
   # If there is, serve that one instead
