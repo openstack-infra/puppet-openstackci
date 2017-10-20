@@ -60,6 +60,28 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
 <% end -%>
 
   RewriteEngine On
+<% if @ara_middleware -%>
+  <Directory "/usr/local/bin">
+    <Files "ara-wsgi-sqlite">
+      Allow from all
+      Satisfy Any
+    </Files>
+  </Directory>
+  # Redirect .*/<%= @ara_middleware_database_directory %> to the ARA sqlite wsgi middleware
+  # This middleware automatically loads the ARA web application with the
+  # database located at .*/<%= @ara_middleware_database_directory %>/ansible.sqlite.
+  SetEnv ARA_WSGI_TMPDIR_MAX_AGE <%= @ara_middleware_tmpdir_max_age %>
+  SetEnv ARA_WSGI_LOG_ROOT <%= @docroot %>
+  SetEnv ARA_WSGI_DATABASE_DIRECTORY <%= @ara_middleware_database_directory %>
+
+  WSGIScriptAliasMatch ^.*/<%= @ara_middleware_database_directory %> /usr/local/bin/ara-wsgi-sqlite
+
+  # Everything beyond this point is rewritten to htmlify.
+  # Make sure we don't do that for dynamic ARA reports.
+  RewriteCond %{REQUEST_URI} ^.*/<%= @ara_middleware_database_directory %> [NC]
+  RewriteRule .* - [L]
+<% end -%>
+
   # If the specified file does not exist, look if there is a gzipped version
   # If there is, serve that one instead
   RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f

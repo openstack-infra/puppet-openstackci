@@ -13,11 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# [*ara_middleware*]
+#   (optional) Whether or not to set up the ARA database middleware
+#   Defaults to false.
+#
 # == Class: openstackci::logserver
 #
 class openstackci::logserver (
   $domain,
   $jenkins_ssh_key,
+  $ara_middleware = false,
+  $ara_middleware_tmpdir_max_age = 3600,
+  $ara_middleware_database_directory = 'ara-report',
   $swift_authurl = '',
   $swift_user = '',
   $swift_key = '',
@@ -196,4 +203,17 @@ class openstackci::logserver (
     require     => File['/usr/local/sbin/log_archive_maintenance.sh'],
   }
 
+  if $ara_middleware {
+    package { 'ara':
+      ensure   => 'latest',
+      provider => 'openstack_pip',
+      require  => [
+        Package['build-essential'],
+        Package['python-dev'],
+        Package['libffi-dev'],
+        Package['libssl-dev']
+      ],
+      notify   => Service['httpd']
+    }
+  }
 }

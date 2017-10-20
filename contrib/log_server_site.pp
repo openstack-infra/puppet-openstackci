@@ -23,6 +23,7 @@ node default {
   class { '::openstackci::logserver':
     domain                  => hiera('domain'),
     jenkins_ssh_key         => hiera('jenkins_ssh_public_key'),
+    ara_middleware          => hiera('ara_middleware', false),
     swift_authurl           => hiera('swift_authurl', ''),
     swift_user              => hiera('swift_user', ''),
     swift_key               => hiera('swift_key', ''),
