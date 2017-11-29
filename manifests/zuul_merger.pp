@@ -28,7 +28,7 @@ class openstackci::zuul_merger(
   $git_email = 'zuul@domain.example',
   $git_name = 'Zuul',
   $manage_common_zuul = true,
-  $revision = 'master',
+  $revision = '2.6.0',
   $git_source_repo = 'https://git.openstack.org/openstack-infra/zuul',
 ) {
 

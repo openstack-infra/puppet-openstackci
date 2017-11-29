@@ -53,7 +53,7 @@ class openstackci::zuul_scheduler(
   $smtp_port = 25,
   $smtp_default_from = "zuul@${::fqdn}",
   $smtp_default_to = "zuul.reports@${::fqdn}",
-  $revision = 'master',
+  $revision = '2.6.0',
 ) {
 
   if ! defined(Class['project_config']) {

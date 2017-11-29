@@ -184,7 +184,8 @@ class openstackci::single_node_ci (
   $smtp_host                     = 'localhost',
   $smtp_default_from             = "zuul@${vhost_name}",
   $smtp_default_to               = "zuul.reports@${vhost_name}",
-  $zuul_revision                 = 'master',
+  $zuul_revision                 = '2.6.0',
+  $zuulv3                        = false,
   $zuul_git_source_repo          = 'https://git.openstack.org/openstack-infra/zuul',
 
   # Nodepool configurations
@@ -194,9 +195,13 @@ class openstackci::single_node_ci (
   $nodepool_jenkins_target       = undef,
   $jenkins_api_key               = undef,
   $jenkins_credentials_id        = undef,
-  $nodepool_revision             = 'master',
+  $nodepool_revision             = '1e31103',
   $nodepool_git_source_repo      = 'https://git.openstack.org/openstack-infra/nodepool',
 ) {
+
+  if ! $zuulv3 and ($zuul_revision == 'master' or $nodepool_revision == 'master') {
+    fail("zuul v2 can not be deployed from master: zuul_revision: ${zuul_revision}, nodepool_revision: ${nodepool_revision}")
+  }
 
   class { '::openstackci::jenkins_master':
     vhost_name              => $jenkins_vhost_name,

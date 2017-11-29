@@ -21,7 +21,7 @@ class openstackci::nodepool_launcher (
   $mysql_root_password = '',
   $mysql_password = '',
   $git_source_repo = 'https://git.openstack.org/openstack-infra/nodepool',
-  $revision = 'master',
+  $revision = '1e31103',
   $statsd_host = '',
   $statsd_prefix = undef,
   $project_config_repo = '',

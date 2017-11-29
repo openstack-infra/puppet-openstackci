@@ -21,7 +21,7 @@ class openstackci::nodepool_builder (
   $mysql_password = '',
   $nodepool_ssh_public_key = undef,
   $git_source_repo = 'https://git.openstack.org/openstack-infra/nodepool',
-  $revision = 'master',
+  $revision = '1e31103',
   $environment = {},
   $vhost_name = $::fqdn,
   $statsd_host = '',
