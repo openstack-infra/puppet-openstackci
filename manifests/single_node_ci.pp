@@ -113,6 +113,10 @@
 #   The default 'to' e-mail address zuul will use when it sends
 #   notification e-mails.
 #
+# [*zuulv2*]
+#   Set to true to deploy zuul v2 (incompatible with zuul v3).
+#   If set, nodepool_revision and zuul_revision have no effect.
+#
 # [*zuul_revision*]
 #   The branch name used to install zuul.
 #
@@ -184,6 +188,7 @@ class openstackci::single_node_ci (
   $smtp_host                     = 'localhost',
   $smtp_default_from             = "zuul@${vhost_name}",
   $smtp_default_to               = "zuul.reports@${vhost_name}",
+  $zuulv2                        = true,
   $zuul_revision                 = 'master',
   $zuul_git_source_repo          = 'https://git.openstack.org/openstack-infra/zuul',
 
@@ -198,80 +203,93 @@ class openstackci::single_node_ci (
   $nodepool_git_source_repo      = 'https://git.openstack.org/openstack-infra/nodepool',
 ) {
 
-  class { '::openstackci::jenkins_master':
-    vhost_name              => $jenkins_vhost_name,
-    serveradmin             => $serveradmin,
-    jenkins_ssh_private_key => $jenkins_ssh_private_key,
-    jenkins_ssh_public_key  => $jenkins_ssh_public_key,
-    jenkins_version         => $jenkins_version,
-    manage_jenkins_jobs     => true,
-    jenkins_url             => 'http://127.0.0.1:8080/',
-    jenkins_username        => $jenkins_username,
-    jenkins_password        => $jenkins_password,
-    project_config_repo     => $project_config_repo,
-    log_server              => $log_server,
-    java_args_override      => $java_args_override,
-    jjb_git_revision        => $jjb_git_revision,
-    jjb_git_url             => $jjb_git_url,
-  }
+  if $zuulv2 {
 
-  class { '::openstackci::zuul_merger':
-    vhost_name           => $vhost_name,
-    gearman_server       => 'localhost',
-    gerrit_server        => $gerrit_server,
-    gerrit_user          => $gerrit_user,
-    # known_hosts_content is set by openstackci::zuul_scheduler
-    known_hosts_content  => '',
-    zuul_ssh_private_key => $gerrit_user_ssh_private_key,
-    zuul_url             => "http://${vhost_name}/p/",
-    git_email            => $git_email,
-    git_name             => $git_name,
-    manage_common_zuul   => false,
-    revision             => $zuul_revision,
-    git_source_repo      => $zuul_git_source_repo,
-  }
+    $nodepool_revision_ = hiera('nodepoolv2_revision', '0.3.1')
+    $zuul_revision_ = hiera('zuulv2_revision', '2.6.0')
 
-  class { '::openstackci::zuul_scheduler':
-    vhost_name           => $vhost_name,
-    gearman_server       => 'localhost',
-    gerrit_server        => $gerrit_server,
-    gerrit_user          => $gerrit_user,
-    known_hosts_content  => $gerrit_ssh_host_key,
-    zuul_ssh_private_key => $gerrit_user_ssh_private_key,
-    url_pattern          => "http://${log_server}/{build.parameters[LOG_PATH]}",
-    zuul_url             => "http://${vhost_name}/p/",
-    job_name_in_report   => true,
-    status_url           => "http://${vhost_name}",
-    project_config_repo  => $project_config_repo,
-    git_email            => $git_email,
-    git_name             => $git_name,
-    smtp_host            => $smtp_host,
-    smtp_default_from    => $smtp_default_from,
-    smtp_default_to      => $smtp_default_to,
-    revision             => $zuul_revision,
-  }
+    class { '::openstackci::jenkins_master':
+      vhost_name              => $jenkins_vhost_name,
+      serveradmin             => $serveradmin,
+      jenkins_ssh_private_key => $jenkins_ssh_private_key,
+      jenkins_ssh_public_key  => $jenkins_ssh_public_key,
+      jenkins_version         => $jenkins_version,
+      manage_jenkins_jobs     => true,
+      jenkins_url             => 'http://127.0.0.1:8080/',
+      jenkins_username        => $jenkins_username,
+      jenkins_password        => $jenkins_password,
+      project_config_repo     => $project_config_repo,
+      log_server              => $log_server,
+      java_args_override      => $java_args_override,
+      jjb_git_revision        => $jjb_git_revision,
+      jjb_git_url             => $jjb_git_url,
+    }
 
-  class { '::openstackci::nodepool':
-    mysql_root_password       => $mysql_root_password,
-    mysql_password            => $mysql_nodepool_password,
-    nodepool_ssh_private_key  => $jenkins_ssh_private_key,
-    revision                  => $nodepool_revision,
-    git_source_repo           => $nodepool_git_source_repo,
-    oscc_file_contents        => $oscc_file_contents,
-    environment               => {
-      # Set up the key in /etc/default/nodepool, used by the service.
-      'NODEPOOL_SSH_KEY' => $jenkins_ssh_public_key
-    },
-    project_config_repo       => $project_config_repo,
-    # Disable nodepool image logs as it conflicts with the zuul status page
-    enable_image_log_via_http => false,
-    jenkins_masters           => [
-      { name        => $nodepool_jenkins_target,
-        url         => 'http://localhost:8080/',
-        user        => $jenkins_username,
-        apikey      => $jenkins_api_key,
-        credentials => $jenkins_credentials_id,
+    class { '::openstackci::zuul_merger':
+      vhost_name           => $vhost_name,
+      gearman_server       => 'localhost',
+      gerrit_server        => $gerrit_server,
+      gerrit_user          => $gerrit_user,
+      # known_hosts_content is set by openstackci::zuul_scheduler
+      known_hosts_content  => '',
+      zuul_ssh_private_key => $gerrit_user_ssh_private_key,
+      zuul_url             => "http://${vhost_name}/p/",
+      git_email            => $git_email,
+      git_name             => $git_name,
+      manage_common_zuul   => false,
+      revision             => $zuul_revision_,
+      git_source_repo      => $zuul_git_source_repo,
+    }
+
+    class { '::openstackci::zuul_scheduler':
+      vhost_name           => $vhost_name,
+      gearman_server       => 'localhost',
+      gerrit_server        => $gerrit_server,
+      gerrit_user          => $gerrit_user,
+      known_hosts_content  => $gerrit_ssh_host_key,
+      zuul_ssh_private_key => $gerrit_user_ssh_private_key,
+      url_pattern          => "http://${log_server}/{build.parameters[LOG_PATH]}",
+      zuul_url             => "http://${vhost_name}/p/",
+      job_name_in_report   => true,
+      status_url           => "http://${vhost_name}",
+      project_config_repo  => $project_config_repo,
+      git_email            => $git_email,
+      git_name             => $git_name,
+      smtp_host            => $smtp_host,
+      smtp_default_from    => $smtp_default_from,
+      smtp_default_to      => $smtp_default_to,
+      revision             => $zuul_revision_,
+    }
+
+    class { '::openstackci::nodepool':
+      mysql_root_password       => $mysql_root_password,
+      mysql_password            => $mysql_nodepool_password,
+      nodepool_ssh_private_key  => $jenkins_ssh_private_key,
+      revision                  => $nodepool_revision_,
+      git_source_repo           => $nodepool_git_source_repo,
+      oscc_file_contents        => $oscc_file_contents,
+      environment               => {
+        # Set up the key in /etc/default/nodepool, used by the service.
+        'NODEPOOL_SSH_KEY' => $jenkins_ssh_public_key
       },
-    ],
+      project_config_repo       => $project_config_repo,
+      # Disable nodepool image logs as it conflicts with the zuul status page
+      enable_image_log_via_http => false,
+      jenkins_masters           => [
+        { name        => $nodepool_jenkins_target,
+          url         => 'http://localhost:8080/',
+          user        => $jenkins_username,
+          apikey      => $jenkins_api_key,
+          credentials => $jenkins_credentials_id,
+        },
+      ],
+    }
+
+  } else {
+  # Zuul V3
+
+    # TODO v3 all in one
+    fail('zuul v3 all in one deployment is not supported')
   }
+
 }
