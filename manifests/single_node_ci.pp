@@ -113,6 +113,10 @@
 #   The default 'to' e-mail address zuul will use when it sends
 #   notification e-mails.
 #
+# [*zuulv2*]
+#   Set to true to deploy zuul v2 (incompatible with zuul v3).
+#   If set, nodepool_revision and zuul_revision have no effect.
+#
 # [*zuul_revision*]
 #   The branch name used to install zuul.
 #
@@ -184,6 +188,7 @@ class openstackci::single_node_ci (
   $smtp_host                     = 'localhost',
   $smtp_default_from             = "zuul@${vhost_name}",
   $smtp_default_to               = "zuul.reports@${vhost_name}",
+  $zuulv2                        = true,
   $zuul_revision                 = 'master',
   $zuul_git_source_repo          = 'https://git.openstack.org/openstack-infra/zuul',
 
@@ -197,6 +202,11 @@ class openstackci::single_node_ci (
   $nodepool_revision             = 'master',
   $nodepool_git_source_repo      = 'https://git.openstack.org/openstack-infra/nodepool',
 ) {
+
+  if $zuulv2 {
+
+    $nodepool_revision_ = hiera('nodepoolv2_revision', '0.4.0')
+    $zuul_revision_ = hiera('zuulv2_revision', '2.6.0')
 
   class { '::openstackci::jenkins_master':
     vhost_name              => $jenkins_vhost_name,
@@ -227,7 +237,7 @@ class openstackci::single_node_ci (
     git_email            => $git_email,
     git_name             => $git_name,
     manage_common_zuul   => false,
-    revision             => $zuul_revision,
+    revision             => $zuul_revision_,
     git_source_repo      => $zuul_git_source_repo,
   }
 
@@ -248,14 +258,14 @@ class openstackci::single_node_ci (
     smtp_host            => $smtp_host,
     smtp_default_from    => $smtp_default_from,
     smtp_default_to      => $smtp_default_to,
-    revision             => $zuul_revision,
+    revision             => $zuul_revision_,
   }
 
   class { '::openstackci::nodepool':
     mysql_root_password       => $mysql_root_password,
     mysql_password            => $mysql_nodepool_password,
     nodepool_ssh_private_key  => $jenkins_ssh_private_key,
-    revision                  => $nodepool_revision,
+    revision                  => $nodepool_revision_,
     git_source_repo           => $nodepool_git_source_repo,
     oscc_file_contents        => $oscc_file_contents,
     environment               => {
@@ -274,4 +284,12 @@ class openstackci::single_node_ci (
       },
     ],
   }
+
+  } else {
+  # Zuul V3
+
+    # TODO v3 all in one
+    fail('zuul v3 all in one deployment is not supported')
+  }
+
 }
