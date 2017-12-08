@@ -54,6 +54,21 @@ class openstackci::zuul_scheduler(
   $smtp_default_from = "zuul@${::fqdn}",
   $smtp_default_to = "zuul.reports@${::fqdn}",
   $revision = 'master',
+  # v3 additions
+  $python_version = 2,
+  $zookeeper_hosts = '127.0.0.1:2181',
+  $zookeeper_session_timeout = undef,
+  $zuulv3 = false,
+  $connections = [],
+  $connection_secrets = [],
+  $zuul_status_url = 'http://127.0.0.1:8001',
+  $zuul_web_url = 'http://127.0.0.1:9000',
+  $gearman_client_ssl_cert = undef,
+  $gearman_client_ssl_key = undef,
+  $gearman_server_ssl_cert = undef,
+  $gearman_server_ssl_key = undef,
+  $gearman_ssl_ca = undef,
+  $github_key_content = undef,
 ) {
 
   if ! defined(Class['project_config']) {
@@ -98,11 +113,45 @@ class openstackci::zuul_scheduler(
     proxy_ssl_key_file_contents    => $proxy_ssl_key_file_contents,
     proxy_ssl_chain_file_contents  => $proxy_ssl_chain_file_contents,
     revision                       => $revision,
+    python_version                 => $python_version,
+    zookeeper_hosts                => $zookeeper_hosts,
+    zookeeper_session_timeout      => $zookeeper_session_timeout,
+    zuulv3                         => $zuulv3,
+    connections                    => $connections,
+    connection_secrets             => $connection_secrets,
+    zuul_status_url                => $zuul_status_url,
+    zuul_web_url                   => $zuul_web_url,
+    gearman_client_ssl_cert        => $gearman_client_ssl_cert,
+    gearman_client_ssl_key         => $gearman_client_ssl_key,
+    gearman_server_ssl_cert        => $gearman_server_ssl_cert,
+    gearman_server_ssl_key         => $gearman_server_ssl_key,
+    gearman_ssl_ca                 => $gearman_ssl_ca,
   }
 
-  class { '::zuul::server':
-    layout_dir => $::project_config::zuul_layout_dir,
-    require    => $::project_config::config_dir,
+  if $zuulv3 {
+    if ($github_key_content != undef) {
+      file { '/etc/zuul/github.key':
+        ensure  => present,
+        owner   => 'zuul',
+        group   => 'zuul',
+        mode    => '0600',
+        content => $github_key_content,
+        require => File['/etc/zuul'],
+      }
+    }
+    class { '::zuul::scheduler':
+      layout_dir     => $::project_config::zuul_layout_dir,
+      require        => $::project_config::config_dir,
+      python_version => $python_version,
+      use_mysql      => true,
+    }
+    class { '::zuul::web': }
+    class { '::zuul::fingergw': }
+  } else {
+    class { '::zuul::server':
+      layout_dir => $::project_config::zuul_layout_dir,
+      require    => $::project_config::config_dir,
+    }
   }
 
   if $known_hosts_content != '' {
