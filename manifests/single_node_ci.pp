@@ -308,8 +308,12 @@ class openstackci::single_node_ci (
       $zuul_revision_ = $zuul_revision
     }
 
-    # TODO v3 all in one
-    fail('zuul v3 all in one deployment is not supported')
+    # One instance running locally should be enough for single_node_ci.
+    class { '::zookeeper':
+      id             => 1,
+      purge_interval => 6,
+      servers        => [$::fqdn,],
+    }
   }
 
 }
