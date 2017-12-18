@@ -48,4 +48,41 @@ describe 'basic openstackci' do
 
   end
 
+  if fact('osfamily') == 'RedHat'
+
+    context 'default parameters' do
+
+      it 'should work with no errors' do
+
+        base_path = File.dirname(__FILE__)
+        pp_path = File.join(base_path, 'fixtures', 'default.pp')
+        pp = File.read(pp_path)
+
+        # Run it twice and test for idempotency
+        apply_manifest(pp, :catch_failures => true)
+        apply_manifest(pp, :catch_changes => true)
+      end
+
+    end
+
+    context 'installation of packages' do
+
+      describe package('httpd') do
+        it { should be_installed }
+      end
+
+    end
+
+    context 'files and directories' do
+
+      describe file('/var/cache/httpd/proxy') do
+        it { should be_directory }
+        it { should be_owned_by 'apache' }
+        it { should be_mode 755 }
+      end
+
+    end
+
+  end
+
 end
