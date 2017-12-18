@@ -4,6 +4,8 @@
 # the OpenStack Infra, as well as a reverse proxy for other repositories that
 # are not mirrored in the AFS infrastructure.
 #
+# Supports both CentOS and Debian-based mirrors.
+#
 # === Parameters:
 #
 # [*mirror_root*]
@@ -23,6 +25,33 @@ class openstackci::mirror (
   $vhost_name = $::fqdn,
   $serveraliases = undef,
 ) {
+  case $::osfamily {
+    'RedHat': {
+      $cache_root = '/var/cache/httpd/proxy'
+      $cleanup_requires = File['/var/cache/apache2/proxy']
+      $www_user = 'apache'
+      $www_group = 'apache'
+    }
+    'Debian': {
+      $cache_root = '/var/cache/apache2/proxy'
+      $cleanup_requires = [
+          File['/var/cache/apache2/proxy'],
+          Package['apache2-utils'],
+      ]
+      $www_user = 'www-data'
+      $www_group = 'www-data'
+    }
+    default: {
+      $cache_root = '/var/cache/apache2/proxy'
+      $cleanup_requires = [
+          File['/var/cache/apache2/proxy'],
+          Package['apache2-utils'],
+      ]
+      $www_user = 'www-data'
+      $www_group = 'www-data'
+    }
+  }
+
   $pypi_root = "${mirror_root}/pypi"
   $wheel_root = "${mirror_root}/wheel"
   $ceph_deb_hammer_root = "${mirror_root}/ceph-deb-hammer"
@@ -288,9 +317,9 @@ class openstackci::mirror (
 
   file { '/var/cache/apache2/proxy':
     ensure  => directory,
-    path    => '/var/cache/apache2/proxy',
-    owner   => 'www-data',
-    group   => 'www-data',
+    path    => $cache_root,
+    owner   => $www_user,
+    group   => $www_group,
     mode    => '0755',
     require => Class['httpd']
   }
@@ -331,6 +360,43 @@ class openstackci::mirror (
     }
   }
 
+  if $::osfamily == 'RedHat' {
+    # NOTE(jpena): Ports 8081/8082 are not allowed by default for httpd
+    # Instead of an exec, we could use selinux::port from voxpupuli-selinux
+    package { 'policycoreutils-python':
+      ensure => present,
+    }
+    -> exec {'enable-port-8081-selinux':
+      command => 'semanage port -m -t http_cache_port_t -p tcp 8081',
+      path    => '/usr/sbin:/usr/bin',
+      onlyif  => 'semanage port -l |grep http_cache_port_t|grep tcp | grep -v 8081',
+      before  => Httpd::Vhost[$vhost_name],
+    }
+    -> exec {'enable-port-8082-selinux':
+      command => 'semanage port -m -t http_cache_port_t -p tcp 8082',
+      path    => '/usr/sbin:/usr/bin',
+      onlyif  => 'semanage port -l |grep http_cache_port_t|grep tcp | grep -v 8082',
+      before  => Httpd::Vhost[$vhost_name],
+    }
+
+    # AFS files get the nfs_t label. We need this SELinux boolean to allow
+    # Apache to serve them when Enforcing
+    selboolean { 'httpd_use_nfs':
+      persistent => true,
+      value      => on,
+    }
+
+    # In CentOS, httpd::vhost will install the mod_ssl package, which creates
+    # file /etc/httpd/conf.d/ssl.conf. Since that directory is purged by the
+    # httpd class, we create an idempotency problem. Let's make sure the file
+    # is not there
+    file { '/etc/httpd/conf.d/ssl.conf':
+      ensure  => absent,
+      require => Httpd::Vhost[$vhost_name],
+      notify  => Service['httpd'],
+    }
+  }
+
   ::httpd::vhost { $vhost_name:
     port          => 80,
     priority      => '50',
@@ -356,12 +422,9 @@ class openstackci::mirror (
     # Clean apache cache once an hour, keep size down to 50GiB.
     minute      => '0',
     hour        => '*',
-    command     => 'flock -n /var/run/htcacheclean.lock htcacheclean -n -p /var/cache/apache2/proxy -t -l 40960M > /dev/null',
+    command     => "flock -n /var/run/htcacheclean.lock htcacheclean -n -p ${cache_root} -t -l 40960M > /dev/null",
     environment => 'PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin',
-    require     => [
-          File['/var/cache/apache2/proxy'],
-          Package['apache2-utils'],
-      ],
+    require     => $cleanup_requires,
   }
 
   class { '::httpd::logrotate':
