@@ -107,7 +107,7 @@ NameVirtualHost <%= @vhost_name %>:8082
     # Caching reverse proxy for things that don't make sense in AFS
     #
     # General cache rules
-    CacheRoot "/var/cache/apache2/proxy"
+    CacheRoot "<%= @cache_root %>"
     CacheDirLevels 5
     CacheDirLength 2
     # SSL support
@@ -230,7 +230,7 @@ NameVirtualHost <%= @vhost_name %>:8082
     # Caching reverse proxy for things that don't make sense in AFS
     #
     # General cache rules
-    CacheRoot "/var/cache/apache2/proxy"
+    CacheRoot "<%= @cache_root %>"
     CacheDirLevels 5
     CacheDirLength 2
     # SSL support
@@ -284,7 +284,7 @@ NameVirtualHost <%= @vhost_name %>:8082
     # Caching reverse proxy for things that don't make sense in AFS
     #
     # General cache rules
-    CacheRoot "/var/cache/apache2/proxy"
+    CacheRoot "<%= @cache_root %>"
     CacheDirLevels 5
     CacheDirLength 2
     # SSL support
