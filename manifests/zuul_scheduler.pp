@@ -54,6 +54,7 @@ class openstackci::zuul_scheduler(
   $smtp_default_from = "zuul@${::fqdn}",
   $smtp_default_to = "zuul.reports@${::fqdn}",
   $revision = 'master',
+  $git_source_repo = 'https://git.openstack.org/openstack-infra/zuul',
 ) {
 
   if ! defined(Class['project_config']) {
@@ -98,6 +99,7 @@ class openstackci::zuul_scheduler(
     proxy_ssl_key_file_contents    => $proxy_ssl_key_file_contents,
     proxy_ssl_chain_file_contents  => $proxy_ssl_chain_file_contents,
     revision                       => $revision,
+    git_source_repo                => $git_source_repo,
   }
 
   class { '::zuul::server':
