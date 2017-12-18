@@ -267,6 +267,7 @@ class openstackci::single_node_ci (
     smtp_default_from    => $smtp_default_from,
     smtp_default_to      => $smtp_default_to,
     revision             => $zuul_revision_,
+    git_source_repo      => $zuul_git_source_repo,
   }
 
   class { '::openstackci::nodepool':
