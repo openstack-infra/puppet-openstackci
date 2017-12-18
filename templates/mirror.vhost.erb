@@ -40,7 +40,7 @@ LogFormat "%h %l %u %t \"%r\" %>s %b %{cache-status}e \"%{Referer}i\" \"%{User-a
     # Caching reverse proxy for things that don't make sense in AFS
     #
     # General cache rules
-    CacheRoot "/var/cache/apache2/proxy"
+    CacheRoot "<%= @cache_root %>"
     CacheDirLevels 5
     CacheDirLength 2
     # SSL support
@@ -137,7 +137,7 @@ LogFormat "%h %l %u %t \"%r\" %>s %b %{cache-status}e \"%{Referer}i\" \"%{User-a
     # Caching reverse proxy for things that don't make sense in AFS
     #
     # General cache rules
-    CacheRoot "/var/cache/apache2/proxy"
+    CacheRoot "<%= @cache_root %>"
     CacheDirLevels 5
     CacheDirLength 2
     # SSL support
@@ -292,7 +292,7 @@ LogFormat "%h %l %u %t \"%r\" %>s %b %{cache-status}e \"%{Referer}i\" \"%{User-a
     # Caching reverse proxy for things that don't make sense in AFS
     #
     # General cache rules
-    CacheRoot "/var/cache/apache2/proxy"
+    CacheRoot "<%= @cache_root %>"
     CacheDirLevels 5
     CacheDirLength 2
     # SSL support
@@ -350,7 +350,7 @@ LogFormat "%h %l %u %t \"%r\" %>s %b %{cache-status}e \"%{Referer}i\" \"%{User-a
     # Caching reverse proxy for things that don't make sense in AFS
     #
     # General cache rules
-    CacheRoot "/var/cache/apache2/proxy"
+    CacheRoot "<%= @cache_root %>"
     CacheDirLevels 5
     CacheDirLength 2
     # SSL support
