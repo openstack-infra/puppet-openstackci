@@ -4,6 +4,8 @@
 # the OpenStack Infra, as well as a reverse proxy for other repositories that
 # are not mirrored in the AFS infrastructure.
 #
+# Supports both CentOS and Debian-based mirrors.
+#
 # === Parameters:
 #
 # [*mirror_root*]
@@ -23,6 +25,32 @@ class openstackci::mirror (
   $vhost_name = $::fqdn,
   $serveraliases = undef,
 ) {
+  case $::osfamily {
+    'RedHat': {
+      $cache_root = '/var/cache/httpd/proxy'
+      $cleanup_requires = File['/var/cache/apache2/proxy']
+      $www_user = 'apache'
+      $www_group = 'apache'
+    }
+    'Debian': {
+      $cache_root = '/var/cache/apache2/proxy'
+      $cleanup_requires = [
+          File['/var/cache/apache2/proxy'],
+          Package['apache2-utils'],
+      ]
+      $www_user = 'www-data'
+      $www_group = 'www-data'
+    }
+    default: {
+      $cache_root = '/var/cache/apache2/proxy'
+      $cleanup_requires = [
+          File['/var/cache/apache2/proxy'],
+          Package['apache2-utils'],
+      ]
+      $www_user = 'www-data'
+      $www_group = 'www-data'
+    }
+  }
 
   $wheel_root = "${mirror_root}/wheel"
   $ceph_deb_hammer_root = "${mirror_root}/ceph-deb-hammer"
@@ -345,20 +373,21 @@ class openstackci::mirror (
   }
 
   # Cache cleanup
-  package { 'apache2-utils':
-    ensure => present,
+  # The apache2-utils package is only required for Debian/Ubuntu
+  # In CentOS/RHEL, htcacheclean is part of the httpd package
+  if $::osfamily == 'Debian' {
+    package { 'apache2-utils':
+      ensure => present,
+    }
   }
 
   cron { 'apache-cache-cleanup':
     # Clean apache cache once an hour, keep size down to 70GiB.
     minute      => '0',
     hour        => '*',
-    command     => 'flock -n /var/run/htcacheclean.lock htcacheclean -n -p /var/cache/apache2/proxy -t -l 70200M > /dev/null',
+    command     => "flock -n /var/run/htcacheclean.lock htcacheclean -n -p ${cache_root} -t -l 70200M > /dev/null",
     environment => 'PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin',
-    require     => [
-      File['/var/cache/apache2/proxy'],
-      Package['apache2-utils'],
-    ],
+    require     => $cleanup_requires,
   }
 
   class { '::httpd::logrotate':
