@@ -25,6 +25,9 @@ describe 'basic openstackci' do
         it { should be_installed }
       end
 
+      describe package('apache2-utils') do
+        it { should be_installed }
+      end
     end
 
     context 'files and directories' do
@@ -33,6 +36,12 @@ describe 'basic openstackci' do
         it { should be_file }
         it { should be_owned_by 'root' }
         it { should be_mode 440 }
+      end
+
+      describe file('/var/cache/apache2/proxy') do
+        it { should be_directory }
+        it { should be_owned_by 'www-data' }
+        it { should be_mode 755 }
       end
 
     end
