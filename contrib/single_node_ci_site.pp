@@ -51,6 +51,7 @@ node default {
     smtp_host                   => hiera('smtp_host', 'localhost'),
     smtp_default_from           => hiera('smtp_default_from', "zuul@${vhost_name}"),
     smtp_default_to             => hiera('smtp_default_to', "zuul.reports@${vhost_name}"),
+    zuulv2                      => hiera('zuulv2', true),
     zuul_revision               => hiera('zuul_revision', 'master'),
     zuul_git_source_repo        => hiera('zuul_git_source_repo',
       'https://git.openstack.org/openstack-infra/zuul'),
