@@ -113,6 +113,9 @@
 #   The default 'to' e-mail address zuul will use when it sends
 #   notification e-mails.
 #
+# [*zuulv2*]
+#   Set to true to deploy zuul v2 (incompatible with zuul v3).
+#
 # [*zuul_revision*]
 #   The branch name used to install zuul.
 #
@@ -184,7 +187,8 @@ class openstackci::single_node_ci (
   $smtp_host                     = 'localhost',
   $smtp_default_from             = "zuul@${vhost_name}",
   $smtp_default_to               = "zuul.reports@${vhost_name}",
-  $zuul_revision                 = 'master',
+  $zuulv2                        = true,
+  $zuul_revision                 = undef,
   $zuul_git_source_repo          = 'https://git.openstack.org/openstack-infra/zuul',
 
   # Nodepool configurations
@@ -194,9 +198,23 @@ class openstackci::single_node_ci (
   $nodepool_jenkins_target       = undef,
   $jenkins_api_key               = undef,
   $jenkins_credentials_id        = undef,
-  $nodepool_revision             = 'master',
+  $nodepool_revision             = undef,
   $nodepool_git_source_repo      = 'https://git.openstack.org/openstack-infra/nodepool',
 ) {
+
+  if $zuulv2 {
+
+    if $nodepool_revision == undef {
+      $nodepool_revision_ = '0.3.1'
+    } else {
+      $nodepool_revision_ = $nodepool_revision
+    }
+
+    if $zuul_revision == undef {
+      $zuul_revision_ = '2.5.1'
+    } else {
+      $zuul_revision_ = $zuul_revision
+    }
 
   class { '::openstackci::jenkins_master':
     vhost_name              => $jenkins_vhost_name,
@@ -227,7 +245,7 @@ class openstackci::single_node_ci (
     git_email            => $git_email,
     git_name             => $git_name,
     manage_common_zuul   => false,
-    revision             => $zuul_revision,
+    revision             => $zuul_revision_,
     git_source_repo      => $zuul_git_source_repo,
   }
 
@@ -248,14 +266,14 @@ class openstackci::single_node_ci (
     smtp_host            => $smtp_host,
     smtp_default_from    => $smtp_default_from,
     smtp_default_to      => $smtp_default_to,
-    revision             => $zuul_revision,
+    revision             => $zuul_revision_,
   }
 
   class { '::openstackci::nodepool':
     mysql_root_password       => $mysql_root_password,
     mysql_password            => $mysql_nodepool_password,
     nodepool_ssh_private_key  => $jenkins_ssh_private_key,
-    revision                  => $nodepool_revision,
+    revision                  => $nodepool_revision_,
     git_source_repo           => $nodepool_git_source_repo,
     oscc_file_contents        => $oscc_file_contents,
     environment               => {
@@ -274,4 +292,24 @@ class openstackci::single_node_ci (
       },
     ],
   }
+
+  } else {
+  # Zuul V3
+
+    if $nodepool_revision == undef {
+      $nodepool_revision_ = 'master'
+    } else {
+      $nodepool_revision_ = $nodepool_revision
+    }
+
+    if $zuul_revision == undef {
+      $zuul_revision_ = 'master'
+    } else {
+      $zuul_revision_ = $zuul_revision
+    }
+
+    # TODO v3 all in one
+    fail('zuul v3 all in one deployment is not supported')
+  }
+
 }
