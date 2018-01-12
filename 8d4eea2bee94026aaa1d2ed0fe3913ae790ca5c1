@@ -1,0 +1,10 @@
+Code-Review+2: Clark Boylan <cboylan@sapwetik.org>
+Code-Review+2: Jens Harbott (frickler) <j.harbott@x-ion.de>
+Code-Review+2: James E. Blair <corvus@inaugust.com>
+Workflow+1: James E. Blair <corvus@inaugust.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 12 Jan 2018 00:11:22 +0000
+Reviewed-on: https://review.openstack.org/523951
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
