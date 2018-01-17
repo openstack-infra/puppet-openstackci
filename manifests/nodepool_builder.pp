@@ -37,6 +37,7 @@ class openstackci::nodepool_builder (
   $build_workers = '1',
   $upload_workers = '4',
   $python_version = 2,
+  $zuulv3 = false,
 ) {
 
   if ! defined(Class['project_config']) {
@@ -77,6 +78,7 @@ class openstackci::nodepool_builder (
     environment                   => $environment,
     build_workers                 => $build_workers,
     upload_workers                => $upload_workers,
+    zuulv3                        => $zuulv3,
   }
 
   file { '/etc/nodepool/nodepool.yaml':
