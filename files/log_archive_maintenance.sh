@@ -8,6 +8,3 @@ find -O3 /srv/static/logs/ -depth -not -name robots.txt -not -name lost+found \
         -exec gzip \{\} \; \) \
     -o \( -type f -mtime +30 -execdir rm \{\} \; \) \
     -o \( -type d -empty -mtime +1 -execdir rmdir {} \; \) \)
-find -O3 /srv/static/docs-draft/ -depth -not -name lost+found \( \
-    \( -type f -mtime +21 -execdir rm \{\} \; \) \
-    -o \( -type d -empty -mtime +1 -execdir rmdir {} \; \) \)
