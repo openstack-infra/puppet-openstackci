@@ -83,7 +83,8 @@ class openstackci::nodepool_builder (
 
   file { '/etc/nodepool/nodepool.yaml':
     ensure  => present,
-    source  => $::project_config::nodepool_config_file,
+    source  => [$::project_config::nodepool_config_file_zuulv3,
+                $::project_config::nodepool_config_file],
     owner   => 'nodepool',
     group   => 'root',
     mode    => '0400',
