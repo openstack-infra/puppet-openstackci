@@ -73,7 +73,6 @@ class openstackci::nodepool_builder (
   class { '::nodepool::builder':
     nodepool_ssh_public_key       => $nodepool_ssh_public_key,
     statsd_host                   => $statsd_host,
-    image_log_document_root       => $image_log_document_root,
     builder_logging_conf_template => $builder_logging_conf_template,
     environment                   => $environment,
     build_workers                 => $build_workers,
