@@ -28,6 +28,7 @@ class openstackci::nodepool_launcher (
   $project_config_base = undef,
   $launcher_logging_conf_template = 'nodepool/nodepool-launcher.logging.conf.erb',
   $python_version = 2,
+  $enable_webapp = false,
 ) {
 
   if ! defined(Class['project_config']) {
@@ -55,6 +56,7 @@ class openstackci::nodepool_launcher (
     statsd_host                    => $statsd_host,
     statsd_prefix                  => $statsd_prefix,
     launcher_logging_conf_template => $launcher_logging_conf_template,
+    enable_webapp                  => $enable_webapp,
   }
 
   file { '/etc/nodepool/nodepool.yaml':
