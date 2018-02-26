@@ -1,0 +1,8 @@
+Code-Review+2: Ian Wienand <iwienand@redhat.com>
+Workflow+1: Ian Wienand <iwienand@redhat.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 26 Feb 2018 00:00:07 +0000
+Reviewed-on: https://review.openstack.org/543774
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
