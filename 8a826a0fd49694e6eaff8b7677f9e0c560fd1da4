@@ -1,0 +1,9 @@
+Code-Review+2: Clark Boylan <cboylan@sapwetik.org>
+Code-Review+2: Paul Belanger <pabelanger@redhat.com>
+Workflow+1: Clark Boylan <cboylan@sapwetik.org>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Thu, 29 Mar 2018 20:58:17 +0000
+Reviewed-on: https://review.openstack.org/557816
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
