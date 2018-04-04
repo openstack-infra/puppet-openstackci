@@ -13,6 +13,10 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
 <% end -%>
   DocumentRoot <%= @docroot %>
 
+  WSGIDaemonProcess logs user=www-data group=www-data processes=<%= @wsgi_processes %> threads=<%= @wsgi_threads %>
+  WSGIProcessGroup logs
+  WSGIApplicationGroup %{GLOBAL}
+
   AddType text/plain .log
   AddType text/plain .sh
   AddType text/plain .yaml
