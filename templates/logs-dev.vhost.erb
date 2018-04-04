@@ -13,6 +13,10 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
 <% end -%>
   DocumentRoot <%= @docroot %>
 
+  WSGIDaemonProcess logs-dev user=www-data group=www-data processes=<%= @wsgi_processes %> threads=<%= @wsgi_threads %>
+  WSGIProcessGroup logs-dev
+  WSGIApplicationGroup %{GLOBAL}
+
   # use Apache to compress the results afterwards, to save on the wire
   # it's approx 18x savings of wire traffic to compress. We need to
   # compress by content types that htmlify can produce

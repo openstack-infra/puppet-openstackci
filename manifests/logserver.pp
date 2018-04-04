@@ -31,6 +31,8 @@ class openstackci::logserver (
   $swift_tenant_name = '',
   $swift_region_name = '',
   $swift_default_container = '',
+  $wsgi_processes = 8,
+  $wsgi_threads = 1,
   $readmes = {},
 ) {
 
