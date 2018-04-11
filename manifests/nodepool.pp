@@ -85,7 +85,7 @@ class openstackci::nodepool (
     python_version              => $python_version,
   }
 
-  if (install_nodepool_builder) {
+  if ($install_nodepool_builder) {
     class { '::nodepool::builder':
       statsd_host                   => $statsd_host,
       builder_logging_conf_template => $builder_logging_conf_template,
