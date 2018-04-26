@@ -57,7 +57,7 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
     Satisfy Any
   </Directory>
 
-<% @readmes.each do |pattern, helpfile| -%>
+<% scope.lookupvar('::openstackci::logserver::readmes').each do |pattern, helpfile| -%>
   <Directory <%= @docroot %><%= pattern %>>
     ReadmeName <%= helpfile %>
   </Directory>
