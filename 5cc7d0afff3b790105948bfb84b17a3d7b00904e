@@ -1,0 +1,9 @@
+Code-Review+2: Jens Harbott (frickler) <j.harbott@x-ion.de>
+Code-Review+2: Ian Wienand <iwienand@redhat.com>
+Workflow+1: David Moreau Simard <dmsimard@redhat.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 04 May 2018 13:54:46 +0000
+Reviewed-on: https://review.openstack.org/558688
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
