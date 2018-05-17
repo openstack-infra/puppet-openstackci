@@ -33,6 +33,12 @@ class openstackci::nodepool_builder (
   $upload_workers = '4',
   $python_version = 2,
   $zuulv3 = false,
+  $ssl_cert_file = '',
+  $ssl_cert_file_contents = '',
+  $ssl_chain_file = '',
+  $ssl_chain_file_contents = '',
+  $ssl_key_file = '',
+  $ssl_key_file_contents = '',
 ) {
 
   if ! defined(Class['project_config']) {
@@ -68,6 +74,12 @@ class openstackci::nodepool_builder (
     build_workers                 => $build_workers,
     upload_workers                => $upload_workers,
     zuulv3                        => $zuulv3,
+    ssl_cert_file                 => $ssl_cert_file,
+    ssl_cert_file_contents        => $ssl_cert_file_contents,
+    ssl_chain_file                => $ssl_chain_file,
+    ssl_chain_file_contents       => $ssl_chain_file_contents,
+    ssl_key_file                  => $ssl_key_file,
+    ssl_key_file_contents         => $ssl_key_file_contents,
   }
 
   file { '/etc/nodepool/nodepool.yaml':
