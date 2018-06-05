@@ -71,7 +71,7 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
     Satisfy Any
   </Directory>
 
-<% @readmes.each do |pattern, helpfile| -%>
+<% scope.lookupvar('::openstackci::logserver::readmes').each do |pattern, helpfile| -%>
   <Directory <%= @docroot %><%= pattern %>>
     ReadmeName <%= helpfile %>
   </Directory>
@@ -82,7 +82,7 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
   </Directory>
 
   RewriteEngine On
-<% if @ara_middleware -%>
+<% if scope.lookupvar('::openstackci::logserver::ara_middleware') -%>
   <Directory "/usr/local/bin">
     <Files "ara-wsgi-sqlite">
       Allow from all
@@ -91,20 +91,20 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
   </Directory>
   # ARA sqlite middleware configuration
   # See docs for details: https://ara.readthedocs.io/en/latest/advanced.html
-  SetEnv ARA_WSGI_TMPDIR_MAX_AGE <%= @ara_middleware_tmpdir_max_age %>
+  SetEnv ARA_WSGI_TMPDIR_MAX_AGE <%= scope.lookupvar('::openstackci::logserver::ara_middleware_tmpdir_max_age') %>
   SetEnv ARA_WSGI_LOG_ROOT <%= @docroot %>
-  SetEnv ARA_WSGI_DATABASE_DIRECTORY <%= @ara_middleware_database_directory %>
+  SetEnv ARA_WSGI_DATABASE_DIRECTORY <%= scope.lookupvar('::openstackci::logserver::ara_middleware_database_directory') %>
 
-  # Redirect .*/<%= @ara_middleware_database_directory %> to the ARA sqlite wsgi middleware
+  # Redirect .*/<%= scope.lookupvar('::openstackci::logserver::ara_middleware_database_directory') %> to the ARA sqlite wsgi middleware
   # This middleware automatically loads the ARA web application with the
-  # database located at .*/<%= @ara_middleware_database_directory %>/ansible.sqlite.
+  # database located at .*/<%= scope.lookupvar('::openstackci::logserver::ara_middleware_database_directory') %>/ansible.sqlite.
   # If we get a request directly to the database file, don't load the middleware
   # so that users can download the raw database if they wish.
-  WSGIScriptAliasMatch ^.*/<%= @ara_middleware_database_directory %>(?!/ansible.sqlite) /usr/local/bin/ara-wsgi-sqlite
+  WSGIScriptAliasMatch ^.*/<%= scope.lookupvar('::openstackci::logserver::ara_middleware_database_directory') %>(?!/ansible.sqlite) /usr/local/bin/ara-wsgi-sqlite
 
   # Everything beyond this point is rewritten to htmlify.
   # Make sure we don't do that for dynamic ARA reports.
-  RewriteCond %{REQUEST_URI} ^.*/<%= @ara_middleware_database_directory %> [NC]
+  RewriteCond %{REQUEST_URI} ^.*/<%= scope.lookupvar('::openstackci::logserver::ara_middleware_database_directory') %> [NC]
   RewriteRule .* - [L]
 <% end -%>
 
