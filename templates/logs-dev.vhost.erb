@@ -8,12 +8,12 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
   ServerName <%= @srvname %>
 <% if @serveraliases.is_a? Array -%>
 <% @serveraliases.each do |name| -%><%= " ServerAlias #{name}\n" %><% end -%>
-<% elsif @serveraliases != '' -%>
+<% elsif ! ['', nil, :undef].include?(@serveraliases) -%>
 <%= " ServerAlias #{@serveraliases}" %>
 <% end -%>
   DocumentRoot <%= @docroot %>
 
-  WSGIDaemonProcess logs-dev user=www-data group=www-data processes=<%= @wsgi_processes %> threads=<%= @wsgi_threads %>
+  WSGIDaemonProcess logs-dev user=www-data group=www-data processes=<%= scope.lookupvar('::openstackci::logserver::wsgi_processes') %> threads=<%= scope.lookupvar('::openstackci::logserver::wsgi_threads') %>
   WSGIProcessGroup logs-dev
   WSGIApplicationGroup %{GLOBAL}
 
