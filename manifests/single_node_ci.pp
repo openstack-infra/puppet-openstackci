@@ -150,7 +150,7 @@
 #   If Jenkins is secured, this parameter needs to match the id field of this element:
 #   <com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey plugin="ssh-credentials@1.6">
 #   inside this file: /var/lib/jenkins/credentials.xml
-#   and associated with this this key 'jenkins_ssh_private_key'. Otherwise it is ignored.
+#   and associated with this key 'jenkins_ssh_private_key'. Otherwise it is ignored.
 #
 # [*nodepool_revision*]
 #   The branch name used to install nodepool.
