@@ -16,7 +16,7 @@
 # == Class: openstackci::nodepool_builder
 #
 class openstackci::nodepool_builder (
-  $oscc_file_contents,
+  $oscc_file_contents = undef,
   $mysql_root_password = '',
   $mysql_password = '',
   $nodepool_ssh_public_key = undef,
@@ -114,16 +114,18 @@ class openstackci::nodepool_builder (
     ],
   }
 
-  file { '/home/nodepool/.config/openstack/clouds.yaml':
-    ensure  => present,
-    owner   => 'nodepool',
-    group   => 'nodepool',
-    mode    => '0400',
-    content => $oscc_file_contents,
-    require => [
-      File['/home/nodepool/.config/openstack'],
-      User['nodepool'],
-    ],
+  if $oscc_file_contents {
+    file { '/home/nodepool/.config/openstack/clouds.yaml':
+      ensure  => present,
+      owner   => 'nodepool',
+      group   => 'nodepool',
+      mode    => '0400',
+      content => $oscc_file_contents,
+      require => [
+        File['/home/nodepool/.config/openstack'],
+        User['nodepool'],
+      ],
+    }
   }
 
 }
