@@ -32,6 +32,11 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
     AddDefaultCharset UTF-8
     AddEncoding x-gzip gz
   </FilesMatch>
+  <FilesMatch \.(log|txt)\.gz$>
+    ForceType plain/text
+    AddDefaultCharset UTF-8
+    AddEncoding x-gzip gz
+  </FilesMatch>
   <FilesMatch \.css\.gz$>
     ForceType text/css
     AddDefaultCharset UTF-8
