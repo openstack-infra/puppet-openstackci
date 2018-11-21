@@ -1,0 +1,9 @@
+Code-Review+2: Clark Boylan <cboylan@sapwetik.org>
+Code-Review+2: Monty Taylor <mordred@inaugust.com>
+Workflow+1: Clark Boylan <cboylan@sapwetik.org>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Wed, 21 Nov 2018 22:49:10 +0000
+Reviewed-on: https://review.openstack.org/577522
+Project: openstack-infra/puppet-openstackci
+Branch: refs/heads/master
