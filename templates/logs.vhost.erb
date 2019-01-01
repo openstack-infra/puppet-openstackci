@@ -13,6 +13,9 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
 <% end -%>
   DocumentRoot <%= @docroot %>
 
+  # Authorize cross request, e.g. fetch job-output from the zuul builds page
+  Header set Access-Control-Allow-Origin "*"
+
   WSGIDaemonProcess logs user=www-data group=www-data processes=<%= scope.lookupvar('::openstackci::logserver::wsgi_processes') %> threads=<%= scope.lookupvar('::openstackci::logserver::wsgi_threads') %>
   WSGIProcessGroup logs
   WSGIApplicationGroup %{GLOBAL}
