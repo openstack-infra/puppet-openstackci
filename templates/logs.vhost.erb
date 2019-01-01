@@ -135,6 +135,11 @@ NameVirtualHost <%= @vhost_name %>:<%= @port %>
 
   WSGIScriptAlias /htmlify /usr/local/lib/python2.7/dist-packages/os_loganalyze/wsgi.py
 
+  <Location />
+    # Authorize cross request, e.g. fetch job-output from the zuul builds page
+    Header set Access-Control-Allow-Origin "*"
+  </Location>
+
   ErrorLog /var/log/apache2/<%= @name %>_error.log
   LogLevel warn
   CustomLog /var/log/apache2/<%= @name %>_access.log combined
