@@ -45,6 +45,12 @@ class openstackci::logserver (
   include ::httpd
   include ::httpd::mod::wsgi
 
+  if ! defined(Httpd::Mod['headers']) {
+    httpd::mod { 'headers':
+      ensure => present,
+    }
+  }
+
   if ! defined(Httpd::Mod['rewrite']) {
     httpd::mod { 'rewrite':
       ensure => present,
