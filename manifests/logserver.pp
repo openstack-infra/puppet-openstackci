@@ -69,6 +69,12 @@ class openstackci::logserver (
     }
   }
 
+  if ! defined(Httpd::Mod['expires']) {
+    httpd::mod { 'expires':
+        ensure => present,
+    }
+  }
+
   ::httpd::vhost { "logs.${domain}":
     port     => 80,
     priority => '50',
